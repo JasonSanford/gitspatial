@@ -1,4 +1,8 @@
+import logging
+
 from django.shortcuts import render
+
+logger = logging.getLogger(__name__)
 
 
 def home(request):
@@ -7,4 +11,5 @@ def home(request):
 
     Show the home page
     """
+    logger.debug('ZZZZZZZZZZZ')
     return render(request, 'index.html')
