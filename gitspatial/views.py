@@ -11,5 +11,4 @@ def home(request):
 
     Show the home page
     """
-    logger.error('Error at home')
     return render(request, 'index.html')

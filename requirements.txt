@@ -1,5 +1,11 @@
 Django==1.5.1
+boto==2.9.9
 dj-database-url==0.2.2
+django-social-auth==0.7.25
+django-storages==1.1.8
 gunicorn==17.5
+httplib2==0.8
+oauth2==1.5.211
 psycopg2==2.5.1
+python-openid==2.2.5
 wsgiref==0.1.2
