@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.conf.urls import patterns, include, url
+from social_auth.views import auth
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -15,6 +16,10 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
+    url(r'^login/$', auth, kwargs={'backend': 'github'}, name='login'),
+    url(r'^logout/$', 'gitspatial.views.logout', name='logout'),
+    url(r'^user/$', 'gitspatial.views.user_landing', name='user_landing'),
+    url(r'', include('social_auth.urls')),
 )
 
 if settings.DEBUG:

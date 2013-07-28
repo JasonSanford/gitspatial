@@ -124,6 +124,12 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'gitspatial',
     'storages',
+    'social_auth',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.contrib.github.GithubBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
@@ -131,6 +137,13 @@ STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'gitspatial'
+
+GITHUB_APP_ID = os.environ.get('GITHUB_APP_ID')
+GITHUB_API_SECRET = os.environ.get('GITHUB_API_SECRET')
+GITHUB_EXTENDED_PERMISSIONS = ['repo']
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/user/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

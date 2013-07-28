@@ -9,6 +9,12 @@
     <meta name="author" content="">
     <link href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 80px;
+        padding-bottom: 40px;
+      }
+    </style>
     <!--<link href="{{ STATIC_URL }}css/common.css" rel="stylesheet">
     <link rel="shortcut icon" href="{{ STATIC_URL }}favicon.ico">-->
     {% block css %}{% endblock %}
@@ -29,20 +35,19 @@
                         <li><a href="">How it Works</a></li>
                     </ul>
                     <ul class="nav pull-right">
-                    <!- was: if user.is_anonymous -->
-                    {% if false %}
+                    {% if user.is_anonymous %}
                         <li>
                             <a href="" class="btn-large navbutton">sign up</a>
                         </li>
                         <li>
-                            <a href="">login</a>
+                            <a href="{% url 'login' %}">login</a>
                         </li>
                     {% else %}
                         <li>
                             <a href="">{{ extended_user.display_name }}</a>
                         </li>
                         <li>
-                            <a href="">logout</a>
+                            <a href="{% url 'logout' %}">logout</a>
                         </li>
                     {% endif %}
                     </ul>
