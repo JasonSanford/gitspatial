@@ -1,4 +1,5 @@
 import os
+import sys
 
 import dj_database_url
 import djcelery
@@ -181,6 +182,7 @@ LOGGING = {
         'console': {
             'level': 'ERROR',
             'class': 'logging.StreamHandler',
+            'stream': sys.stdout,
             'formatter': 'verbose'
         }
     },
