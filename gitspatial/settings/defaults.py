@@ -187,7 +187,7 @@ LOGGING = {
         }
     },
     'loggers': {
-        'gitspatial': {
+        'django.request': {
             'handlers': ['console'],
             'level': 'ERROR',
             'propagate': True,
