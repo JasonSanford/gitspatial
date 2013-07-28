@@ -1,6 +1,7 @@
 import os
 
 import dj_database_url
+import djcelery
 
 # Django settings for gitspatial project.
 
@@ -125,6 +126,8 @@ INSTALLED_APPS = (
     'gitspatial',
     'storages',
     'social_auth',
+    'kombu.transport.django',
+    'djcelery',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -144,6 +147,14 @@ GITHUB_EXTENDED_PERMISSIONS = ['repo']
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/user/'
+
+BROKER_BACKEND = 'django'
+CELERY_TIMEZONE = 'UTC'
+BROKER_URL = 'django://'
+
+djcelery.setup_loader()
+
+CELERY_IMPORTS = ('gitspatial.tasks',)
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

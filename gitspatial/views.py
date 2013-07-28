@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 
+from .tasks import wait
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -13,6 +16,7 @@ def home(request):
 
     Show the home page
     """
+    wait.apply_async(duration=60)
     return render(request, 'index.html')
 
 
