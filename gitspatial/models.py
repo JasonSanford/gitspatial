@@ -11,7 +11,7 @@ class Repo(Timestampable, models.Model):
     name = models.CharField(max_length=1000)
     full_name = models.CharField(max_length=1000)
     private = models.BooleanField()
-    synced = models.BooleanField()
+    synced = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.full_name

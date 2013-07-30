@@ -36,5 +36,6 @@ def user_landing(request):
 
     User landing page
     """
+    # TODO: Only do this at sign up. Subsequent re-checks of new/updated repos should be scheduled.
     get_user_repos.apply_async((request.user,))
     return render(request, 'user.html')
