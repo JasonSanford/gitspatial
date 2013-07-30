@@ -2,10 +2,9 @@ import logging
 
 from celery import task
 from django.db.models.query import QuerySet
-import requests
-from social_auth.models import UserSocialAuth
 
-from .models import Repo
+from .models import Repo, FeatureSet
+from .github import GitHubApiGetRequest
 
 
 logger = logging.getLogger(__name__)
@@ -13,26 +12,23 @@ logger = logging.getLogger(__name__)
 
 @task(name='get_user_repos')
 def get_user_repos(user_or_users):
+    """
+    Create or update the repos for a single
+    user or set of users
+    """
+    logging.debug('got here')
     if isinstance(user_or_users, (list, tuple, QuerySet)):
         users = user_or_users
     else:
         users = [user_or_users]
     for user in users:
-        social_auth_user = UserSocialAuth.objects.get(user=user, provider='github')
-        social_extra = social_auth_user.extra_data
-        access_token = social_extra['access_token']
-
-        uri = 'https://api.github.com/user/repos'
-        headers = {'Authorization': 'token {0}'.format(access_token)}
-        request = requests.get(uri, headers=headers)
-
-        raw_repos = request.json()
-        for raw_repo in raw_repos:
+        raw_repos = GitHubApiGetRequest(user, '/user/repos')
+        for raw_repo in raw_repos.json:
             defaults = {
                 'user': user,
                 'name': raw_repo['name'],
                 'full_name': raw_repo['full_name'],
-                'private': raw_repo['private'],
+                'github_private': raw_repo['private'],
             }
             repo, created = Repo.objects.get_or_create(github_id=raw_repo['id'], defaults=defaults)
             if created:
@@ -41,3 +37,21 @@ def get_user_repos(user_or_users):
                 repo.__dict__.update(defaults)
                 repo.save()
                 logger.info('Updated repo {0} for user {1}'.format(repo, user))
+
+
+@task(name='get_repo_feature_sets')
+def get_repo_feature_sets(repo_or_repos):
+    """
+    Create or update the feature sets for
+    a single repo or set of repos
+    """
+    if isinstance(repo_or_repos, (list, tuple, QuerySet)):
+        repos = repo_or_repos
+    else:
+        repos = [repo_or_repos]
+    for repo in repos:
+        raw_contents = GitHubApiGetRequest(repo.user, '/repos/{0}/contents/'.format(repo.full_name))
+        for item in raw_contents.json:
+            if item['type'] == 'file' and item['name'].endswith('.geojson'):
+                defaults = {'name': item['name'][:item['name'].find('.geojson')]}
+                feature_set, created = FeatureSet.objects.get_or_create(repo=repo, file_name=item['name'], defaults=defaults)

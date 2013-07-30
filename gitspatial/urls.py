@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^login/$', auth, kwargs={'backend': 'github'}, name='login'),
     url(r'^logout/$', 'gitspatial.views.logout', name='logout'),
-    url(r'^user/$', 'gitspatial.views.user_landing', name='user_landing'),
+    url(r'^user/', include('gitspatial.user.urls')),
     url(r'', include('social_auth.urls')),
 )
 
