@@ -24,12 +24,19 @@ def user_landing(request):
     """
     # TODO: Only do this at sign up. Subsequent re-checks of new/updated repos should be scheduled.
     get_user_repos.apply_async((request.user,))
-    return render(request, 'user.html')
+    user_repos = Repo.objects.filter(user=request.user).order_by('name')
+    context = {'user_repos': user_repos}
+    return render(request, 'user.html', context)
+
+
+@login_required
+def user_repo(request, repo_id):
+    return HttpResponse('hola')
 
 
 @login_required
 @require_http_methods(['POST', 'DELETE'])
-def repo_sync(request, repo_id):
+def user_repo_sync(request, repo_id):
     """
     POST /repo/:id
     or

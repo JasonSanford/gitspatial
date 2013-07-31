@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-Your user landing page
+<table class="table table-striped">
+    <thead>
+        <tr><th>Repo</th><th>GitHub Privacy</th><th>Sync Status</th></tr>
+    </thead>
+    <tbody>
+        {% for repo in user_repos %}
+        <tr>
+            <td>{% if repo.synced %}<a href="{% url 'user_repo' repo_id=repo.id %}">{% endif %}{{ repo.name }}{% if repo.synced %}</a>{% endif %}</td>
+            <td>{{ repo.github_private }}</td>
+            <td><a style="width: 70px;" href="{% url 'user_repo_sync' repo.id %}" class="repo-sync btn {% if repo.synced %}btn-danger{% else %}btn-success{% endif %}">{% if repo.synced %}Un-sync{% else %}Sync{% endif %}</a></td></tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
