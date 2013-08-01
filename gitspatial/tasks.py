@@ -55,3 +55,10 @@ def get_repo_feature_sets(repo_or_repos):
             if item['type'] == 'file' and item['name'].endswith('.geojson'):
                 defaults = {'name': item['name'][:item['name'].find('.geojson')]}
                 feature_set, created = FeatureSet.objects.get_or_create(repo=repo, file_name=item['name'], defaults=defaults)
+
+
+@task(name='delete_repo_feature_sets')
+def delete_repo_feature_sets(repo):
+    feature_sets = FeatureSet.objects.filter(repo=repo)
+    for feature_set in feature_sets:
+        feature_set.delete()

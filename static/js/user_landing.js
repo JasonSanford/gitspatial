@@ -13,7 +13,7 @@ $(document).ready(function () {
                 url: $this.attr('href'),
                 type: 'DELETE',
                 success: function () {
-                    $this.removeClass('btn-danger').addClass('btn-success').text('Sync');
+                    $this.removeClass('btn-danger synced').addClass('btn-success not-synced').text('Sync');
                     $name_td.html(repo_name);
                 },
                 error: function () {
@@ -25,7 +25,7 @@ $(document).ready(function () {
                 url: $this.attr('href'),
                 type: 'POST',
                 success: function () {
-                    $this.removeClass('btn-success').addClass('btn-danger').text('Unsync');
+                    $this.removeClass('btn-success not-synced').addClass('btn-danger synced').text('Unsync');
                     $name_td.html('<a href="' + repo_url + '">' + repo_name + '</a>');
                 },
                 error: function (jqXHR) {

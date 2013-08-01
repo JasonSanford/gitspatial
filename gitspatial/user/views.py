@@ -9,7 +9,7 @@ from django.views.decorators.http import require_http_methods
 
 from ..github import GitHubApiPostRequest, GitHubApiGetRequest, GitHubApiDeleteRequest
 from ..models import Repo
-from ..tasks import get_user_repos, get_repo_feature_sets
+from ..tasks import get_user_repos, get_repo_feature_sets, delete_repo_feature_sets
 
 
 logger = logging.getLogger(__name__)
@@ -96,9 +96,10 @@ def user_repo_sync(request, repo_id):
 
         if hook_id_to_delete is not None:
             hook_delete_request = GitHubApiDeleteRequest(request.user, '/repos/{0}/hooks/{1}'.format(repo.full_name, hook_id_to_delete))
-            if hook_delete_request.status_code != 204:
-                logger.warning('Hook not deleted for repo: {0}'.format(repo))
+            if hook_delete_request.status_code == 204:
+                logger.info('Hook deleted for repo: {0}'.format(repo))
+                delete_repo_feature_sets.apply_async((repo,))
             else:
-                logger.warning('Hook deleted for repo: {0}'.format(repo))
+                logger.warning('Hook not deleted for repo: {0}'.format(repo))
         repo.save()
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=204)
