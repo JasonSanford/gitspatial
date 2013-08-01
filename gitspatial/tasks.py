@@ -22,6 +22,8 @@ def get_user_repos(user_or_users):
     else:
         users = [user_or_users]
     for user in users:
+        previous_repos = Repo.objects.filter(user=user)
+        current_repos = []
         raw_repos = GitHubApiGetRequest(user, '/user/repos')
         for raw_repo in raw_repos.json:
             defaults = {
@@ -31,6 +33,7 @@ def get_user_repos(user_or_users):
                 'github_private': raw_repo['private'],
             }
             repo, created = Repo.objects.get_or_create(github_id=raw_repo['id'], defaults=defaults)
+            current_repos.append(repo)
             if created:
                 logger.info('Created repo {0} for user {1}'.format(repo, user))
             else:
@@ -39,6 +42,9 @@ def get_user_repos(user_or_users):
                 logger.info('Updated repo {0} for user {1}'.format(repo, user))
             if repo.synced:
                 get_repo_feature_sets.apply_async((repo,))
+        for previous_repo in previous_repos:
+            if previous_repo not in current_repos:
+                previous_repo.delete()
 
 
 @task(name='get_repo_feature_sets')
