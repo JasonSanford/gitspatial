@@ -44,17 +44,6 @@ def user_repo_sync(request, repo_id):
 
     Sets repo synced property as True or False (POST or DELETE)
     """
-    max_repo_syncs = 3
-
-    current_synced_repos = Repo.objects.filter(user=request.user, synced=True).count()
-
-    if current_synced_repos >= max_repo_syncs:
-        response = {
-            'status': 'error',
-            'message': 'While we ramp things up, users are limited to syncing {0} repos. Cool?'.format(max_repo_syncs)
-        }
-        return HttpResponseBadRequest(json.dumps(response), content_type='application/json')
-
     try:
         repo = Repo.objects.get(id=repo_id)
     except Repo.DoesNotExist:
@@ -64,6 +53,17 @@ def user_repo_sync(request, repo_id):
         raise PermissionDenied
 
     if request.method == 'POST':
+        max_repo_syncs = 3
+
+        current_synced_repos = Repo.objects.filter(user=request.user, synced=True).count()
+
+        if current_synced_repos >= max_repo_syncs:
+            response = {
+                'status': 'error',
+                'message': 'While we ramp things up, users are limited to syncing {0} repos. Cool?'.format(max_repo_syncs)
+            }
+            return HttpResponseBadRequest(json.dumps(response), content_type='application/json')
+
         repo.synced = True
 
         # Create a GitHub web hook so we get notified when this repo is pushed
