@@ -28,8 +28,11 @@ $(document).ready(function () {
                     $this.removeClass('btn-success').addClass('btn-danger').text('Unsync');
                     $name_td.html('<a href="' + repo_url + '">' + repo_name + '</a>');
                 },
-                error: function () {
-                    alert('there was an error syncing');
+                error: function (jqXHR) {
+                    response = JSON.parse(jqXHR.responseText);
+                    if ('message' in response) {
+                        alert(response.message);
+                    }
                 }
             });
         }

@@ -3,7 +3,7 @@ import logging
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.http import Http404
+from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import render, HttpResponse
 from django.views.decorators.http import require_http_methods
 
@@ -23,7 +23,7 @@ def user_landing(request):
     User landing page
     """
     # TODO: Only do this at sign up. Subsequent re-checks of new/updated repos should be scheduled.
-    get_user_repos.apply_async((request.user,))
+    #get_user_repos.apply_async((request.user,))
     user_repos = Repo.objects.filter(user=request.user).order_by('name')
     context = {'user_repos': user_repos}
     return render(request, 'user.html', context)
@@ -44,6 +44,17 @@ def user_repo_sync(request, repo_id):
 
     Sets repo synced property as True or False (POST or DELETE)
     """
+    max_repo_syncs = 3
+
+    current_synced_repos = Repo.objects.filter(user=request.user, synced=True).count()
+
+    if current_synced_repos >= max_repo_syncs:
+        response = {
+            'status': 'error',
+            'message': 'While we ramp things up, users are limited to syncing {0} repos. Cool?'.format(max_repo_syncs)
+        }
+        return HttpResponseBadRequest(json.dumps(response), content_type='application/json')
+
     try:
         repo = Repo.objects.get(id=repo_id)
     except Repo.DoesNotExist:
