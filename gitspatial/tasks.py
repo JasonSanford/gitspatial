@@ -61,7 +61,7 @@ def get_repo_feature_sets(repo_or_repos):
                 feature_set, created = FeatureSet.objects.get_or_create(repo=repo, file_name=item['name'], defaults=defaults)
                 current_feature_sets.append(feature_set)
         for previous_feature_set in previous_feature_sets:
-            if previous_feature_set not in previous_feature_sets:
+            if previous_feature_set not in current_feature_sets:
                 previous_feature_set.delete()
 
 
