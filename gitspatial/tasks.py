@@ -1,3 +1,4 @@
+import base64
 import logging
 
 from celery import task
@@ -5,6 +6,7 @@ from django.db.models.query import QuerySet
 
 from .models import Repo, FeatureSet
 from .github import GitHubApiGetRequest
+from .geojson import GeoJSONParser, GeoJSONParserException
 
 
 logger = logging.getLogger(__name__)
@@ -71,10 +73,30 @@ def get_repo_feature_sets(repo_or_repos):
                 previous_feature_set.delete()
 
 
+@task(name='get_feature_set_features')
+def get_feature_set_features(feature_set_or_feature_sets):
+    """
+    Delete all features for, and create
+    features for a feature set
+    """
+    if isinstance(feature_set_or_feature_sets, (list, tuple, QuerySet)):
+        feature_sets = feature_set_or_feature_sets
+    else:
+        feature_sets = [feature_set_or_feature_sets]
+    for feature_set in feature_sets:
+        raw_content = GitHubApiGetRequest(
+            feature_set.repo.user,
+            '/repos/{0}/contents/{1}'.format(feature_set.repo.full_name, feature_set.file_name))
+        content = base64.b64decode(raw_content.json['content'])
+        try:
+            geojson = GeoJSONParser(content)
+        except GeoJSONParserException as e:
+            logger.error('GeoJSONParserError parsing FeatureSet: {0} with error: {1}'.format(feature_set, e.message))
+            return
+        logger.info(len(geojson.features))
+
+
 @task(name='delete_repo_feature_sets')
 def delete_repo_feature_sets(repo):
     logger.info('Deleting feature sets for repo: {0}'.format(repo))
-    feature_sets = FeatureSet.objects.filter(repo=repo)
-    for feature_set in feature_sets:
-        logger.info('Deleting feature set: {0}'.format(feature_set))
-        feature_set.delete()
+    FeatureSet.objects.filter(repo=repo).delete()
