@@ -64,16 +64,16 @@ def get_repo_feature_sets(repo_or_repos):
     for repo in repos:
         previous_feature_sets = FeatureSet.objects.filter(repo=repo)
         current_feature_sets = []
-        raw_contents = GitHubApiGetRequest(repo.user, '/repos/{0}/contents/'.format(repo.full_name))
-        for item in raw_contents.json:
-            if item['type'] == 'file' and item['name'].endswith('.geojson'):
-                defaults = {'name': item['name'][:item['name'].find('.geojson')]}
-                feature_set, created = FeatureSet.objects.get_or_create(repo=repo, file_name=item['name'], defaults=defaults)
+        repo_tree = GitHubApiGetRequest(repo.user, '/repos/{0}/git/trees/master?recursive=1'.format(repo.full_name))
+        for item in repo_tree.json['tree']:
+            if item['type'] == 'blob' and item['path'].endswith('.geojson'):
+                defaults = {'name': item['path']}
+                feature_set, created = FeatureSet.objects.get_or_create(repo=repo, path=item['path'], defaults=defaults)
                 current_feature_sets.append(feature_set)
+                get_feature_set_features.apply_async((feature_set,))
         for previous_feature_set in previous_feature_sets:
             if previous_feature_set not in current_feature_sets:
                 previous_feature_set.delete()
-        get_feature_set_features.apply_async((current_feature_sets,))
 
 
 @task(name='get_feature_set_features')
@@ -91,12 +91,12 @@ def get_feature_set_features(feature_set_or_feature_sets):
         Feature.objects.filter(feature_set=feature_set).delete()
         raw_content = GitHubApiGetRequest(
             feature_set.repo.user,
-            '/repos/{0}/contents/{1}'.format(feature_set.repo.full_name, feature_set.file_name))
+            '/repos/{0}/contents/{1}'.format(feature_set.repo.full_name, feature_set.path))
         content = base64.b64decode(raw_content.json['content'])
         try:
             geojson = GeoJSONParser(content)
         except GeoJSONParserException as e:
-            logger.error('GeoJSONParserError parsing FeatureSet: {0} with error: {1}'.format(feature_set, e.message))
+            logger.error('GeoJSONParserError parsing FeatureSet: {0} with error: {1}'.format(feature_set, e))
             return
         for feature in geojson.features:
             geom = GEOSGeometry(json.dumps(feature['geometry']))

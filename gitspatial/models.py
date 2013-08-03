@@ -26,8 +26,8 @@ class FeatureSet(Timestampable, models.Model):
     Represents a GeoJSON file within a GitHub repo
     """
     repo = models.ForeignKey(Repo)
-    file_name = models.CharField(max_length=1000)  # The filename in the repo, "fire-hydrants.geojson"
-    name = models.CharField(max_length=255)  # The name without extension, "fire-hydrants"
+    path = models.CharField(max_length=1000)  # The path for a file in the repo, "fire-hydrants.geojson", "data/geojson/pump-stations.geojson"
+    name = models.CharField(max_length=1000)  # The editable name of the feature set, initially the same as path
 
     def __unicode__(self):
         return '{0}/{1}'.format(self.repo.full_name, self.name)
