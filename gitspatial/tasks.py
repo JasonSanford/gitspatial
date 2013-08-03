@@ -1,10 +1,12 @@
 import base64
+import json
 import logging
 
 from celery import task
+from django.contrib.gis.geos import GEOSGeometry
 from django.db.models.query import QuerySet
 
-from .models import Repo, FeatureSet
+from .models import Repo, FeatureSet, Feature
 from .github import GitHubApiGetRequest
 from .geojson import GeoJSONParser, GeoJSONParserException
 
@@ -18,7 +20,6 @@ def get_user_repos(user_or_users):
     Create or update the repos for a single
     user or set of users
     """
-    logging.debug('got here')
     if isinstance(user_or_users, (list, tuple, QuerySet)):
         users = user_or_users
     else:
@@ -28,6 +29,7 @@ def get_user_repos(user_or_users):
         current_repos = []
         raw_repos = GitHubApiGetRequest(user, '/user/repos')
         for raw_repo in raw_repos.json:
+            #logger.info('raw_repo is: {0}'.format(raw_repo))
             defaults = {
                 'user': user,
                 'name': raw_repo['name'],
@@ -71,6 +73,7 @@ def get_repo_feature_sets(repo_or_repos):
         for previous_feature_set in previous_feature_sets:
             if previous_feature_set not in current_feature_sets:
                 previous_feature_set.delete()
+        get_feature_set_features.apply_async((current_feature_sets,))
 
 
 @task(name='get_feature_set_features')
@@ -84,6 +87,8 @@ def get_feature_set_features(feature_set_or_feature_sets):
     else:
         feature_sets = [feature_set_or_feature_sets]
     for feature_set in feature_sets:
+        # First, kill the current features
+        Feature.objects.filter(feature_set=feature_set).delete()
         raw_content = GitHubApiGetRequest(
             feature_set.repo.user,
             '/repos/{0}/contents/{1}'.format(feature_set.repo.full_name, feature_set.file_name))
@@ -93,7 +98,12 @@ def get_feature_set_features(feature_set_or_feature_sets):
         except GeoJSONParserException as e:
             logger.error('GeoJSONParserError parsing FeatureSet: {0} with error: {1}'.format(feature_set, e.message))
             return
-        logger.info(len(geojson.features))
+        for feature in geojson.features:
+            geom = GEOSGeometry(json.dumps(feature['geometry']))
+            properties = json.dumps(feature['properties'])
+            feature = Feature(feature_set=feature_set, geom=geom, properties=properties)
+            feature.save()
+            logger.info('Created Feature: {0}'.format(feature))
 
 
 @task(name='delete_repo_feature_sets')
