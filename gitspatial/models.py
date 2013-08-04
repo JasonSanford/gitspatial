@@ -28,6 +28,7 @@ class FeatureSet(Timestampable, models.Model):
     repo = models.ForeignKey(Repo)
     path = models.CharField(max_length=1000)  # The path for a file in the repo, "fire-hydrants.geojson", "data/geojson/pump-stations.geojson"
     name = models.CharField(max_length=1000)  # The editable name of the feature set, initially the same as path
+    synced = models.BooleanField(default=False)  # Just like Repo, not all are synced
 
     def __unicode__(self):
         return '{0}/{1}'.format(self.repo.full_name, self.name)

@@ -8,8 +8,8 @@ from django.shortcuts import render, HttpResponse
 from django.views.decorators.http import require_http_methods
 
 from ..github import GitHubApiPostRequest, GitHubApiGetRequest, GitHubApiDeleteRequest
-from ..models import Repo
-from ..tasks import get_user_repos, get_repo_feature_sets, delete_repo_feature_sets
+from ..models import Repo, FeatureSet, Feature
+from ..tasks import get_user_repos, get_repo_feature_sets, delete_repo_feature_sets, get_feature_set_features, delete_feature_set_features
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,24 @@ def user_landing(request):
 
 @login_required
 def user_repo(request, repo_id):
-    return HttpResponse('hola')
+    try:
+        repo = Repo.objects.get(id=repo_id)
+    except Repo.DoesNotExist:
+        raise Http404
+    feature_sets = FeatureSet.objects.filter(repo=repo).order_by('name')
+    context = {'repo': repo, 'feature_sets': feature_sets}
+    return render(request, 'user_repo.html', context)
+
+
+@login_required
+def user_feature_set(request, feature_set_id):
+    try:
+        feature_set = FeatureSet.objects.get(id=feature_set_id)
+    except FeatureSet.DoesNotExist:
+        raise Http404
+    count = Feature.objects.filter(feature_set=feature_set).count()
+    context = {'feature_set': feature_set, 'count': count}
+    return render(request, 'user_feature_set.html', context)
 
 
 @login_required
@@ -102,4 +119,34 @@ def user_repo_sync(request, repo_id):
             else:
                 logger.warning('Hook not deleted for repo: {0}'.format(repo))
         repo.save()
+        return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=204)
+
+
+@login_required
+@require_http_methods(['POST', 'DELETE'])
+def user_feature_set_sync(request, feature_set_id):
+    """
+    POST /feature_set/:id
+    or
+    DELETE /feature_set/:id
+
+    Sets feature set synced property as True or False (POST or DELETE)
+    """
+    try:
+        feature_set = FeatureSet.objects.get(id=feature_set_id)
+    except FeatureSet.DoesNotExist:
+        raise Http404
+
+    if not feature_set.repo.user == request.user:
+        raise PermissionDenied
+
+    if request.method == 'POST':
+        feature_set.synced = True
+        feature_set.save()
+        get_feature_set_features.apply_async((feature_set,))
+        return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=201)
+    else:  # DELETE
+        feature_set.synced = False
+        feature_set.save()
+        delete_feature_set_features.apply_async((feature_set,))
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=204)

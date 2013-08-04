@@ -70,7 +70,8 @@ def get_repo_feature_sets(repo_or_repos):
                 defaults = {'name': item['path']}
                 feature_set, created = FeatureSet.objects.get_or_create(repo=repo, path=item['path'], defaults=defaults)
                 current_feature_sets.append(feature_set)
-                get_feature_set_features.apply_async((feature_set,))
+                if feature_set.synced:
+                    get_feature_set_features.apply_async((feature_set,))
         for previous_feature_set in previous_feature_sets:
             if previous_feature_set not in current_feature_sets:
                 previous_feature_set.delete()
@@ -88,6 +89,8 @@ def get_feature_set_features(feature_set_or_feature_sets):
         feature_sets = [feature_set_or_feature_sets]
     for feature_set in feature_sets:
         # First, kill the current features
+        if not feature_set.synced:
+            return
         Feature.objects.filter(feature_set=feature_set).delete()
         raw_content = GitHubApiGetRequest(
             feature_set.repo.user,
@@ -110,3 +113,9 @@ def get_feature_set_features(feature_set_or_feature_sets):
 def delete_repo_feature_sets(repo):
     logger.info('Deleting feature sets for repo: {0}'.format(repo))
     FeatureSet.objects.filter(repo=repo).delete()
+
+
+@task(name='delete_feature_set_features')
+def delete_feature_set_features(feature_set):
+    logger.info('Deleting features for feature set: {0}'.format(feature_set))
+    Feature.objects.filter(feature_set=feature_set).delete()

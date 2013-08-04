@@ -8,7 +8,15 @@
     <tbody>
         {% for repo in user_repos %}
         <tr id="repo-tr-{{ repo.id }}" data-repo-name="{{ repo.name }}" data-repo-id="{{ repo.id }}">
-            <td class="repo-link-goes-here">{% if repo.synced %}<a href="{% url 'user_repo' repo_id=repo.id %}">{% endif %}{{ repo.name }}{% if repo.synced %}</a>{% endif %}</td>
+            <td class="repo-link-goes-here">
+                {% if repo.synced %}
+                <a href="{% url 'user_repo' repo_id=repo.id %}">
+                {% endif %}
+                {{ repo.name }}
+                {% if repo.synced %}
+                </a>
+                {% endif %}
+            </td>
             <td>{{ repo.github_private }}</td>
             <td>
                 <a style="width: 70px;" href="{% url 'user_repo_sync' repo.id %}" class="repo-sync btn {% if repo.synced %}btn-danger synced{% else %}btn-success not-synced{% endif %}">{% if repo.synced %}Unsync{% else %}Sync{% endif %}</a>
