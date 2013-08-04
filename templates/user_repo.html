@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>GeoJSON in {{repo.full_name}}</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr><th>Repo</th><th>Sync Status</th></tr>
+    </thead>
+    <tbody>
+        {% for feature_set in feature_sets %}
+        <tr id="fs-tr-{{ feature_set.id }}" data-fs-name="{{ feature_set.name }}" data-fs-id="{{ feature_set.id }}">
+            <td class="fs-link-goes-here">
+                {% if feature_set.synced %}
+                <a href="{% url 'user_repo' repo_id=feature_set.id %}">
+                {% endif %}
+                {{ feature_set.name }}
+                {% if feature_set.synced %}
+                </a>
+                {% endif %}
+            </td>
+            <td>
+                <a style="width: 70px;" href="{% url 'user_feature_set_sync' feature_set.id %}" class="fs-sync btn {% if feature_set.synced %}btn-danger synced{% else %}btn-success not-synced{% endif %}">{% if feature_set.synced %}Unsync{% else %}Sync{% endif %}</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{ STATIC_URL }}js/user_repo.js"></script>
+{% endblock %}

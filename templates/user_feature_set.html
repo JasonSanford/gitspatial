@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{feature_set.name}}</h2>
+<h3>{{count}} features</h3>
+{% endblock %}
+
+{% block javascript %}
+<script src="{{ STATIC_URL }}js/user_feature_set.js"></script>
+{% endblock %}
