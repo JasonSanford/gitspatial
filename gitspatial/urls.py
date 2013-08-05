@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^login/$', auth, kwargs={'backend': 'github'}, name='login'),
     url(r'^logout/$', 'gitspatial.views.logout', name='logout'),
     url(r'^user/', include('gitspatial.user.urls')),
+    url(r'^api/', include('gitspatial.api.urls')),
     url(r'', include('social_auth.urls')),
 )
 
