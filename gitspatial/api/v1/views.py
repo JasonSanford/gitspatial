@@ -1,8 +1,9 @@
 from django.http import Http404
 from django.shortcuts import HttpResponse
-from django.contrib.gis.geos.polygon import Polygon
 
 from gitspatial.models import Repo, FeatureSet, Feature
+from ..exceptions import InvalidSpatialParameterException
+from ..helpers import query_args
 
 
 def feature_set_query(request, user_name, repo_name, feature_set_name):
@@ -19,7 +20,10 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
     spatial_args = None
 
     if 'bbox' in request.GET:
-        spatial_args = _by_bbox(request.GET['bbox'])
+        try:
+            spatial_args = query_args.by_bbox(request.GET['bbox'])
+        except InvalidSpatialParameterException:
+            return HttpResponse('Bad dude')
 
     if spatial_args is not None:
         filter_kwargs.update(spatial_args)
@@ -27,12 +31,3 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
     features = Feature.objects.filter(**filter_kwargs)
 
     return HttpResponse('Feature count is is {0}.'.format(len(features)))
-
-
-def _by_bbox(bbox_string):
-    bbox = bbox_string.split(',')
-    bbox = map(float, bbox)
-
-    return {
-        'geom__intersects': Polygon.from_bbox(bbox)
-    }

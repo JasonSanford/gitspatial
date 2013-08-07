@@ -125,6 +125,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'gitspatial',
+    'gitspatial.api',
+    'gitspatial.user',
     'storages',
     'social_auth',
     'kombu.transport.django',
