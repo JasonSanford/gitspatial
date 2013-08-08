@@ -49,6 +49,11 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
             spatial_args = query_args.by_bbox(request.GET['bbox'])
         except InvalidSpatialParameterException as ex:
             return bad_request(str(ex))
+    elif 'lat' in request.GET and 'lon' in request.GET and 'distance' in request.GET:
+        try:
+            spatial_args = query_args.by_lat_lon_distance(request.GET['lat'], request.GET['lon'], request.GET['distance'])
+        except InvalidSpatialParameterException as ex:
+            return bad_request(str(ex))
 
     if spatial_args is not None:
         filter_kwargs.update(spatial_args)
