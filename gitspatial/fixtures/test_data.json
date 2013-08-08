@@ -1,0 +1,280 @@
+[
+{
+    "pk": 5, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "JasonSanford", 
+        "first_name": "Jason Sanford", 
+        "last_name": "", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-07-31T04:41:10.735Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "!", 
+        "email": "jasonsanford@gmail.com", 
+        "date_joined": "2013-07-30T07:13:39.966Z"
+    }
+},
+{
+    "pk": 22, 
+    "model": "gitspatial.repo", 
+    "fields": {
+        "updated_date": "2013-08-07T21:13:49.948Z", 
+        "name": "mecklenburg-gis-opendata", 
+        "github_id": 11858452, 
+        "github_private": false, 
+        "user": 5, 
+        "full_name": "JasonSanford/mecklenburg-gis-opendata", 
+        "created_date": "2013-08-07T21:13:32.163Z", 
+        "synced": true
+    }
+},
+{
+    "pk": 3, 
+    "model": "gitspatial.featureset", 
+    "fields": {
+        "updated_date": "2013-08-07T21:13:59.563Z", 
+        "name": "data/colleges.geojson", 
+        "repo": 22, 
+        "created_date": "2013-08-07T21:13:50.762Z", 
+        "synced": true, 
+        "path": "data/colleges.geojson"
+    }
+},
+{
+    "pk": 1, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8487049999999954 35.4991119999999967)", 
+        "properties": "{\"zipcode\": 28036, \"name\": \"Davidson\", \"phone\": \"892-2000\", \"address\": \"102 N Main St\"}"
+    }
+},
+{
+    "pk": 2, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.7293109999999956 35.3023460000000000)", 
+        "properties": "{\"zipcode\": 28213, \"name\": \"UNCC\", \"phone\": \"547-2000\", \"address\": \"9201 University City Bv\"}"
+    }
+},
+{
+    "pk": 3, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.7451539999999994 35.2948889999999977)", 
+        "properties": "{\"zipcode\": 28213, \"name\": \"Brookstone College of Business\", \"phone\": \"547-8600\", \"address\": \"8307 University Executive Park\"}"
+    }
+},
+{
+    "pk": 4, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8506440000000026 35.2728889999999993)", 
+        "properties": "{\"zipcode\": 28216, \"name\": \"Dudley's Beauty College\", \"phone\": \"392-2564\", \"address\": \"1950 John MacDonald Av\"}"
+    }
+},
+{
+    "pk": 5, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8768749999999983 35.2687090000000012)", 
+        "properties": "{\"zipcode\": 28216, \"name\": \"Charlotte Truck Driver School\", \"phone\": \"393-3000\", \"address\": \"500 N Hoskins Rd\"}"
+    }
+},
+{
+    "pk": 6, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8767160000000018 35.2561380000000000)", 
+        "properties": "{\"zipcode\": 28208, \"name\": \"Brand's College of Beauty\", \"phone\": \"392-5255\", \"address\": \"115 Lakewood Av\"}"
+    }
+},
+{
+    "pk": 7, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8589949999999931 35.2415329999999969)", 
+        "properties": "{\"zipcode\": 28208, \"name\": \"Johnson C. Smith University\", \"phone\": \"378-1000\", \"address\": \"100 Beatties Ford Rd\"}"
+    }
+},
+{
+    "pk": 8, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.9559140000000070 35.2361190000000022)", 
+        "properties": "{\"zipcode\": 28214, \"name\": \"East Coast Bible College\", \"phone\": \"394-2307\", \"address\": \"6900 Wilkinson Bv\"}"
+    }
+},
+{
+    "pk": 9, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8472950000000026 35.2304389999999970)", 
+        "properties": "{\"zipcode\": 28202, \"name\": \"Teach South Central Center\", \"phone\": \"342-6346\", \"address\": \"500 W Trade St\"}"
+    }
+},
+{
+    "pk": 10, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8277080000000012 35.2142180000000025)", 
+        "properties": "{\"zipcode\": 28204, \"name\": \"Southeastern College of Beauty\", \"phone\": \"376-7351\", \"address\": \"1535 Elizabeth Av\"}"
+    }
+},
+{
+    "pk": 11, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8229890000000069 35.2132590000000008)", 
+        "properties": "{\"zipcode\": 28204, \"name\": \"King's College\", \"phone\": \"372-0266\", \"address\": \"322 Lamar Av\"}"
+    }
+},
+{
+    "pk": 12, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8230989999999991 35.2106720000000024)", 
+        "properties": "{\"zipcode\": 28207, \"name\": \"Mercy School of Nursing\", \"phone\": \"379-5840\", \"address\": \"1921 Vail Av\"}"
+    }
+},
+{
+    "pk": 13, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8379170000000045 35.2011869999999973)", 
+        "properties": "{\"zipcode\": 28203, \"name\": \"CMHA School of Nursing\", \"phone\": \"355-5043\", \"address\": \"1200 Blyth Av\"}"
+    }
+},
+{
+    "pk": 14, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8305459999999982 35.1889850000000024)", 
+        "properties": "{\"zipcode\": 28207, \"name\": \"Presbyterian Hospital School of Nurs\", \"phone\": \"384-4140\", \"address\": \"1901 Selwyn Av\"}"
+    }
+},
+{
+    "pk": 15, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8305459999999982 35.1889850000000024)", 
+        "properties": "{\"zipcode\": 28207, \"name\": \"Queens College\", \"phone\": \"337-2212\", \"address\": \"1900 Selwyn Av\"}"
+    }
+},
+{
+    "pk": 16, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8995220000000046 35.1867629999999991)", 
+        "properties": "{\"zipcode\": 28217, \"name\": \"ECPI College of Technology\", \"phone\": \"357-0077\", \"address\": \"1121 Woodridge Center Dr\"}"
+    }
+},
+{
+    "pk": 17, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.9256199999999950 35.1826190000000025)", 
+        "properties": "{\"zipcode\": 28217, \"name\": \"Central Piedmont Community Clg.\", \"phone\": \"330-4053\", \"address\": \"2201 Water Ridge Py\"}"
+    }
+},
+{
+    "pk": 18, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8505119999999948 35.1671759999999978)", 
+        "properties": "{\"zipcode\": 28209, \"name\": \"American Bisiness & Fashion\", \"phone\": \"523-3738\", \"address\": \"1515 Mockingbird Ln\"}"
+    }
+},
+{
+    "pk": 19, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8507369999999952 35.1671359999999993)", 
+        "properties": "{\"zipcode\": 28209, \"name\": \"Pfieffer University\", \"phone\": \"521-9116\", \"address\": \"4701 Park Rd\"}"
+    }
+},
+{
+    "pk": 20, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8507160000000056 35.1669649999999976)", 
+        "properties": "{\"zipcode\": 28209, \"name\": \"Academy of Court Reporting\", \"phone\": \"523-1122\", \"address\": \"4705 Park Rd\"}"
+    }
+},
+{
+    "pk": 21, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8259330000000062 35.1514400000000009)", 
+        "properties": "{\"zipcode\": 28211, \"name\": \"Wake Forrest University - MBA\", \"phone\": \"365-1717\", \"address\": \"6800 Morrison Bv\"}"
+    }
+},
+{
+    "pk": 22, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.9145539999999954 35.1342280000000002)", 
+        "properties": "{\"zipcode\": 28273, \"name\": \"Gordon-Conwell Theology\", \"phone\": \"527-9909\", \"address\": \"9401 Souther Pines Bv\"}"
+    }
+},
+{
+    "pk": 23, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.6949450000000041 35.1197489999999988)", 
+        "properties": "{\"zipcode\": 28105, \"name\": \"New Covenant Bible College\", \"phone\": \"847-8204\", \"address\": \"1727 Matthews-Mint Hill Rd\"}"
+    }
+},
+{
+    "pk": 24, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.7220530000000025 35.1191299999999984)", 
+        "properties": "{\"zipcode\": 28105, \"name\": \"Wingate University Graduate\", \"phone\": \"849-2132\", \"address\": \"224 Matthews St\"}"
+    }
+},
+{
+    "pk": 25, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.8183060000000069 35.0855809999999977)", 
+        "properties": "{\"zipcode\": 28226, \"name\": \"Southern Evangelical Seminary\", \"phone\": \"543-9475\", \"address\": \"5801 Pineville-Matthews Rd\"}"
+    }
+},
+{
+    "pk": 26, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 3, 
+        "geom": "POINT (-80.7579190000000011 35.0677140000000023)", 
+        "properties": "{\"zipcode\": 28270, \"name\": \"Southern Evangelical Seminary\", \"phone\": \"847-5600\", \"address\": \"4298 McKee Rd\"}"
+    }
+}
+]
