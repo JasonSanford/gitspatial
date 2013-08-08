@@ -16,6 +16,7 @@ class APIRequestTest(TestCase):
     def test_bbox(self):
         response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/colleges.geojson?bbox=-80.888,35.206,-80.799,35.270')
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'application/json')
         json_content = json.loads(response.content)
         self.assertEqual(len(json_content['features']), 7)
 
@@ -44,6 +45,13 @@ class APIRequestTest(TestCase):
             'message': 'Items in the bbox parameter must be parseable as floats'
         }
         self.assertEqual(json_content, expected)
+
+    def test_jsonp(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/colleges.geojson?bbox=-80.84761,35.23020,-80.84629,35.23110&callback=myFunc')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response['Content-Type'], 'text/javascript')
+        self.assertEqual(response.content[:7], 'myFunc(')
+        self.assertEqual(response.content[-1], ')')
 
 
 # Query Prameters
