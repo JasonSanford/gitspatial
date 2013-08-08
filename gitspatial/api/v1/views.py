@@ -9,6 +9,9 @@ from ..exceptions import InvalidSpatialParameterException
 from ..helpers import query_args
 
 
+default_limit = 50
+
+
 @jsonp
 def feature_set_query(request, user_name, repo_name, feature_set_name):
     full_name = '{0}/{1}'.format(user_name, repo_name)
@@ -20,6 +23,21 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
 
     if not feature_set.synced:
         raise Http404
+
+    limit = request.GET.get('limit', default_limit)
+    offset = request.GET.get('offset', 0)
+
+    try:
+        limit = int(limit)
+    except ValueError:
+        limit = default_limit
+    if limit > default_limit:
+        limit = default_limit
+
+    try:
+        offset = int(offset)
+    except ValueError:
+        offset = 0
 
     filter_kwargs = {
         'feature_set': feature_set,
@@ -35,7 +53,7 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
     if spatial_args is not None:
         filter_kwargs.update(spatial_args)
 
-    features = Feature.objects.filter(**filter_kwargs).geojson()
+    features = Feature.objects.filter(**filter_kwargs).geojson()[offset:offset+limit]
     json_features = [
         {
             'type': 'Feature',

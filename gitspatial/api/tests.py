@@ -53,6 +53,36 @@ class APIRequestTest(TestCase):
         self.assertEqual(response.content[:7], 'myFunc(')
         self.assertEqual(response.content[-1], ')')
 
+    def test_pagination_defaults(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson')
+        self.assertEqual(response.status_code, 200)
+        json_content = json.loads(response.content)
+        self.assertEqual(len(json_content['features']), 50)
+
+    def test_pagination_custom_limit(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?limit=30')
+        self.assertEqual(response.status_code, 200)
+        json_content = json.loads(response.content)
+        self.assertEqual(len(json_content['features']), 30)
+
+    def test_pagination_custom_limit_offset(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?limit=30&offset=30')
+        self.assertEqual(response.status_code, 200)
+        json_content = json.loads(response.content)
+        self.assertEqual(len(json_content['features']), 30)
+
+    def test_bbox_with_limit_greater_than_set(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/colleges.geojson?bbox=-80.888,35.206,-80.799,35.270&limit=20')
+        self.assertEqual(response.status_code, 200)
+        json_content = json.loads(response.content)
+        self.assertEqual(len(json_content['features']), 7)
+
+    def test_bbox_with_limit_less_than_set(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/colleges.geojson?bbox=-80.888,35.206,-80.799,35.270&limit=5')
+        self.assertEqual(response.status_code, 200)
+        json_content = json.loads(response.content)
+        self.assertEqual(len(json_content['features']), 5)
+
 
 # Query Prameters
 class BBoxTest(TestCase):

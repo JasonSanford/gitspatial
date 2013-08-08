@@ -30,6 +30,8 @@ class FeatureSet(Timestampable, models.Model):
     name = models.CharField(max_length=1000)  # The editable name of the feature set, initially the same as path
     synced = models.BooleanField(default=False)  # Just like Repo, not all are synced
 
+    unique_together = ('repo', 'name')
+
     def __unicode__(self):
         return '{0}/{1}'.format(self.repo.full_name, self.name)
 
@@ -42,6 +44,8 @@ class Feature(geo_models.Model):
     geom = geo_models.GeometryField()
     properties = models.TextField()
     objects = geo_models.GeoManager()
+
+    ordering = ['id']
 
     def __unicode__(self):
         return '<Feature {0} from {1}>'.format(self.id, self.feature_set)
