@@ -2,6 +2,7 @@ import json
 
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
+from django.views.decorators.http import require_GET
 
 from gitspatial.models import Repo, FeatureSet, Feature
 from ..decorators import jsonp
@@ -13,6 +14,7 @@ default_limit = 50
 
 
 @jsonp
+@require_GET
 def feature_set_query(request, user_name, repo_name, feature_set_name):
     full_name = '{0}/{1}'.format(user_name, repo_name)
     try:

@@ -106,6 +106,29 @@ class APIRequestTest(TestCase):
         self.assertEqual(json_content, expected)
 
 
+class HttpMethodTest(TestCase):
+    fixtures = ['gitspatial/fixtures/test_data.json']
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_get(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson')
+        self.assertEqual(response.status_code, 200)
+
+    def test_put(self):
+        response = self.client.put('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson')
+        self.assertEqual(response.status_code, 405)
+
+    def test_post(self):
+        response = self.client.post('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson')
+        self.assertEqual(response.status_code, 405)
+
+    def test_delete(self):
+        response = self.client.delete('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson')
+        self.assertEqual(response.status_code, 405)
+
+
 # Query Prameters
 class BBoxTest(TestCase):
     def setUp(self):
