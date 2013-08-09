@@ -12,7 +12,7 @@
         <tr id="fs-tr-{{ feature_set.id }}" data-fs-name="{{ feature_set.name }}" data-fs-id="{{ feature_set.id }}">
             <td class="fs-link-goes-here">
                 {% if feature_set.synced %}
-                <a href="{% url 'user_repo' repo_id=feature_set.id %}">
+                <a href="{% url 'user_feature_set' feature_set_id=feature_set.id %}">
                 {% endif %}
                 {{ feature_set.name }}
                 {% if feature_set.synced %}
