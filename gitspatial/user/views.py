@@ -24,7 +24,7 @@ def user_landing(request):
     """
     # TODO: Only do this at sign up. Subsequent re-checks of new/updated repos should be scheduled.
     get_user_repos.apply_async((request.user,))
-    user_repos = Repo.objects.filter(user=request.user).order_by('name')
+    user_repos = Repo.objects.filter(user=request.user).extra(select={'lower_name': 'lower(name)'}).order_by('lower_name')
     context = {'user_repos': user_repos}
     return render(request, 'user.html', context)
 
