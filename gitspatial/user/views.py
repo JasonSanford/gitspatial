@@ -93,8 +93,8 @@ def user_repo_sync(request, repo_id):
                 'content_type': 'json'
             }
         }
-        hook_request = GitHubApiPostRequest(request.user, '/repos/{0}/hooks'.format(repo.full_name), hook_data)
-        if hook_request.status_code == 204:
+        gh_request = GitHubApiPostRequest(request.user, '/repos/{0}/hooks'.format(repo.full_name), hook_data)
+        if gh_request.response.status_code == 204:
             logger.info('Hook created for repo: {0}'.format(repo))
         else:
             logger.info('Hook not created for repo: {0}'.format(repo))
@@ -103,17 +103,17 @@ def user_repo_sync(request, repo_id):
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=201)
     else:  # DELETE
         repo.synced = False
-        hook_request = GitHubApiGetRequest(request.user, '/repos/{0}/hooks'.format(repo.full_name))
+        gh_request = GitHubApiGetRequest(request.user, '/repos/{0}/hooks'.format(repo.full_name))
         hook_id_to_delete = None
 
-        for hook in hook_request.json:
+        for hook in gh_request.response.json():
             if 'url' in hook['config'] and hook['config']['url'] == repo.hook_url:
                 hook_id_to_delete = hook['id']
                 continue
 
         if hook_id_to_delete is not None:
-            hook_delete_request = GitHubApiDeleteRequest(request.user, '/repos/{0}/hooks/{1}'.format(repo.full_name, hook_id_to_delete))
-            if hook_delete_request.status_code == 204:
+            gh_request = GitHubApiDeleteRequest(request.user, '/repos/{0}/hooks/{1}'.format(repo.full_name, hook_id_to_delete))
+            if gh_request.response.status_code == 204:
                 logger.info('Hook deleted for repo: {0}'.format(repo))
                 delete_repo_feature_sets.apply_async((repo,))
             else:

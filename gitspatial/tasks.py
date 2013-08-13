@@ -27,25 +27,33 @@ def get_user_repos(user_or_users):
     for user in users:
         previous_repos = Repo.objects.filter(user=user)
         current_repos = []
-        raw_repos = GitHubApiGetRequest(user, '/user/repos')
-        for raw_repo in raw_repos.json:
-            #logger.info('raw_repo is: {0}'.format(raw_repo))
-            defaults = {
-                'user': user,
-                'name': raw_repo['name'],
-                'full_name': raw_repo['full_name'],
-                'github_private': raw_repo['private'],
-            }
-            repo, created = Repo.objects.get_or_create(github_id=raw_repo['id'], defaults=defaults)
-            current_repos.append(repo)
-            if created:
-                logger.info('Created repo {0} for user {1}'.format(repo, user))
+        api_path = '/user/repos'
+        there_are_more_repos = True
+        while there_are_more_repos:
+            gh_request = GitHubApiGetRequest(user, api_path)
+            if hasattr(gh_request.response, 'links') and 'next' in gh_request.response.links:
+                next_url = gh_request.response.links['next']['url']
+                next_url_parts = next_url.split('api.github.com')
+                api_path = next_url_parts[1]
             else:
-                repo.__dict__.update(defaults)
-                repo.save()
-                logger.info('Updated repo {0} for user {1}'.format(repo, user))
-            if repo.synced:
-                get_repo_feature_sets.apply_async((repo,))
+                there_are_more_repos = False
+            for raw_repo in gh_request.response.json():
+                defaults = {
+                    'user': user,
+                    'name': raw_repo['name'],
+                    'full_name': raw_repo['full_name'],
+                    'github_private': raw_repo['private'],
+                }
+                repo, created = Repo.objects.get_or_create(github_id=raw_repo['id'], defaults=defaults)
+                current_repos.append(repo)
+                if created:
+                    logger.info('Created repo {0} for user {1}'.format(repo, user))
+                else:
+                    repo.__dict__.update(defaults)
+                    repo.save()
+                    logger.info('Updated repo {0} for user {1}'.format(repo, user))
+                if repo.synced:
+                    get_repo_feature_sets.apply_async((repo,))
         for previous_repo in previous_repos:
             if previous_repo not in current_repos:
                 previous_repo.delete()
@@ -64,8 +72,8 @@ def get_repo_feature_sets(repo_or_repos):
     for repo in repos:
         previous_feature_sets = FeatureSet.objects.filter(repo=repo)
         current_feature_sets = []
-        repo_tree = GitHubApiGetRequest(repo.user, '/repos/{0}/git/trees/master?recursive=1'.format(repo.full_name))
-        for item in repo_tree.json['tree']:
+        gh_request = GitHubApiGetRequest(repo.user, '/repos/{0}/git/trees/master?recursive=1'.format(repo.full_name))
+        for item in gh_request.response.json()['tree']:
             if item['type'] == 'blob' and item['path'].endswith('.geojson'):
                 defaults = {'name': item['path']}
                 feature_set, created = FeatureSet.objects.get_or_create(repo=repo, path=item['path'], defaults=defaults)
@@ -92,10 +100,10 @@ def get_feature_set_features(feature_set_or_feature_sets):
         if not feature_set.synced:
             return
         Feature.objects.filter(feature_set=feature_set).delete()
-        raw_content = GitHubApiGetRequest(
+        gh_request = GitHubApiGetRequest(
             feature_set.repo.user,
             '/repos/{0}/contents/{1}'.format(feature_set.repo.full_name, feature_set.path))
-        content = base64.b64decode(raw_content.json['content'])
+        content = base64.b64decode(gh_request.response.json()['content'])
         try:
             geojson = GeoJSONParser(content)
         except GeoJSONParserException as e:

@@ -1,13 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<p>Below are your repos on GitHub. Sync the repos containing GeoJSON to expose a spatial API for them</p>
+
+<p><strong>Note: </strong>Some of the repos below may be private. Syncing repos (and the feature sets in them) will expose them publicly.</p>
+
 <table class="table table-striped">
     <thead>
-        <tr><th>Repo</th><th>GitHub Privacy</th><th>Sync Status</th></tr>
+        <tr>
+            <th style="width: 40px;">GitHub Privacy</th>
+            <th>Repo</th>
+            <th>Sync Status</th>
+        </tr>
     </thead>
     <tbody>
         {% for repo in user_repos %}
-        <tr id="repo-tr-{{ repo.id }}" data-repo-name="{{ repo.name }}" data-repo-id="{{ repo.id }}">
+        <tr class="{% if repo.github_private %}warning{% endif %}" id="repo-tr-{{ repo.id }}" data-repo-name="{{ repo.name }}" data-repo-id="{{ repo.id }}">
+            <td style="width: 40px; text-align: center;">
+                {% if repo.github_private %}
+                <i class="icon-lock"></i>
+                {% endif %}
+            </td>
             <td class="repo-link-goes-here">
                 {% if repo.synced %}
                 <a href="{% url 'user_repo' repo_id=repo.id %}">
@@ -17,7 +30,6 @@
                 </a>
                 {% endif %}
             </td>
-            <td>{{ repo.github_private }}</td>
             <td>
                 <a style="width: 70px;" href="{% url 'user_repo_sync' repo.id %}" class="repo-sync btn {% if repo.synced %}btn-danger synced{% else %}btn-success not-synced{% endif %}">{% if repo.synced %}Unsync{% else %}Sync{% endif %}</a>
             </td>

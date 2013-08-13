@@ -21,8 +21,7 @@ class GitHubApiGetRequest(GitHubApiRequest):
         super(GitHubApiGetRequest, self).__init__(user, method)
 
         request = requests.get(self._uri, headers=self._headers)
-        self.status_code = request.status_code
-        self.json = request.json()
+        self.response = request
 
 
 class GitHubApiPostRequest(GitHubApiRequest):
@@ -31,8 +30,7 @@ class GitHubApiPostRequest(GitHubApiRequest):
         super(GitHubApiPostRequest, self).__init__(user, method, **kwargs)
 
         request = requests.post(self._uri, headers=self._headers, data=json.dumps(payload))
-        self.status_code = request.status_code
-        self.json = request.json()
+        self.response = request
 
 
 class GitHubApiDeleteRequest(GitHubApiRequest):
@@ -40,4 +38,4 @@ class GitHubApiDeleteRequest(GitHubApiRequest):
         super(GitHubApiDeleteRequest, self).__init__(user, method)
 
         request = requests.delete(self._uri, headers=self._headers)
-        self.status_code = request.status_code
+        self.response = request
