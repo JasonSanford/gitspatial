@@ -41,14 +41,40 @@ def user_repo(request, repo_id):
 
 
 @login_required
+@require_http_methods(['PUT', 'GET'])
 def user_feature_set(request, feature_set_id):
     try:
         feature_set = FeatureSet.objects.get(id=feature_set_id)
     except FeatureSet.DoesNotExist:
         raise Http404
-    count = Feature.objects.filter(feature_set=feature_set).count()
-    context = {'feature_set': feature_set, 'count': count}
-    return render(request, 'user_feature_set.html', context)
+
+    if not feature_set.repo.user == request.user:
+        raise PermissionDenied
+
+    if request.method == 'GET':
+        count = Feature.objects.filter(feature_set=feature_set).count()
+        context = {'feature_set': feature_set, 'count': count}
+        return render(request, 'user_feature_set.html', context)
+    else:
+        raw_data = request.body
+        parts = raw_data.split('&')
+        data = {}
+        for part in parts:
+            key, value = part.split('=')
+            data[key] = value
+
+        if 'value' not in data:
+            return HttpResponseBadRequest('No value found')
+
+        value = data['value']
+
+        if not (0 < len(value) < 1000):
+            return HttpResponseBadRequest('Feature set name must be between 1 and 1,000 characters.')
+
+        feature_set.name = value
+        feature_set.save()
+
+        return HttpResponse('Success! Seeya.')
 
 
 @login_required
