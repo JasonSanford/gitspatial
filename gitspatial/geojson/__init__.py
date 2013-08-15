@@ -28,7 +28,7 @@ class GeoJSONParser:
                 raise GeoJSONParserException('Content was not a JSON object.')
         except (ValueError, TypeError):
             raise GeoJSONParserException('Content was not JSON serializeable.')
-        #test_geojson['features'][0]['geometry']['type'] = 'Parallelogram'
+
         if not 'type' in test_geojson:
             raise GeoJSONParserException('The "type" member is requried and was not found.')
 
