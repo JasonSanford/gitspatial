@@ -37,16 +37,4 @@ $(document).ready(function () {
             });
         }
     });
-
-    $('.tr-fs').hover(function () {
-        $(this).find('.icon-pencil').css({'background-position': '0 -72px'});
-    }, function () {
-        $(this).find('.icon-pencil').css({'background-position': '0 -2000px'});
-    });
-
-    $('.pencil.edit').click(function (event) {
-        event.stopPropagation();
-        event.preventDefault();
-        $(this).siblings('.editable').editable('toggle');
-    });
 });
