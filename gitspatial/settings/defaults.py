@@ -194,6 +194,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'gitspatial': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
         '': {
             'handlers': ['console'],
             'level': 'INFO',
