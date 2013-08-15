@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>{{feature_set.name}}</h2>
+<h2 id="name" data-pk="{{ feature_set.id }}" data-original-title="Change feature set name" data-type="text" data-name="name" data-toggle="manual" data-url="{% url 'user_feature_set' feature_set.id %}" data-title="Change feature set name" style="display: inline;">{{feature_set.name}}</h2>
+<a href="#" id="pencil">
+    <i class="icon-pencil"></i>
+</a>
 <h3>{{count}} features</h3>
 {% endblock %}
 
 {% block javascript %}
+<script src="{{ STATIC_URL }}lib/bootstrap-editable/js/bootstrap-editable.js"></script>
 <script src="{{ STATIC_URL }}js/user_feature_set.js"></script>
+{% endblock %}
+
+{% block css %}
+<link href="{{ STATIC_URL }}lib/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
 {% endblock %}

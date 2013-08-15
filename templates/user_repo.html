@@ -9,12 +9,8 @@
     </thead>
     <tbody>
         {% for feature_set in feature_sets %}
-        <tr class="tr-fs" id="fs-tr-{{ feature_set.id }}" data-fs-name="{{ feature_set.name }}" data-fs-id="{{ feature_set.id }}">
+        <tr id="fs-tr-{{ feature_set.id }}" data-fs-name="{{ feature_set.name }}" data-fs-id="{{ feature_set.id }}">
             <td class="fs-link-goes-here">
-                <a href="#" id="pencil-{{ feature_set.id }}" class="pencil edit">
-                    <i class="icon-pencil" style="background-position: 0 -2000px"></i>
-                </a>
-                <span id="{{ feature_set.id }}" class="editable" data-pk="{{ feature_set.id }}" data-original-title="Change feature set name" data-type="text" data-name="name" data-toggle="manual" data-url="{% url 'user_feature_set' feature_set.id %}" data-title="Change feature set name">
                 {% if feature_set.synced %}
                 <a href="{% url 'user_feature_set' feature_set_id=feature_set.id %}">
                 {% endif %}
@@ -22,7 +18,6 @@
                 {% if feature_set.synced %}
                 </a>
                 {% endif %}
-                </span>
             </td>
             <td>
                 <a style="width: 70px;" href="{% url 'user_feature_set_sync' feature_set.id %}" class="fs-sync btn {% if feature_set.synced %}btn-danger synced{% else %}btn-success not-synced{% endif %}">{% if feature_set.synced %}Unsync{% else %}Sync{% endif %}</a>
@@ -34,10 +29,5 @@
 {% endblock %}
 
 {% block javascript %}
-<script src="{{ STATIC_URL }}lib/bootstrap-editable/js/bootstrap-editable.js"></script>
 <script src="{{ STATIC_URL }}js/user_repo.js"></script>
-{% endblock %}
-
-{% block css %}
-<link href="{{ STATIC_URL }}lib/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
 {% endblock %}
