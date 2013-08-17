@@ -128,7 +128,7 @@ def get_feature_set_features(feature_set_or_feature_sets):
             feature.save()
             logger.info('Created Feature: {0}'.format(feature))
         logger.info('Setting feature set sync status as synced: {0}'.format(feature_set))
-        feature_set.sync_status = FeatureSet.SYNCING
+        feature_set.sync_status = FeatureSet.SYNCED
         feature_set.save()
 
 
