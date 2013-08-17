@@ -53,6 +53,9 @@ def get_user_repos(user_or_users):
                     repo.save()
                     logger.info('Updated repo {0} for user {1}'.format(repo, user))
                 if repo.synced:
+                    logger.info('Setting repo sync status as syncing: {0}'.format(repo))
+                    repo.sync_status = Repo.SYNCING
+                    repo.save()
                     get_repo_feature_sets.apply_async((repo,))
         for previous_repo in previous_repos:
             if previous_repo not in current_repos:
@@ -79,10 +82,16 @@ def get_repo_feature_sets(repo_or_repos):
                 feature_set, created = FeatureSet.objects.get_or_create(repo=repo, path=item['path'], defaults=defaults)
                 current_feature_sets.append(feature_set)
                 if feature_set.synced:
+                    logger.info('Setting feature set sync status as syncing: {0}'.format(feature_set))
+                    feature_set.sync_status = FeatureSet.SYNCING
+                    feature_set.save()
                     get_feature_set_features.apply_async((feature_set,))
         for previous_feature_set in previous_feature_sets:
             if previous_feature_set not in current_feature_sets:
                 previous_feature_set.delete()
+        logger.info('Setting repo sync status as synced: {0}'.format(repo))
+        repo.sync_status = Repo.SYNCED
+        repo.save()
 
 
 @task(name='get_feature_set_features')
@@ -108,6 +117,9 @@ def get_feature_set_features(feature_set_or_feature_sets):
             geojson = GeoJSONParser(content)
         except GeoJSONParserException as e:
             logger.error('GeoJSONParserError parsing FeatureSet: {0} with error: {1}'.format(feature_set, e))
+            logger.info('Setting feature set sync status as synced: {0}'.format(feature_set))
+            feature_set.sync_status = FeatureSet.ERROR_SYNCING
+            feature_set.save()
             return
         for feature in geojson.features:
             geom = GEOSGeometry(json.dumps(feature['geometry']))
@@ -115,6 +127,9 @@ def get_feature_set_features(feature_set_or_feature_sets):
             feature = Feature(feature_set=feature_set, geom=geom, properties=properties)
             feature.save()
             logger.info('Created Feature: {0}'.format(feature))
+        logger.info('Setting feature set sync status as synced: {0}'.format(feature_set))
+        feature_set.sync_status = FeatureSet.SYNCING
+        feature_set.save()
 
 
 @task(name='delete_repo_feature_sets')

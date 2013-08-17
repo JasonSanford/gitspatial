@@ -2,10 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models as geo_models
 
-from .behaviors import Timestampable
+from .behaviors import Syncable, Timestampable
 
 
-class Repo(Timestampable, models.Model):
+class Repo(Syncable, Timestampable, models.Model):
     github_id = models.IntegerField()
     user = models.ForeignKey(User)
     name = models.CharField(max_length=1000)
@@ -21,7 +21,7 @@ class Repo(Timestampable, models.Model):
         return self.full_name
 
 
-class FeatureSet(Timestampable, models.Model):
+class FeatureSet(Syncable, Timestampable, models.Model):
     """
     Represents a GeoJSON file within a GitHub repo
     """

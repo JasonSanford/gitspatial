@@ -11,6 +11,7 @@
             <th style="width: 40px;">GitHub Privacy</th>
             <th>Repo</th>
             <th>Sync Status</th>
+            <th>Sync / Unsync</th>
         </tr>
     </thead>
     <tbody>
@@ -18,7 +19,7 @@
         <tr class="{% if repo.github_private %}warning{% endif %}" id="repo-tr-{{ repo.id }}" data-repo-name="{{ repo.name }}" data-repo-id="{{ repo.id }}">
             <td style="width: 40px; text-align: center;">
                 {% if repo.github_private %}
-                <i class="icon-lock"></i>
+                <i class="icon-lock" alt="This repo is marked as private on GitHub." title="This repo is marked as private on GitHub."></i>
                 {% endif %}
             </td>
             <td class="repo-link-goes-here">
@@ -30,6 +31,7 @@
                 </a>
                 {% endif %}
             </td>
+            <td>{{ repo.get_sync_status_display }}</td>
             <td>
                 <a style="width: 70px;" href="{% url 'user_repo_sync' repo.id %}" class="repo-sync btn {% if repo.synced %}btn-danger synced{% else %}btn-success not-synced{% endif %}">{% if repo.synced %}Unsync{% else %}Sync{% endif %}</a>
             </td>
