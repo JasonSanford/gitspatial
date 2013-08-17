@@ -117,7 +117,7 @@ def get_feature_set_features(feature_set_or_feature_sets):
             geojson = GeoJSONParser(content)
         except GeoJSONParserException as e:
             logger.error('GeoJSONParserError parsing FeatureSet: {0} with error: {1}'.format(feature_set, e))
-            logger.info('Setting feature set sync status as synced: {0}'.format(feature_set))
+            logger.info('Setting feature set sync status as error syncing: {0}'.format(feature_set))
             feature_set.sync_status = FeatureSet.ERROR_SYNCING
             feature_set.save()
             return
