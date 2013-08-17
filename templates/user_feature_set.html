@@ -5,14 +5,34 @@
 <a href="#" id="pencil">
     <i class="icon-pencil"></i>
 </a>
+
 <h3>{{count}} features</h3>
+
+<div id="map-container"></div>
+
 {% endblock %}
 
 {% block javascript %}
+<script>
+gs.fs = {
+    center: {
+        lat: {{ center_lat }},
+        lng: {{ center_lng }}
+    },
+    bounds: {{ bounds }}
+}
+</script>
+<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
 <script src="{{ STATIC_URL }}lib/bootstrap-editable/js/bootstrap-editable.js"></script>
 <script src="{{ STATIC_URL }}js/user_feature_set.js"></script>
 {% endblock %}
 
 {% block css %}
 <link href="{{ STATIC_URL }}lib/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+<link href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" rel="stylesheet">
+<style type="text/css">
+#map-container {
+    height: 400px;
+}
+</style>
 {% endblock %}

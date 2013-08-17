@@ -32,6 +32,24 @@ class FeatureSet(Syncable, Timestampable, models.Model):
 
     unique_together = ('repo', 'name')
 
+    @property
+    def bounds(self):
+        # A (minx, miny, maxx, maxy) tuple representing the bounding box of the feature set
+        if hasattr(self, '_bounds'):
+            return self._bounds
+        else:
+            bounds = Feature.objects.filter(feature_set=self).extent()
+            self._bounds = bounds
+        return self._bounds
+
+    @property
+    def center(self):
+        # A (lng, lat) tuple containing the approximage center of the feature set
+        xmin, ymin, xmax, ymax = self.bounds
+        x = (xmin + xmax) / 2
+        y = (ymin + ymax) / 2
+        return (x, y)
+
     def __unicode__(self):
         return '{0}/{1}'.format(self.repo.full_name, self.name)
 

@@ -53,7 +53,12 @@ def user_feature_set(request, feature_set_id):
 
     if request.method == 'GET':
         count = Feature.objects.filter(feature_set=feature_set).count()
-        context = {'feature_set': feature_set, 'count': count}
+        context = {
+            'feature_set': feature_set,
+            'count': count,
+            'center_lat': feature_set.center[1],
+            'center_lng': feature_set.center[0],
+            'bounds': list(feature_set.bounds)}
         return render(request, 'user_feature_set.html', context)
     else:
         raw_data = request.body
