@@ -78,7 +78,7 @@ def get_repo_feature_sets(repo_or_repos):
         gh_request = GitHubApiGetRequest(repo.user, '/repos/{0}/git/trees/master?recursive=1'.format(repo.full_name))
         for item in gh_request.response.json()['tree']:
             if item['type'] == 'blob' and item['path'].endswith('.geojson'):
-                defaults = {'name': item['path']}
+                defaults = {'name': item['path'], 'size': item['size']}
                 feature_set, created = FeatureSet.objects.get_or_create(repo=repo, path=item['path'], defaults=defaults)
                 current_feature_sets.append(feature_set)
                 if feature_set.synced:

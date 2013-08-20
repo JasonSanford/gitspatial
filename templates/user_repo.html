@@ -5,7 +5,12 @@
 
 <table class="table table-striped table-bordered">
     <thead>
-        <tr><th>Repo</th><th>Sync Status</th><th>Sync / Unsync</th></tr>
+        <tr>
+            <th>Repo</th>
+            <th>Size</th>
+            <th>Sync Status</th>
+            <th>Sync / Unsync</th>
+        </tr>
     </thead>
     <tbody>
         {% for feature_set in feature_sets %}
@@ -19,6 +24,7 @@
                 </a>
                 {% endif %}
             </td>
+            <td>{{ feature_set.size }}</td>
             <td>
                 {{ feature_set.get_sync_status_display }}
             </td>

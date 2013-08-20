@@ -28,6 +28,7 @@ class FeatureSet(Syncable, Timestampable, models.Model):
     repo = models.ForeignKey(Repo)
     path = models.CharField(max_length=1000)  # The path for a file in the repo, "fire-hydrants.geojson", "data/geojson/pump-stations.geojson"
     name = models.CharField(max_length=1000)  # The editable name of the feature set, initially the same as path
+    size = models.IntegerField()  # Size in bytes, just trusting GitHub API here
     synced = models.BooleanField(default=False)  # Just like Repo, not all are synced
 
     unique_together = ('repo', 'name')
