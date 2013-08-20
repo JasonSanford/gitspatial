@@ -223,11 +223,13 @@ def user_feature_set_sync(request, feature_set_id):
 
     if request.method == 'POST':
         feature_set.synced = True
+        feature_set.sync_status = FeatureSet.SYNCED
         feature_set.save()
         get_feature_set_features.apply_async((feature_set,))
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=201)
     else:  # DELETE
         feature_set.synced = False
+        feature_set.sync_status = FeatureSet.NOT_SYNCED
         feature_set.save()
         delete_feature_set_features.apply_async((feature_set,))
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=204)
