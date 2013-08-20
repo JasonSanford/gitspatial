@@ -25,7 +25,7 @@ $('#pencil').click(function(e) {
                 road_layer
             ]
         }),
-        feature_set_layer = new L.GeoJSON();
+        feature_set_layer = new L.GeoJSON(gs.features);
     map
         .addLayer(feature_set_layer)
         .fitBounds([[gs.fs.bounds[1], gs.fs.bounds[0]], [gs.fs.bounds[3], gs.fs.bounds[2]]]);
