@@ -31,7 +31,7 @@
     </table>
 </div>
 
-<div class="pagination">
+<div class="pagination pagination-centered">
     <ul>
         {% if previous_page_number %}
         <li><a href="?page={{ previous_page_number }}">&laquo;</a></li>
@@ -50,7 +50,9 @@
         {% endif %}
     </ul>
 </div>
-current_page: {{ current_page }}
+<div style="text-align: center;">
+<strong>{{ start_index }} - {{ end_index }}</strong> of {{ count }}
+</div>
 {% endblock %}
 
 {% block javascript %}

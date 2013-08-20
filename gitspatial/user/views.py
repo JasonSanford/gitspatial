@@ -108,7 +108,9 @@ def user_feature_set(request, feature_set_id):
             'page_range': paginated.page_range,
             'current_page': requested_page,
             'previous_page_number': previous_page_number,
-            'next_page_number': next_page_number}
+            'next_page_number': next_page_number,
+            'start_index': current_page.start_index(),
+            'end_index': current_page.end_index()}
         return render(request, 'user_feature_set.html', context)
     else:
         raw_data = request.body
