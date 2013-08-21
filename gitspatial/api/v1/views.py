@@ -1,8 +1,9 @@
 import json
+import logging
 
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 
 from gitspatial.models import Repo, FeatureSet, Feature
 from ..decorators import jsonp
@@ -11,6 +12,8 @@ from ..helpers import query_args
 
 
 default_limit = 50
+
+logger = logging.getLogger(__name__)
 
 
 @jsonp
@@ -73,6 +76,15 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
     content = json.dumps(response, indent=indent)
 
     return HttpResponse(content, content_type='application/json')
+
+
+@require_POST
+def repo_hook(request, repo_id):
+    raw_payload = request.POST['payload']
+    payload = json.loads(raw_payload)
+    logger.info('got post-receive hook from github')
+    logger.info(payload)
+    return HttpResponse('Thanks GitHub!')
 
 
 def bad_request(message):
