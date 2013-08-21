@@ -7,7 +7,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.db.models.query import QuerySet
 
 from .models import Repo, FeatureSet, Feature
-from .github import GitHubApiGetRequest
+from .github import GitHubApiGetRequest, GitHubRawRequest
 from .geojson import GeoJSONParser, GeoJSONParserException
 
 
@@ -100,6 +100,7 @@ def get_feature_set_features(feature_set_or_feature_sets):
     Delete all features for, and create
     features for a feature set
     """
+    one_megabyte = 1048576
     if isinstance(feature_set_or_feature_sets, (list, tuple, QuerySet)):
         feature_sets = feature_set_or_feature_sets
     else:
@@ -109,10 +110,23 @@ def get_feature_set_features(feature_set_or_feature_sets):
         if not feature_set.synced:
             return
         Feature.objects.filter(feature_set=feature_set).delete()
-        gh_request = GitHubApiGetRequest(
-            feature_set.repo.user,
-            '/repos/{0}/contents/{1}'.format(feature_set.repo.full_name, feature_set.path))
-        content = base64.b64decode(gh_request.response.json()['content'])
+        if feature_set.size < one_megabyte:
+            # We can get files < 1 megabyte via the GitHub API
+            gh_request = GitHubApiGetRequest(
+                feature_set.repo.user,
+                '/repos/{0}/contents/{1}'.format(feature_set.repo.full_name, feature_set.path))
+            content = base64.b64decode(gh_request.response.json()['content'])
+        elif not feature_set.repo.github_private:
+            # For files > 1 megabyte in public repos, get the contents from raw.github.com
+            gh_raw_request = GitHubRawRequest(feature_set.repo.full_name, feature_set.path)
+            content = gh_raw_request.response.text
+            logger.info('Content is: %s' % content)
+        else:
+            logger.error('Could not get features for {0} because the file is greater than 1 megabyte and in a private GitHub repo.'.format(feature_set))
+            logger.info('Setting feature set sync status as error syncing: {0}'.format(feature_set))
+            feature_set.sync_status = FeatureSet.ERROR_SYNCING
+            feature_set.save()
+            return
         try:
             geojson = GeoJSONParser(content)
         except GeoJSONParserException as e:

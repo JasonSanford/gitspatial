@@ -39,3 +39,11 @@ class GitHubApiDeleteRequest(GitHubApiRequest):
 
         request = requests.delete(self._uri, headers=self._headers)
         self.response = request
+
+
+class GitHubRawRequest(object):
+    _uri_template = 'https://raw.github.com/{0}/master/{1}'
+
+    def __init__(self, repo_full_name, path):
+        request = requests.get(self._uri_template.format(repo_full_name, path))
+        self.response = request
