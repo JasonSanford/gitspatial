@@ -56,61 +56,65 @@ def user_feature_set(request, feature_set_id):
         raise PermissionDenied
 
     if request.method == 'GET':
-        count = Feature.objects.filter(feature_set=feature_set).count()
+        if feature_set.is_syncing:
+            context = {'feature_set': feature_set}
+        else:
+            count = Feature.objects.filter(feature_set=feature_set).count()
 
-        requested_page = request.GET.get('page', 1)
+            requested_page = request.GET.get('page', 1)
 
-        try:
-            requested_page = int(requested_page)
-        except ValueError:
-            return redirect('user_feature_set', feature_set_id=feature_set_id)
+            try:
+                requested_page = int(requested_page)
+            except ValueError:
+                return redirect('user_feature_set', feature_set_id=feature_set_id)
 
-        features = Feature.objects.filter(feature_set=feature_set).geojson()
+            features = Feature.objects.filter(feature_set=feature_set).geojson()
 
-        paginated = Paginator(features, per_page)
+            paginated = Paginator(features, per_page)
 
-        try:
-            current_page = paginated.page(requested_page)
-        except EmptyPageException:
-            if requested_page == 0:
-                return redirect('%s?page=%s' % (reverse('user_feature_set', args=(feature_set_id,)), 1))
-            else:
-                return redirect('%s?page=%s' % (reverse('user_feature_set', args=(feature_set_id,)), paginated.num_pages))
+            try:
+                current_page = paginated.page(requested_page)
+            except EmptyPageException:
+                if requested_page == 0:
+                    return redirect('%s?page=%s' % (reverse('user_feature_set', args=(feature_set_id,)), 1))
+                else:
+                    return redirect('%s?page=%s' % (reverse('user_feature_set', args=(feature_set_id,)), paginated.num_pages))
 
-        current_features = current_page.object_list
-        previous_page_number = current_page.previous_page_number() if current_page.has_previous() else None
-        next_page_number = current_page.next_page_number() if current_page.has_next() else None
+            current_features = current_page.object_list
+            previous_page_number = current_page.previous_page_number() if current_page.has_previous() else None
+            next_page_number = current_page.next_page_number() if current_page.has_next() else None
 
-        prop_keys = json.loads(current_features[0].properties).keys()
+            prop_keys = json.loads(current_features[0].properties).keys()
 
-        processed_features = []
-        geojson = {'type': 'FeatureCollection', 'features': []}
-        for current_feature in current_features:
-            processed_feature = {'id': current_feature.id}
-            current_feature_props = json.loads(current_feature.properties)
-            for prop_key in prop_keys:
-                processed_feature[prop_key] = current_feature_props.get(prop_key)
-            processed_features.append(processed_feature)
+            processed_features = []
+            geojson = {'type': 'FeatureCollection', 'features': []}
+            for current_feature in current_features:
+                processed_feature = {'id': current_feature.id}
+                current_feature_props = json.loads(current_feature.properties)
+                for prop_key in prop_keys:
+                    processed_feature[prop_key] = current_feature_props.get(prop_key)
+                processed_features.append(processed_feature)
 
-            geometry = json.loads(current_feature.geojson)
-            geojson_feature = {'type': 'Feature', 'geometry': geometry, 'properties': current_feature_props}
-            geojson['features'].append(geojson_feature)
+                geometry = json.loads(current_feature.geojson)
+                geojson_feature = {'type': 'Feature', 'geometry': geometry, 'properties': current_feature_props}
+                geojson['features'].append(geojson_feature)
 
-        context = {
-            'feature_set': feature_set,
-            'count': count,
-            'center_lat': feature_set.center[1],
-            'center_lng': feature_set.center[0],
-            'bounds': list(feature_set.bounds),
-            'features': processed_features,
-            'geojson': json.dumps(geojson),
-            'prop_keys': prop_keys,
-            'page_range': paginated.page_range,
-            'current_page': requested_page,
-            'previous_page_number': previous_page_number,
-            'next_page_number': next_page_number,
-            'start_index': current_page.start_index(),
-            'end_index': current_page.end_index()}
+            context = {
+                'feature_set': feature_set,
+                'count': count,
+                'center_lat': feature_set.center[1],
+                'center_lng': feature_set.center[0],
+                'bounds': list(feature_set.bounds),
+                'features': processed_features,
+                'geojson': json.dumps(geojson),
+                'prop_keys': prop_keys,
+                'page_range': paginated.page_range,
+                'current_page': requested_page,
+                'previous_page_number': previous_page_number,
+                'next_page_number': next_page_number,
+                'start_index': current_page.start_index(),
+                'end_index': current_page.end_index()}
+
         return render(request, 'user_feature_set.html', context)
     else:
         raw_data = request.body
@@ -165,6 +169,7 @@ def user_repo_sync(request, repo_id):
             return HttpResponseBadRequest(json.dumps(response), content_type='application/json')
 
         repo.synced = True
+        repo.sync_status = repo.SYNCING
 
         # Create a GitHub web hook so we get notified when this repo is pushed
         hook_data = {
@@ -225,7 +230,7 @@ def user_feature_set_sync(request, feature_set_id):
 
     if request.method == 'POST':
         feature_set.synced = True
-        feature_set.sync_status = FeatureSet.SYNCED
+        feature_set.sync_status = FeatureSet.SYNCING
         feature_set.save()
         get_feature_set_features.apply_async((feature_set,))
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=201)

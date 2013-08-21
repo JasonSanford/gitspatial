@@ -8,7 +8,13 @@
     <i class="icon-pencil"></i>
 </a>
 
-<h3>{{count}} features</h3>
+{% if feature_set.is_syncing %}
+
+<h3>Feature Set Syncing ...</h3>
+
+<p>You just keep clicking refresh.</p>
+
+{% else %}
 
 <div id="map-container"></div>
 
@@ -51,8 +57,11 @@
     </ul>
 </div>
 <div style="text-align: center;">
-<strong>{{ start_index }} - {{ end_index }}</strong> of {{ count }}
+    <strong>{{ start_index }} - {{ end_index }}</strong> of {{ count }}
 </div>
+
+{% endif %}
+
 {% endblock %}
 
 {% block javascript %}

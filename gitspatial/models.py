@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.gis.db import models as geo_models
 
 from .behaviors import Syncable, Timestampable
+from .utils import disk_size_format
 
 
 class Repo(Syncable, Timestampable, models.Model):
@@ -50,6 +51,14 @@ class FeatureSet(Syncable, Timestampable, models.Model):
         x = (xmin + xmax) / 2
         y = (ymin + ymax) / 2
         return (x, y)
+
+    @property
+    def is_syncing(self):
+        return self.sync_status == self.SYNCING
+
+    @property
+    def size_pretty(self):
+        return disk_size_format(self.size)
 
     def __unicode__(self):
         return '{0}/{1}'.format(self.repo.full_name, self.name)
