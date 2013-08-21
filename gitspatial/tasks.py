@@ -120,7 +120,6 @@ def get_feature_set_features(feature_set_or_feature_sets):
             # For files > 1 megabyte in public repos, get the contents from raw.github.com
             gh_raw_request = GitHubRawRequest(feature_set.repo.full_name, feature_set.path)
             content = gh_raw_request.response.text
-            logger.info('Content is: %s' % content)
         else:
             logger.error('Could not get features for {0} because the file is greater than 1 megabyte and in a private GitHub repo.'.format(feature_set))
             logger.info('Setting feature set sync status as error syncing: {0}'.format(feature_set))
