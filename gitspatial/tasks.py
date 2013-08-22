@@ -7,7 +7,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.db.models.query import QuerySet
 
 from .models import Repo, FeatureSet, Feature
-from .github import GitHubApiGetRequest, GitHubRawRequest
+from .github import GitHubApiGetRequest
 from .geojson import GeoJSONParser, GeoJSONParserException
 
 
@@ -112,21 +112,14 @@ def get_feature_set_features(feature_set_or_feature_sets):
             return
         Feature.objects.filter(feature_set=feature_set).delete()
         if feature_set.size < one_megabyte:
-            # We can get files < 1 megabyte via the GitHub API
+            # We can get files < 1 megabyte via the Repo API
             gh_request = GitHubApiGetRequest(
                 feature_set.repo.user,
                 '/repos/{0}/contents/{1}'.format(feature_set.repo.full_name, feature_set.path))
             content = base64.b64decode(gh_request.response.json()['content'])
-        elif not feature_set.repo.github_private:
-            # For files > 1 megabyte in public repos, get the contents from raw.github.com
-            gh_raw_request = GitHubRawRequest(feature_set.repo.full_name, feature_set.path)
-            content = gh_raw_request.response.text
         else:
-            logger.error('Could not get features for {0} because the file is greater than 1 megabyte and in a private GitHub repo.'.format(feature_set))
-            logger.info('Setting feature set sync status as error syncing: {0}'.format(feature_set))
-            feature_set.sync_status = FeatureSet.ERROR_SYNCING
-            feature_set.save()
-            return
+            # For files > 1 megabyte, we have to a lot of HTTP dancing
+            content = _get_blob(feature_set.repo.user, feature_set)
         try:
             geojson = GeoJSONParser(content)
         except GeoJSONParserException as e:
@@ -156,3 +149,25 @@ def delete_repo_feature_sets(repo):
 def delete_feature_set_features(feature_set):
     logger.info('Deleting features for feature set: {0}'.format(feature_set))
     Feature.objects.filter(feature_set=feature_set).delete()
+
+
+def _get_blob(user, feature_set):
+    # Get the head of the master branch
+    head_request = GitHubApiGetRequest(user, '/repos/{0}/git/refs/heads/{1}'.format(feature_set.repo.full_name, feature_set.repo.master_branch))
+
+    # Get the latest commit  in this branch
+    commit_request = GitHubApiGetRequest(user, head_request.response.json()['object']['url'].split('github.com')[1])
+
+    # Get the tree from the latest commit
+    tree_request = GitHubApiGetRequest(user, commit_request.response.json()['tree']['url'].split('github.com')[1] + '?recursive=1')
+    blob_url = None
+    for item in tree_request.response.json()['tree']:
+        if item['path'] == feature_set.path:
+            blob_url = item['url'].split('github.com')[1]
+            continue
+
+    # Get the blob
+    blob_request = GitHubApiGetRequest(user, blob_url)
+    encoded_content = blob_request.response.json()['content']
+    decoded = base64.b64decode(encoded_content)
+    return decoded

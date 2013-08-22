@@ -22,6 +22,7 @@ class GeoJSONParserException(Exception):
 
 class GeoJSONParser:
     def __init__(self, geojson_string):
+        filtered_geojson = {'type': 'FeatureCollection', 'features': []}
         try:
             test_geojson = json.loads(geojson_string)
             if not isinstance(test_geojson, dict):
@@ -40,12 +41,16 @@ class GeoJSONParser:
         for feature in test_geojson['features']:
             if not ('type' in feature and feature['type'] == 'Feature' and 'properties' in feature and 'geometry' in feature):
                 raise GeoJSONParserException('GeoJSON Features must have a type of "Feature" and "properties" and "geometry" members.')
+            if feature['geometry'] is None:
+                # null geometries are valid. Move along.
+                continue
             if feature['geometry']['type'] not in geojson_types:
                 raise GeoJSONParserException('{0} is not a valid GeoJSON geometry.'.format(feature['geometry']['type']))
             try:
                 validictory.validate(feature['geometry'], geojson_types[feature['geometry']['type']])
             except validictory.validator.ValidationError as e:
                 raise GeoJSONParserException('GeoJSON validation error. Message: {0}.'.format(e.message))
+            filtered_geojson['features'].append(feature)
 
         # Everything's good
-        self.features = test_geojson['features']
+        self.features = filtered_geojson['features']
