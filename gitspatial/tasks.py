@@ -43,6 +43,7 @@ def get_user_repos(user_or_users):
                     'name': raw_repo['name'],
                     'full_name': raw_repo['full_name'],
                     'github_private': raw_repo['private'],
+                    'master_branch': raw_repo['master_branch'],
                 }
                 repo, created = Repo.objects.get_or_create(github_id=raw_repo['id'], defaults=defaults)
                 current_repos.append(repo)

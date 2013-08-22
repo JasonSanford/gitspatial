@@ -12,6 +12,7 @@ class Repo(Syncable, Timestampable, models.Model):
     name = models.CharField(max_length=1000)
     full_name = models.CharField(max_length=1000)
     github_private = models.BooleanField()
+    master_branch = models.CharField(max_length=200)
     synced = models.BooleanField(default=False)
 
     @property
