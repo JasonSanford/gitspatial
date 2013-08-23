@@ -10,6 +10,7 @@ from gitspatial.models import Repo, FeatureSet, Feature
 from ..decorators import jsonp
 from ..exceptions import InvalidSpatialParameterException
 from ..helpers import query_args
+from ...tasks import get_feature_set_features
 
 
 default_limit = 50
@@ -82,18 +83,25 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
 @require_POST
 @csrf_exempt
 def repo_hook(request, repo_id):
-    """
-    logger.info('request.body is')
-    logger.info(request.body)
-    logger.info('post is')
-    logger.info(request.POST)
-    logger.info('content-type is')
-    logger.info(request.META['CONTENT_TYPE'])
-    raw_payload = request.POST['payload']
-    """
     payload = json.loads(request.body)
-    logger.info('got post-receive hook from github')
-    logger.info(payload)
+    repo = Repo.objects.get(github_id=payload['repository']['id'])
+
+    modified, removed = [], []
+    for commit in payload['commits']:
+        for path in commit['modified']:
+            if path not in modified:
+                modified.append(path)
+        for path in commit['removed']:
+            if path not in removed:
+                removed.append(path)
+
+    for path in modified:
+        feature_set = FeatureSet.objects.get(repo=repo, path=path)
+        get_feature_set_features.apply_async((feature_set,))
+
+    for path in removed:
+        FeatureSet.objects.filter(repo=repo, path=path).delete()
+
     return HttpResponse('Thanks GitHub!')
 
 
