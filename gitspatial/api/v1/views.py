@@ -3,6 +3,7 @@ import logging
 
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 
 from gitspatial.models import Repo, FeatureSet, Feature
@@ -79,6 +80,7 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
 
 
 @require_POST
+@csrf_exempt
 def repo_hook(request, repo_id):
     logger.info('post is')
     logger.info(request.POST)
