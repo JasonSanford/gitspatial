@@ -193,6 +193,7 @@ def user_repo_sync(request, repo_id):
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=201)
     else:  # DELETE
         repo.synced = False
+        repo.sync_status = repo.NOT_SYNCED
         gh_request = github.get('/repos/{0}/hooks'.format(repo.full_name))
         hook_id_to_delete = None
 
@@ -203,9 +204,6 @@ def user_repo_sync(request, repo_id):
 
         if hook_id_to_delete is not None:
             gh_request = github.delete('/repos/{0}/hooks/{1}'.format(repo.full_name, hook_id_to_delete))
-            logger.info(hook_id_to_delete)
-            logger.info(gh_request.status_code)
-            logger.info(gh_request.json())
             if gh_request.status_code == 204:
                 logger.info('Hook deleted for repo: {0}'.format(repo))
                 delete_repo_feature_sets.apply_async((repo,))
