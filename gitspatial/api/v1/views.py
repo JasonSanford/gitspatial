@@ -82,6 +82,7 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
 @require_POST
 @csrf_exempt
 def repo_hook(request, repo_id):
+    """
     logger.info('request.body is')
     logger.info(request.body)
     logger.info('post is')
@@ -89,7 +90,8 @@ def repo_hook(request, repo_id):
     logger.info('content-type is')
     logger.info(request.META['CONTENT_TYPE'])
     raw_payload = request.POST['payload']
-    payload = json.loads(raw_payload)
+    """
+    payload = json.loads(request.body)
     logger.info('got post-receive hook from github')
     logger.info(payload)
     return HttpResponse('Thanks GitHub!')
