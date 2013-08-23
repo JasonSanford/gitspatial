@@ -80,6 +80,8 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
 
 @require_POST
 def repo_hook(request, repo_id):
+    logger.log('post is')
+    logger.info(request.POST)
     raw_payload = request.POST['payload']
     payload = json.loads(raw_payload)
     logger.info('got post-receive hook from github')
