@@ -7,7 +7,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.db.models.query import QuerySet
 
 from .models import Repo, FeatureSet, Feature
-from .github import GitHubApiGetRequest
+from .github import GitHub
 from .geojson import GeoJSONParser, GeoJSONParserException
 
 
@@ -26,18 +26,19 @@ def get_user_repos(user_or_users):
         users = [user_or_users]
     for user in users:
         previous_repos = Repo.objects.filter(user=user)
+        github = GitHub(user)
         current_repos = []
         api_path = '/user/repos'
         there_are_more_repos = True
         while there_are_more_repos:
-            gh_request = GitHubApiGetRequest(user, api_path)
-            if hasattr(gh_request.response, 'links') and 'next' in gh_request.response.links:
-                next_url = gh_request.response.links['next']['url']
+            gh_request = github.get(api_path)
+            if hasattr(gh_request, 'links') and 'next' in gh_request.links:
+                next_url = gh_request.links['next']['url']
                 next_url_parts = next_url.split('api.github.com')
                 api_path = next_url_parts[1]
             else:
                 there_are_more_repos = False
-            for raw_repo in gh_request.response.json():
+            for raw_repo in gh_request.json():
                 defaults = {
                     'user': user,
                     'name': raw_repo['name'],
@@ -75,9 +76,10 @@ def get_repo_feature_sets(repo_or_repos):
         repos = [repo_or_repos]
     for repo in repos:
         previous_feature_sets = FeatureSet.objects.filter(repo=repo)
+        github = GitHub(repo.user)
         current_feature_sets = []
-        gh_request = GitHubApiGetRequest(repo.user, '/repos/{0}/git/trees/master?recursive=1'.format(repo.full_name))
-        for item in gh_request.response.json()['tree']:
+        gh_request = github.get('/repos/{0}/git/trees/master?recursive=1'.format(repo.full_name))
+        for item in gh_request.json()['tree']:
             if item['type'] == 'blob' and item['path'].endswith('.geojson'):
                 defaults = {'name': item['path'], 'size': item['size']}
                 feature_set, created = FeatureSet.objects.get_or_create(repo=repo, path=item['path'], defaults=defaults)
@@ -111,15 +113,14 @@ def get_feature_set_features(feature_set_or_feature_sets):
         if not feature_set.synced:
             return
         Feature.objects.filter(feature_set=feature_set).delete()
+        github = GitHub(feature_set.repo.user)
         if feature_set.size < one_megabyte:
             # We can get files < 1 megabyte via the Repo API
-            gh_request = GitHubApiGetRequest(
-                feature_set.repo.user,
-                '/repos/{0}/contents/{1}'.format(feature_set.repo.full_name, feature_set.path))
-            content = base64.b64decode(gh_request.response.json()['content'])
+            gh_request = github.get('/repos/{0}/contents/{1}'.format(feature_set.repo.full_name, feature_set.path))
+            content = base64.b64decode(gh_request.json()['content'])
         else:
             # For files > 1 megabyte, we have to a lot of HTTP dancing
-            content = _get_blob(feature_set.repo.user, feature_set)
+            content = _get_blob(github, feature_set)
         try:
             geojson = GeoJSONParser(content)
         except GeoJSONParserException as e:
@@ -151,23 +152,23 @@ def delete_feature_set_features(feature_set):
     Feature.objects.filter(feature_set=feature_set).delete()
 
 
-def _get_blob(user, feature_set):
+def _get_blob(github, feature_set):
     # Get the head of the master branch
-    head_request = GitHubApiGetRequest(user, '/repos/{0}/git/refs/heads/{1}'.format(feature_set.repo.full_name, feature_set.repo.master_branch))
+    head_request = github.get('/repos/{0}/git/refs/heads/{1}'.format(feature_set.repo.full_name, feature_set.repo.master_branch))
 
     # Get the latest commit  in this branch
-    commit_request = GitHubApiGetRequest(user, head_request.response.json()['object']['url'].split('github.com')[1])
+    commit_request = github.get(head_request.json()['object']['url'].split('github.com')[1])
 
     # Get the tree from the latest commit
-    tree_request = GitHubApiGetRequest(user, commit_request.response.json()['tree']['url'].split('github.com')[1] + '?recursive=1')
+    tree_request = github.get(commit_request.json()['tree']['url'].split('github.com')[1] + '?recursive=1')
     blob_url = None
-    for item in tree_request.response.json()['tree']:
+    for item in tree_request.json()['tree']:
         if item['path'] == feature_set.path:
             blob_url = item['url'].split('github.com')[1]
             continue
 
     # Get the blob
-    blob_request = GitHubApiGetRequest(user, blob_url)
-    encoded_content = blob_request.response.json()['content']
+    blob_request = github.get(blob_url)
+    encoded_content = blob_request.json()['content']
     decoded = base64.b64decode(encoded_content)
     return decoded

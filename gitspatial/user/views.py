@@ -9,7 +9,7 @@ from django.http import Http404, HttpResponseBadRequest
 from django.shortcuts import render, HttpResponse, redirect
 from django.views.decorators.http import require_http_methods
 
-from ..github import GitHubApiPostRequest, GitHubApiGetRequest, GitHubApiDeleteRequest
+from ..github import GitHub
 from ..models import Repo, FeatureSet, Feature
 from ..tasks import get_user_repos, get_repo_feature_sets, delete_repo_feature_sets, get_feature_set_features, delete_feature_set_features
 
@@ -156,6 +156,8 @@ def user_repo_sync(request, repo_id):
     if not repo.user == request.user:
         raise PermissionDenied
 
+    github = GitHub(repo.user)
+
     if request.method == 'POST':
         max_repo_syncs = 3
 
@@ -181,8 +183,8 @@ def user_repo_sync(request, repo_id):
                 'content_type': 'json'
             }
         }
-        gh_request = GitHubApiPostRequest(request.user, '/repos/{0}/hooks'.format(repo.full_name), hook_data)
-        if gh_request.response.status_code == 201:
+        gh_request = github.post('/repos/{0}/hooks'.format(repo.full_name), hook_data)
+        if gh_request.status_code == 201:
             logger.info('Hook created for repo: {0}'.format(repo))
         else:
             logger.info('Hook not created for repo: {0}'.format(repo))
@@ -191,17 +193,20 @@ def user_repo_sync(request, repo_id):
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=201)
     else:  # DELETE
         repo.synced = False
-        gh_request = GitHubApiGetRequest(request.user, '/repos/{0}/hooks'.format(repo.full_name))
+        gh_request = github.get('/repos/{0}/hooks'.format(repo.full_name))
         hook_id_to_delete = None
 
-        for hook in gh_request.response.json():
+        for hook in gh_request.json():
             if 'url' in hook['config'] and hook['config']['url'] == repo.hook_url:
                 hook_id_to_delete = hook['id']
                 continue
 
         if hook_id_to_delete is not None:
-            gh_request = GitHubApiDeleteRequest(request.user, '/repos/{0}/hooks/{1}'.format(repo.full_name, hook_id_to_delete))
-            if gh_request.response.status_code == 204:
+            gh_request = github.delete('/repos/{0}/hooks/{1}'.format(repo.full_name, hook_id_to_delete))
+            logger.info(hook_id_to_delete)
+            logger.info(gh_request.status_code)
+            logger.info(gh_request.json())
+            if gh_request.status_code == 204:
                 logger.info('Hook deleted for repo: {0}'.format(repo))
                 delete_repo_feature_sets.apply_async((repo,))
             else:
