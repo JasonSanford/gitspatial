@@ -82,6 +82,8 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
 @require_POST
 @csrf_exempt
 def repo_hook(request, repo_id):
+    logger.info('request.body is')
+    logger.info(request.body)
     logger.info('post is')
     logger.info(request.POST)
     logger.info('content-type is')
