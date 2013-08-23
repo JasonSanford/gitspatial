@@ -97,10 +97,14 @@ def repo_hook(request, repo_id):
 
     for path in modified:
         feature_set = FeatureSet.objects.get(repo=repo, path=path)
+        logger.info('[github_hook]: Getting features for {0}'.format(feature_set))
         get_feature_set_features.apply_async((feature_set,))
 
     for path in removed:
-        FeatureSet.objects.filter(repo=repo, path=path).delete()
+        feature_sets = FeatureSet.objects.filter(repo=repo, path=path)
+        for feature_set in feature_sets:
+            logger.info('[github_hook]: Deleting feature set for {0}'.format(feature_set))
+            feature_set.delete()
 
     return HttpResponse('Thanks GitHub!')
 
