@@ -182,7 +182,7 @@ def user_repo_sync(request, repo_id):
             }
         }
         gh_request = GitHubApiPostRequest(request.user, '/repos/{0}/hooks'.format(repo.full_name), hook_data)
-        if gh_request.response.status_code == 204:
+        if gh_request.response.status_code == 201:
             logger.info('Hook created for repo: {0}'.format(repo))
         else:
             logger.info('Hook not created for repo: {0}'.format(repo))
