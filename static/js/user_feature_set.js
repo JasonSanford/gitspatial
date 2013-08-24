@@ -43,13 +43,13 @@ $('#pencil').click(function(e) {
     $('.feature').on('mouseover', function () {
         var $this = $(this),
             id = $this.data('feature-id');
-        highlightFeature(id);
+        highlightTR(id);
     });
 
     $('.feature').on('mouseout', function () {
         var $this = $(this),
             id = $this.data('feature-id');
-        unhighlightFeature(id);
+        unhighlightTR(id);
     });
 
     function highlightTR(id) {
