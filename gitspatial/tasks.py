@@ -54,11 +54,6 @@ def get_user_repos(user_or_users):
                     repo.__dict__.update(defaults)
                     repo.save()
                     logger.info('Updated repo {0} for user {1}'.format(repo, user))
-                if repo.synced:
-                    logger.info('Setting repo sync status as syncing: {0}'.format(repo))
-                    repo.sync_status = Repo.SYNCING
-                    repo.save()
-                    get_repo_feature_sets.apply_async((repo,))
         for previous_repo in previous_repos:
             if previous_repo not in current_repos:
                 previous_repo.delete()
@@ -112,6 +107,9 @@ def get_feature_set_features(feature_set_or_feature_sets):
         # First, kill the current features
         if not feature_set.synced:
             return
+        logger.info('Setting feature set sync status as syncing: {0}'.format(feature_set))
+        feature_set.sync_status = feature_set.SYNCING
+        feature_set.save()
         Feature.objects.filter(feature_set=feature_set).delete()
         github = GitHub(feature_set.repo.user)
         if feature_set.size < one_megabyte:
