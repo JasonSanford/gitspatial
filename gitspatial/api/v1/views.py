@@ -10,7 +10,7 @@ from gitspatial.models import Repo, FeatureSet, Feature
 from ..decorators import jsonp
 from ..exceptions import InvalidSpatialParameterException
 from ..helpers import query_args
-from ...tasks import get_feature_set_features
+from ...tasks import get_feature_set_features, get_repo_feature_sets
 
 
 default_limit = 50
@@ -86,7 +86,7 @@ def repo_hook(request, repo_id):
     payload = json.loads(request.body)
     repo = Repo.objects.get(github_id=payload['repository']['id'])
 
-    modified, removed = [], []
+    modified, removed, added = [], [], []
     for commit in payload['commits']:
         for path in commit['modified']:
             if path not in modified:
@@ -94,6 +94,9 @@ def repo_hook(request, repo_id):
         for path in commit['removed']:
             if path not in removed:
                 removed.append(path)
+        for path in commit['added']:
+            if path not in added:
+                added.append(path)
 
     for path in modified:
         feature_set = FeatureSet.objects.get(repo=repo, path=path)
@@ -105,6 +108,9 @@ def repo_hook(request, repo_id):
         for feature_set in feature_sets:
             logger.info('[github_hook]: Deleting feature set for {0}'.format(feature_set))
             feature_set.delete()
+
+    if added:
+        get_repo_feature_sets.apply_async((repo,))
 
     return HttpResponse('Thanks GitHub!')
 
