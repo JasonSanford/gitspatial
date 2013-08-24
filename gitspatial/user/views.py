@@ -96,7 +96,7 @@ def user_feature_set(request, feature_set_id):
                 processed_features.append(processed_feature)
 
                 geometry = json.loads(current_feature.geojson)
-                geojson_feature = {'type': 'Feature', 'geometry': geometry, 'properties': current_feature_props}
+                geojson_feature = {'type': 'Feature', 'geometry': geometry, 'properties': current_feature_props, 'id': current_feature.id}
                 geojson['features'].append(geojson_feature)
 
             context = {

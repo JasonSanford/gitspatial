@@ -27,7 +27,7 @@
         </thead>
         <tbody>
             {% for feature in features %}
-            <tr id="tr-{{ feature.id }}">
+            <tr id="tr-{{ feature.id }}" class="feature" data-feature-id="{{ feature.id }}">
                 {% for prop_key in prop_keys %}
                 <td>{{ feature|keyvalue:prop_key }}</td>
                 {% endfor %}

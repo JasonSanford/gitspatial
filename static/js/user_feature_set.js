@@ -25,9 +25,72 @@ $('#pencil').click(function(e) {
                 road_layer
             ]
         }),
-        feature_set_layer = new L.GeoJSON(gs.features);
+        feature_set_layer = new L.GeoJSON(gs.features, {
+            onEachFeature: function (feature, layer) {
+                layer.on('mouseover', function () {
+                    highlightTR(feature.id);
+                });
+                layer.on('mouseout', function () {
+                    unhighlightTR(feature.id);
+                });
+            }
+        });
     map
         .addLayer(feature_set_layer)
         .fitBounds([[gs.fs.bounds[1], gs.fs.bounds[0]], [gs.fs.bounds[3], gs.fs.bounds[2]]]);
     L.control.layers({'Road': road_layer, 'Satellite': satellite_layer}, null).addTo(map);
+
+    $('.feature').on('mouseover', function () {
+        var $this = $(this),
+            id = $this.data('feature-id');
+        highlightFeature(id);
+    });
+
+    $('.feature').on('mouseout', function () {
+        var $this = $(this),
+            id = $this.data('feature-id');
+        unhighlightFeature(id);
+    });
+
+    function highlightTR(id) {
+        $('#tr-' + id).addClass('info');
+        highlightFeature(id);
+    }
+
+    function unhighlightTR(id) {
+        $('#tr-' + id).removeClass('info');
+        unhighlightFeature(id);
+    }
+
+    function highlightFeature(id) {
+        feature_set_layer.eachLayer(function (layer) {
+            if (id == layer.feature.id) {
+                if (layer instanceof L.Marker) {
+                    var highlight_icon = L.icon({
+                        iconUrl: '/static/img/markers/marker-icon-hover.png'
+                    });
+                    if (layer instanceof L.Marker) {
+                        layer.setIcon(highlight_icon);
+                    }
+                } else {
+                    layer.setStyle({opacity: 1});
+                }
+            }
+        });
+    }
+
+    function unhighlightFeature(id) {
+        feature_set_layer.eachLayer(function (layer) {
+            if (id == layer.feature.id) {
+                if (layer instanceof L.Marker) {
+                    var default_icon = new L.Icon.Default();
+                    if (layer instanceof L.Marker) {
+                        layer.setIcon(default_icon);
+                    }
+                } else {
+                    layer.setStyle({opacity: 0.5});
+                }
+            }
+        });
+    }
 }());
