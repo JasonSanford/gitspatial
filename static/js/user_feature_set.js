@@ -73,7 +73,7 @@ $('#pencil').click(function(e) {
                         layer.setIcon(highlight_icon);
                     }
                 } else {
-                    layer.setStyle({opacity: 1});
+                    layer.setStyle({opacity: 1, fillOpacity: 0.6});
                 }
             }
         });
@@ -88,7 +88,7 @@ $('#pencil').click(function(e) {
                         layer.setIcon(default_icon);
                     }
                 } else {
-                    layer.setStyle({opacity: 0.5});
+                    layer.setStyle({opacity: 0.5, fillOpacity: 0.2});
                 }
             }
         });
