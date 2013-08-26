@@ -37,26 +37,55 @@
     <tbody>
         <tr>
             <th>bbox</th>
-            <td>The geographic bounding box to search for features in <code>xmin</code>, <code>ymin</code>, <code>mxax</code>, <code>ymax</code> (min longitude, min latitude, max longitude, max latitude) format.</td>
+            <td>The geographic bounding box to search for features in <code>xmin</code>, <code>ymin</code>, <code>mxax</code>, <code>ymax</code> (min longitude, min latitude, max longitude, max latitude) format</td>
         </tr>
     </tbody>
 </table>
 
 <h4>Example</h4>
 
-<p>Find all fire hydrants in a map window.</p>
+<p>Find parks in a map window.</p>
 
-<pre>http://</pre>
+<pre>http://gitspatial.herokuapp.com/api/v1/JasonSanford/mecklenburg-gis-opendata/parks?bbox=-80.8633,35.2071,-80.8158,35.2488</pre>
 
 <h3>Search by Point and Radius</h3>
 
-<pre>http://gitspatial.herokuapp.com/:user_name/:repo_name/:feature_set_name?bbox=:xmin,:ymin,:ymax,:ymax</pre>
+<pre>http://gitspatial.herokuapp.com/:user_name/:repo_name/:feature_set_name?lat=:latitude&lon=:longitude&distance=:distance</pre>
 
 <table class="table table-bordered table-striped table-condensed">
     <tbody>
         <tr>
-            <th>bbox</th>
-            <td>The geographic bounding box to search for features in <code>xmin</code>, <code>ymin</code>, <code>mxax</code>, <code>ymax</code> (min longitude, min latitude, max longitude, max latitude) format.</td>
+            <th>lat</th>
+            <td>The latitude, or Y coordinate, for the point to search from</td>
+        </tr>
+        <tr>
+            <th>lon</th>
+            <td>The longitude, or X coordinate, for the point to search from</td>
+        </tr>
+        <tr>
+            <th>distance</th>
+            <td>Thie distance, in meters, to search for features</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Example</h4>
+
+<p>Find schools within 4,000 meters of a point.</p>
+
+<pre>http://gitspatial.herokuapp.com/api/v1/JasonSanford/mecklenburg-gis-opendata/data/schools.geojson?lat=35.256&lon=-80.809&distance=4000</pre>
+
+<h3>Other Parameters</h3>
+
+<table class="table table-bordered table-striped table-condensed">
+    <tbody>
+        <tr>
+            <th>limit</th>
+            <td>The number of features to return. The default and maximum is 50. Use with <code>offset</code> for pagination.</td>
+        </tr>
+        <tr>
+            <th>offset</th>
+            <td>The number of features to skip</td>
         </tr>
     </tbody>
 </table>

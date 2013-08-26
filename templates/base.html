@@ -32,7 +32,8 @@
                 <a class="brand" href="{% url 'home' %}">GitSpatial</a>
                 <div class="nav-collapse">
                     <ul class="nav">
-                        <li><a href="">How it Works</a></li>
+                        <li><a href="{% url 'how_it_works' %}">How it Works</a></li>
+                        <li><a href="{% url 'api_landing' %}">API</a></li>
                     </ul>
                     <ul class="nav pull-right">
                     {% if user.is_anonymous %}
