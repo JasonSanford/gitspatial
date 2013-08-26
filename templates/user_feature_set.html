@@ -3,7 +3,7 @@
 {% load keyvalue %}
 
 {% block content %}
-<h2 id="name" data-pk="{{ feature_set.id }}" data-original-title="Change feature set name" data-type="text" data-name="name" data-toggle="manual" data-url="{% url 'user_feature_set' feature_set.id %}" data-title="Change feature set name" style="display: inline;">{{feature_set.name}}</h2>
+<h1 id="name" data-pk="{{ feature_set.id }}" data-original-title="Change feature set name" data-type="text" data-name="name" data-toggle="manual" data-url="{% url 'user_feature_set' feature_set.id %}" data-title="Change feature set name" style="display: inline;">{{feature_set.name}}</h1>
 <a href="#" id="pencil">
     <i class="icon-pencil"></i>
 </a>
@@ -15,6 +15,26 @@
 <p>You just keep clicking refresh.</p>
 
 {% else %}
+
+<h2>API</h2>
+
+<p>For details, check the <a href="{% url 'api_landing' %}">API docs</a>.</p>
+
+<h3>The Resource</h3>
+
+<pre>{{ api_url }}</pre>
+
+<h3>Examples</h3>
+
+<h4>Search by Bounding Box</h4>
+
+<pre>{{ api_url }}?bbox={{ bounds.0|floatformat:3 }},{{ bounds.1|floatformat:3 }},{{ bounds.2|floatformat:3 }},{{ bounds.3|floatformat:3 }}</pre>
+
+<h4>Search by Point and Radius</h4>
+
+<pre>{{ api_url }}?lat={{ center_lat|floatformat:3 }}&lon={{ center_lng|floatformat:3 }}&distance=3000</pre>
+
+<h2>Preview Features</h2>
 
 <div id="map-container"></div>
 
@@ -59,7 +79,6 @@
 <div style="text-align: center;">
     <strong>{{ start_index }} - {{ end_index }}</strong> of {{ count }}
 </div>
-
 {% endif %}
 
 {% endblock %}

@@ -26,3 +26,12 @@ def logout(request):
     """
     auth_logout(request)
     return redirect('gitspatial.views.home')
+
+
+def how_it_works(request):
+    """
+    GET /how-it-works/
+
+    Show how it works, what else?
+    """
+    return render(request, 'how_it_works.html')

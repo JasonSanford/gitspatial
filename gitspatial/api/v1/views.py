@@ -3,6 +3,7 @@ import logging
 
 from django.conf import settings
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 
@@ -16,6 +17,10 @@ from ...tasks import get_feature_set_features, get_repo_feature_sets
 default_limit = 50
 
 logger = logging.getLogger(__name__)
+
+
+def docs(request):
+    return render(request, 'api_v1.html')
 
 
 @jsonp

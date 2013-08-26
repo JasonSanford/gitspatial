@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>API v1</h2>
+
+<h3>The Resource</h3>
+
+<pre>http://gitspatial.herokuapp.com/:user_name/:repo_name/:feature_set_name</pre>
+
+<table class="table table-bordered table-striped table-condensed">
+    <tbody>
+        <tr>
+            <th>user_name</th>
+            <td>Your GitHub user name</td>
+        </tr>
+        <tr>
+            <th>repo_name</th>
+            <td>A GitHub repo name</td>
+        </tr>
+        <tr>
+            <th>feature_set_name</th>
+            <td>A file in your repo that contains GeoJSON</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>From here, with no URL parameters, you'll just get a paginated list of features.</p>
+
+<h3>Search by Bounding Box</h3>
+
+<pre>http://gitspatial.herokuapp.com/:user_name/:repo_name/:feature_set_name?bbox=:xmin,:ymin,:ymax,:ymax</pre>
+
+<h4>Parameters</h4>
+
+<table class="table table-bordered table-striped table-condensed">
+    <tbody>
+        <tr>
+            <th>bbox</th>
+            <td>The geographic bounding box to search for features in <code>xmin</code>, <code>ymin</code>, <code>mxax</code>, <code>ymax</code> (min longitude, min latitude, max longitude, max latitude) format.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Example</h4>
+
+<p>Find all fire hydrants in a map window.</p>
+
+<pre>http://</pre>
+
+<h3>Search by Point and Radius</h3>
+
+<pre>http://gitspatial.herokuapp.com/:user_name/:repo_name/:feature_set_name?bbox=:xmin,:ymin,:ymax,:ymax</pre>
+
+<table class="table table-bordered table-striped table-condensed">
+    <tbody>
+        <tr>
+            <th>bbox</th>
+            <td>The geographic bounding box to search for features in <code>xmin</code>, <code>ymin</code>, <code>mxax</code>, <code>ymax</code> (min longitude, min latitude, max longitude, max latitude) format.</td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}
