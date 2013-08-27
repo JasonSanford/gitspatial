@@ -40,7 +40,8 @@
         "repo": 22, 
         "created_date": "2013-08-07T21:13:50.762Z", 
         "synced": true, 
-        "path": "data/colleges.geojson"
+        "path": "data/colleges.geojson",
+        "size": 3456
     }
 },
 {
@@ -52,7 +53,8 @@
         "repo": 22, 
         "created_date": "2013-08-08T04:57:23.105Z", 
         "synced": true, 
-        "path": "data/polling_locations.geojson"
+        "path": "data/polling_locations.geojson",
+        "size": 6543
     }
 },
 {

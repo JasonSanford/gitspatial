@@ -75,7 +75,8 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
         {
             'type': 'Feature',
             'properties': json.loads(feature.properties),
-            'geometry': json.loads(feature.geojson)
+            'geometry': json.loads(feature.geojson),
+            'id': feature.id,
         } for feature in features
     ]
     response = {'type': 'FeatureCollection', 'features': json_features}
