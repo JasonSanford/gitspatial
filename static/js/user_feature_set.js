@@ -67,7 +67,7 @@ $('#pencil').click(function(e) {
             if (id == layer.feature.id) {
                 if (layer instanceof L.Marker) {
                     var highlight_icon = L.icon({
-                        iconUrl: '/static/img/markers/marker-icon-hover.png'
+                        iconUrl: gs.STATIC_URL + 'img/markers/marker-icon-hover.png'
                     });
                     if (layer instanceof L.Marker) {
                         layer.setIcon(highlight_icon);
