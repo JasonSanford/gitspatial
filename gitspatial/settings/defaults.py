@@ -146,7 +146,7 @@ AWS_STORAGE_BUCKET_NAME = 'gitspatial'
 
 GITHUB_APP_ID = os.environ.get('GITHUB_APP_ID')
 GITHUB_API_SECRET = os.environ.get('GITHUB_API_SECRET')
-GITHUB_EXTENDED_PERMISSIONS = ['repo']
+GITHUB_EXTENDED_PERMISSIONS = ['public_repo']
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/user/'
