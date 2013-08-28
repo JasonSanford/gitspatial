@@ -965,5 +965,680 @@
         "geom": "POINT (-80.7720730000000060 35.0719599999999971)", 
         "properties": "{\"city\": \"Charlotte\", \"precinct\": 91, \"name\": \"Providence Presbyterian Church\", \"address\": \"10140 Providence Church Ln\"}"
     }
+},
+{
+    "pk": 1222, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8083759999999955 35.3035929999999993)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 107, \"name\": \"Varick Renaissance Center\", \"address\": \"3165 Zion Renaissance Lane\"}"
+    }
+},
+{
+    "pk": 1223, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8426649999999967 35.1307839999999985)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 75, \"name\": \"Holy Covenant UCC\", \"address\": \"6151 Sharon Rd\"}"
+    }
+},
+{
+    "pk": 1224, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.9814980000000020 35.2208359999999985)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 200, \"name\": \"Berryhill Baptist Church\", \"address\": \"9801 Walkers Ferry Rd\"}"
+    }
+},
+{
+    "pk": 1225, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7137139999999960 35.1604249999999965)", 
+        "properties": "{\"city\": \"Matthews\", \"precinct\": 216, \"name\": \"Crown Point Elementary School\", \"address\": \"3335 Sam Newell Rd\"}"
+    }
+},
+{
+    "pk": 1226, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7769959999999969 35.1913679999999971)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 34, \"name\": \"Oakhurst Baptist Church\", \"address\": \"5037 Monroe Rd\"}"
+    }
+},
+{
+    "pk": 1227, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7657229999999942 35.2507129999999975)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 60, \"name\": \"Briarwood Elementary School\", \"address\": \"1001 Wilann Dr\"}"
+    }
+},
+{
+    "pk": 1228, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8531210000000016 35.2083099999999973)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 10, \"name\": \"Greek Orthodox Cathedral\", \"address\": \"600 East Blvd\"}"
+    }
+},
+{
+    "pk": 1229, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7557479999999970 35.2138810000000007)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 84, \"name\": \"Calvary Church of the Nazarene\", \"address\": \"4000 N. Sharon Amity Rd\"}"
+    }
+},
+{
+    "pk": 1230, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.9787479999999960 35.2596759999999989)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 224, \"name\": \"Garden Memorial Presbyterian Church\", \"address\": \"2324 Sam Wilson Road\"}"
+    }
+},
+{
+    "pk": 1231, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8493600000000043 35.2325209999999984)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 11, \"name\": \"Greater Mount Moriah Primitive Baptist\", \"address\": \"747 West Trade Street\"}"
+    }
+},
+{
+    "pk": 1232, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8509399999999943 35.2507189999999966)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 54, \"name\": \"Oaklawn Langauge Academy\", \"address\": \"1810 Oaklawn Avenue\"}"
+    }
+},
+{
+    "pk": 1233, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8592550000000045 35.4816640000000021)", 
+        "properties": "{\"city\": \"Cornelius\", \"precinct\": 202, \"name\": \"Cornelius Town Hall\", \"address\": \"21445 Catawba Avenue\"}"
+    }
+},
+{
+    "pk": 1234, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8053960000000018 35.3464969999999994)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 151, \"name\": \"Croft Community School\", \"address\": \"4911 Hucks Rd\"}"
+    }
+},
+{
+    "pk": 1235, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8563749999999999 35.1116460000000004)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 92, \"name\": \"Quail Hollow Presbyterian Church\", \"address\": \"8801 Park Road\"}"
+    }
+},
+{
+    "pk": 1236, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8944019999999995 35.1417349999999971)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 77, \"name\": \"Nations Ford Elementary School\", \"address\": \"8300 Nations Ford Rd\"}"
+    }
+},
+{
+    "pk": 1237, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7468199999999996 35.3018000000000001)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 141, \"name\": \"University City Regional Library\", \"address\": \"301 E W T Harris Blvd\"}"
+    }
+},
+{
+    "pk": 1238, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7380579999999952 35.2791720000000026)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 132, \"name\": \"Newell Presbyterian Church\", \"address\": \"1500 Rocky River Road West\"}"
+    }
+},
+{
+    "pk": 1239, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7771979999999985 35.0951209999999989)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 112, \"name\": \"Messiah Lutheran Church\", \"address\": \"8300 Providence Rd\"}"
+    }
+},
+{
+    "pk": 1240, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8386239999999958 35.0983840000000029)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 93, \"name\": \"Church of Jesus Christ of Latter Day Saints\", \"address\": \"5815 Carmel Rd\"}"
+    }
+},
+{
+    "pk": 1241, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7974829999999997 35.0913699999999977)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 90, \"name\": \"South Charlotte Middle School\", \"address\": \"8040 Strawberry Ln\"}"
+    }
+},
+{
+    "pk": 1242, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-81.0206060000000008 35.0949870000000033)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 243, \"name\": \"Pleasant Hill Presbyterian Church\", \"address\": \"15000 York Rd\"}"
+    }
+},
+{
+    "pk": 1243, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7925189999999986 35.1842740000000020)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 7, \"name\": \"Randolph Middle School\", \"address\": \"4400 Water Oak Rd\"}"
+    }
+},
+{
+    "pk": 1244, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8014450000000011 35.2315600000000018)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 15, \"name\": \"Midwood Baptist Church\", \"address\": \"2029 Mecklenburg Avenue\"}"
+    }
+},
+{
+    "pk": 1245, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7717860000000059 35.1684559999999991)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 66, \"name\": \"Rama Road Elementary School\", \"address\": \"1035 Rama Rd\"}"
+    }
+},
+{
+    "pk": 1246, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.6917229999999961 35.2115859999999969)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 116, \"name\": \"Cornerstone Baptist Church\", \"address\": \"8947 Albemarle Rd\"}"
+    }
+},
+{
+    "pk": 1247, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8863829999999950 35.2315960000000032)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 23, \"name\": \"Bishop Spaugh Community Academy\", \"address\": \"1901 Herbert Spaugh Ln\"}"
+    }
+},
+{
+    "pk": 1248, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8762739999999951 35.2025810000000021)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 22, \"name\": \"Marie G. Davis Military Academy\", \"address\": \"3343 Griffith St\"}"
+    }
+},
+{
+    "pk": 1249, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7855200000000053 35.2689700000000030)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 42, \"name\": \"Hidden Valley Elementary School\", \"address\": \"5100 Snow White Ln\"}"
+    }
+},
+{
+    "pk": 1250, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8940400000000039 35.4446089999999998)", 
+        "properties": "{\"city\": \"Huntersville\", \"precinct\": 142, \"name\": \"Lake Norman Baptist Church\", \"address\": \"7921 Sam Furr Rd\"}"
+    }
+},
+{
+    "pk": 1251, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8566339999999997 35.2686619999999991)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 25, \"name\": \"West Charlotte Recreation Center\", \"address\": \"2400 Kendall St\"}"
+    }
+},
+{
+    "pk": 1252, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8464299999999980 35.0835450000000009)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 88, \"name\": \"Living Saviour Lutheran Church\", \"address\": \"6817 Carmel Rd.\"}"
+    }
+},
+{
+    "pk": 1253, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8580280000000045 35.1103669999999966)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 114, \"name\": \"South Mecklenburg High School\", \"address\": \"8900 Park Rd\"}"
+    }
+},
+{
+    "pk": 1254, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8638559999999984 35.0877049999999997)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 87, \"name\": \"Pineville Church of the Nazarene\", \"address\": \"8614 Pineville-Matthews Rd\"}"
+    }
+},
+{
+    "pk": 1255, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8867429999999956 35.0851169999999968)", 
+        "properties": "{\"city\": \"Pineville\", \"precinct\": 231, \"name\": \"Pineville United Methodist Church\", \"address\": \"110 S. Polk St\"}"
+    }
+},
+{
+    "pk": 1256, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8918620000000033 35.0792569999999984)", 
+        "properties": "{\"city\": \"Pineville\", \"precinct\": 225, \"name\": \"Belle Johnston Community Center\", \"address\": \"1000 Johnston Dr\"}"
+    }
+},
+{
+    "pk": 1257, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7114339999999970 35.3097899999999996)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 204, \"name\": \"Back Creek Presbyterian Church\", \"address\": \"1821 Back Creek Church Rd\"}"
+    }
+},
+{
+    "pk": 1258, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8705420000000004 35.1396799999999985)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 58, \"name\": \"Starmount Pre-K Center\", \"address\": \"1600 Brookdale Ave\"}"
+    }
+},
+{
+    "pk": 1259, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8328570000000042 35.1314950000000010)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 73, \"name\": \"Heathstead Community Center\", \"address\": \"6140 Heath Ridge Ct\"}"
+    }
+},
+{
+    "pk": 1260, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8092039999999940 35.1325560000000010)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 110, \"name\": \"Church at Charlotte\", \"address\": \"2500 Carmel Road\"}"
+    }
+},
+{
+    "pk": 1261, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8385980000000046 35.1319730000000021)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 111, \"name\": \"Beverly Woods Elementary\", \"address\": \"6001 Quail Hollow Rd\"}"
+    }
+},
+{
+    "pk": 1262, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8027699999999953 35.1391739999999970)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 72, \"name\": \"Carmel Presbyterian Church\", \"address\": \"2048 Carmel Rd\"}"
+    }
+},
+{
+    "pk": 1263, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7299419999999941 35.2024729999999977)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 83, \"name\": \"Albemarle Road Presbyterian Church\", \"address\": \"6740 Albemarle Rd\"}"
+    }
+},
+{
+    "pk": 1264, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7820109999999971 35.0417759999999987)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 137, \"name\": \"Providence Country Club\", \"address\": \"6001 Prov Country Club Dr\"}"
+    }
+},
+{
+    "pk": 1265, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8703189999999950 35.1844049999999982)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 38, \"name\": \"Collinswood Elementary School\", \"address\": \"4000 Applegate Rd\"}"
+    }
+},
+{
+    "pk": 1266, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8067280000000068 35.1285889999999981)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 86, \"name\": \"Carmel Middle School\", \"address\": \"5001 Camilla Dr\"}"
+    }
+},
+{
+    "pk": 1267, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8605119999999999 35.1958100000000016)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 21, \"name\": \"St. Paul United Methodist Church\", \"address\": \"2830 Dorchester PL\"}"
+    }
+},
+{
+    "pk": 1268, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7318690000000032 35.1865719999999982)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 63, \"name\": \"New Hope Baptist Church\", \"address\": \"7841 Idlewild Rd\"}"
+    }
+},
+{
+    "pk": 1269, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7324530000000067 35.2843110000000024)", 
+        "properties": "{\"city\": \"Newell\", \"precinct\": 105, \"name\": \"NEWELL ELEMENTARY SCHOOL\", \"address\": \"8601 Old Concord Road\"}"
+    }
+},
+{
+    "pk": 1270, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7957640000000055 35.2900950000000009)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 26, \"name\": \"Cole Memorial United Methodist Church\", \"address\": \"2022 W. Sugar Creek Rd.\"}"
+    }
+},
+{
+    "pk": 1271, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.9572490000000045 35.1551169999999971)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 228, \"name\": \"Kennedy Middle School\", \"address\": \"4000 Gallant Ln\"}"
+    }
+},
+{
+    "pk": 1272, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8022540000000049 35.3382689999999968)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 238, \"name\": \"David Cox Road Elementary School\", \"address\": \"4215 David Cox Rd\"}"
+    }
+},
+{
+    "pk": 1273, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8139280000000042 35.0577729999999974)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 144, \"name\": \"St. Matthew Catholic Church\", \"address\": \"8015 Ballantyne Commons Pkwy\"}"
+    }
+},
+{
+    "pk": 1274, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7784000000000049 35.1097759999999965)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 100, \"name\": \"Candlewyck Baptist Church\", \"address\": \"7200 Providence Rd\"}"
+    }
+},
+{
+    "pk": 1275, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8224900000000019 35.1885019999999997)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 32, \"name\": \"Christ Episcopal Church\", \"address\": \"1412 Providence Rd\"}"
+    }
+},
+{
+    "pk": 1276, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7583869999999990 35.0672509999999988)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 113, \"name\": \"McKee Road Baptist Church\", \"address\": \"4300 McKee Rd\"}"
+    }
+},
+{
+    "pk": 1277, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8634229999999974 35.1650390000000002)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 37, \"name\": \"Pinewood Elementary School\", \"address\": \"815 Seneca Pl\"}"
+    }
+},
+{
+    "pk": 1278, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8969490000000064 35.4463829999999973)", 
+        "properties": "{\"city\": \"Cornelius\", \"precinct\": 240, \"name\": \"Community in Christ Lutheran Church\", \"address\": \"7621 Norman Island Dr\"}"
+    }
+},
+{
+    "pk": 1279, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.9236269999999962 35.3958450000000013)", 
+        "properties": "{\"city\": \"Huntersville\", \"precinct\": 134, \"name\": \"Bradley Middle School\", \"address\": \"13345 Beatties Ford Rd\"}"
+    }
+},
+{
+    "pk": 1280, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.6384690000000006 35.1937700000000007)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 236, \"name\": \"Blair Road United Methodist Church\", \"address\": \"9135 Blair Rd\"}"
+    }
+},
+{
+    "pk": 1281, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8840840000000014 35.2655519999999996)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 41, \"name\": \"Hoskins Avenue Baptist Church\", \"address\": \"101 S. Hoskins Ave\"}"
+    }
+},
+{
+    "pk": 1282, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.9135650000000055 35.2617800000000017)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 81, \"name\": \"Allenbrook Elementary School\", \"address\": \"1430 Allenbrook DR\"}"
+    }
+},
+{
+    "pk": 1283, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.9435200000000066 35.3043809999999993)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 89, \"name\": \"Coulwood Middle School\", \"address\": \"500 Kentberry Dr\"}"
+    }
+},
+{
+    "pk": 1284, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7828209999999984 35.2423110000000008)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 43, \"name\": \"Garinger High School\", \"address\": \"1100 Eastway Drive\"}"
+    }
+},
+{
+    "pk": 1285, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7737269999999938 35.2684629999999970)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 82, \"name\": \"Greenville Memorial A.M.E. Zion Church\", \"address\": \"6116 Monteith Dr\"}"
+    }
+},
+{
+    "pk": 1286, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.9411149999999964 35.2505150000000000)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 79, \"name\": \"Tuckaseegee Elementary School\", \"address\": \"2028 Little Rock Rd\"}"
+    }
+},
+{
+    "pk": 1287, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8159069999999957 35.0472729999999970)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 232, \"name\": \"South Mecklenburg Presbyterian Church\", \"address\": \"8601 Bryant Farms Rd\"}"
+    }
+},
+{
+    "pk": 1288, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8043420000000054 35.0909759999999977)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 121, \"name\": \"William Davie Park\", \"address\": \"4635 Pineville-Matthews Rd\"}"
+    }
+},
+{
+    "pk": 1289, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.9971019999999982 35.0985829999999979)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 229, \"name\": \"Christ the King Lutheran Church\", \"address\": \"13501 York Rd\"}"
+    }
+},
+{
+    "pk": 1290, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8771579999999943 35.2417769999999990)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 24, \"name\": \"BETTE RAE THOMAS REC CENTER\", \"address\": \"2921 Tuckaseegee Rd\"}"
+    }
+},
+{
+    "pk": 1291, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.6904020000000060 35.1845459999999974)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 235, \"name\": \"Lebanon Road Elementary School\", \"address\": \"7300 Lebanon Rd\"}"
+    }
+},
+{
+    "pk": 1292, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7659160000000043 35.1807569999999998)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 106, \"name\": \"McClintock Middle School\", \"address\": \"2101 Rama Road\"}"
+    }
+},
+{
+    "pk": 1293, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.8702770000000015 35.1205679999999987)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 120, \"name\": \"Sharon Lakes Clubhouse\", \"address\": \"8301 Sharon Lakes Rd\"}"
+    }
+},
+{
+    "pk": 1294, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7760940000000005 35.2111230000000006)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 33, \"name\": \"Eastway Middle School\", \"address\": \"1501 Norland Road\"}"
+    }
+},
+{
+    "pk": 1295, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7968769999999950 35.2940200000000033)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 146, \"name\": \"Turning Point Academy\", \"address\": \"2300 W. Sugar Creek Road\"}"
+    }
+},
+{
+    "pk": 1296, 
+    "model": "gitspatial.feature", 
+    "fields": {
+        "feature_set": 18, 
+        "geom": "POINT (-80.7720730000000060 35.0719599999999971)", 
+        "properties": "{\"city\": \"Charlotte\", \"precinct\": 91, \"name\": \"Providence Presbyterian Church\", \"address\": \"10140 Providence Church Ln\"}"
+    }
 }
 ]

@@ -5,6 +5,7 @@ from django.test.client import Client
 
 from .exceptions import InvalidSpatialParameterException
 from .helpers import query_args
+from .v1.views import default_limit
 
 
 class APIRequestTest(TestCase):
@@ -57,7 +58,7 @@ class APIRequestTest(TestCase):
         response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson')
         self.assertEqual(response.status_code, 200)
         json_content = json.loads(response.content)
-        self.assertEqual(len(json_content['features']), 50)
+        self.assertEqual(len(json_content['features']), default_limit)
 
     def test_pagination_custom_limit(self):
         response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?limit=30')
@@ -87,7 +88,7 @@ class APIRequestTest(TestCase):
         response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?lat=35.1889&lon=-80.7870&distance=3000')
         self.assertEqual(response.status_code, 200)
         json_content = json.loads(response.content)
-        self.assertEqual(len(json_content['features']), 5)
+        self.assertEqual(len(json_content['features']), 10)
 
     def test_within_distance_limit(self):
         response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?lat=35.1889&lon=-80.7870&distance=3000&limit=3')
