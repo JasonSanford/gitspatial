@@ -3,14 +3,49 @@
 {% block content %}
 <h2>How it Works</h2>
 
-<h3>Sign in with GitHub</h3>
+<h3>1. Login with GitHub</h3>
 
-<p>We'll need access to your GitHub account to sync your repos and GeoJSON</p>
+<p>We'll need access to your GitHub account to sync your repos and GeoJSON. For now we're only grabbing your public repos. In the future we'll grab the private ones too (if you want).</p>
 
-<h3>Sync some Repos</h3>
+<p class="content-centered">
+    <img class="img-polaroid" src="{{ STATIC_URL }}img/oauth.png" alt="Oauth" />
+</p>
 
-<p>Not all repos have GeoJSON in them. Sync the ones that do.</p>
+<h3>2. Sync some Repos</h3>
 
-<h3>Sync Some Feature Sets <small>yes, more syncing, but only this once</small</h3>
+<p>Not all repos have GeoJSON in them so we won't waste our time syncing ones that don't. Sync the ones that do.</p>
+
+<p class="content-centered">
+    <img class="img-polaroid" src="{{ STATIC_URL }}img/sync-repo.png" alt="Sync Repo" />
+</p>
+
+<p>When you sync a repo, we add a WebHook to your repo so we're notified any time commits are pushed to the repo. We look to see if any relevant files changed and if so, specific feature sets are resynced.</p>
+
+<p class="content-centered">
+    <img class="img-polaroid" src="{{ STATIC_URL }}img/web-hook.png" alt="Web Hook"/>
+</p>
+
+<h3>3. Sync Some Feature Sets <small>yes, more syncing, but only this once</small></h3>
+
+<p>Some repos have tons of GeoJSON files in them. You might only want a few synced. So sync them.</p>
+
+<p class="content-centered">
+    <img class="img-polaroid" src="{{ STATIC_URL }}img/sync-feature-set.png" alt="Sync Feature Set" />
+</p>
+
+<p>After syncing is complete you can view the feature set page which shows some example API calls and a map where you can preview features. You can edit the name of the feature set by clicking the pencil edit button to the right of the name. Note that this will also change your API calls.</p>
+
+<p class="content-centered">
+    <img class="img-polaroid" src="{{ STATIC_URL }}img/feature-set-page.png" alt="Feature Set Page" />
+</p>
+
+<h3>4. Utilize the API</h3>
+
+<p>With JavaScript libraries like <a href="http://geojason.info/leaflet-vector-layers/demos/gitspatial/">Leaflet Vector Layers</a>, you can easily add features from your repo to a map using the provided API.</p>
+
+<p class="content-centered">
+    <img class="img-polaroid" src="{{ STATIC_URL }}img/lvl-example.png" alt="Leaflet Vector Layers Example" />
+</p>
+
 
 {% endblock %}

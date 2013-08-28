@@ -38,17 +38,14 @@
                     <ul class="nav pull-right">
                     {% if user.is_anonymous %}
                         <li>
-                            <a href="" class="btn-large navbutton">sign up</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'login' %}">login</a>
+                            <a class="btn-auth btn-github" href="{% url 'login' %}" style="color: #222; text-shadow: none;">Login with <b>GitHub</b></a>
                         </li>
                     {% else %}
                         <li>
-                            <a href="">{{ extended_user.display_name }}</a>
+                            <a href="{% url 'user_landing' %}">My Repos</a>
                         </li>
                         <li>
-                            <a href="{% url 'logout' %}">logout</a>
+                            <a href="{% url 'logout' %}">Log Out</a>
                         </li>
                     {% endif %}
                     </ul>

@@ -1,3 +1,8 @@
 table.table tbody td {
     vertical-align: middle !important;
 }
+
+.content-centered {
+    text-align: center;
+    vertical-align: middle;
+}

@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-hey y'all
+<p><a class="btn-auth btn-github large" href="{% url 'login' %}">Login with <b>GitHub</b></a></p>
+{% endblock %}
+
+{% block css %}
+<link href="{{ STATIC_URL }}css/auth-buttons.css" rel="stylesheet" />
 {% endblock %}
