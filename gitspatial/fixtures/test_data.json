@@ -18,6 +18,24 @@
     }
 },
 {
+    "pk": 6, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "SalParadise", 
+        "first_name": "Sal", 
+        "last_name": "Paradise", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2013-07-31T04:41:10.735Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "!", 
+        "email": "salparadise@beats.com", 
+        "date_joined": "2013-07-30T07:13:39.966Z"
+    }
+},
+{
     "pk": 22, 
     "model": "gitspatial.repo", 
     "fields": {
