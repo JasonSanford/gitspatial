@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'gitspatial',
     'gitspatial.api',
     'gitspatial.user',
+    'gitspatial.geojson',
     'storages',
     'social_auth',
     'kombu.transport.django',
@@ -179,7 +180,6 @@ LOGGING = {
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
-            #'stream': sys.stdout,
             'formatter': 'verbose'
         }
     },
@@ -188,6 +188,11 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False
         },
         'gitspatial': {
             'handlers': ['console'],
