@@ -49,7 +49,7 @@ class GeoJSONParser:
             try:
                 validictory.validate(feature['geometry'], geojson_types[feature['geometry']['type']])
             except validictory.validator.ValidationError as e:
-                raise GeoJSONParserException('GeoJSON validation error. Message: {0}.'.format(e.message))
+                raise GeoJSONParserException('GeoJSON validation error. Message: {0}.'.format(str(e)))
             filtered_geojson['features'].append(feature)
 
         # Everything's good

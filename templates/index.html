@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p><a class="btn-auth btn-github large" href="{% url 'login' %}">Login with <b>GitHub</b></a></p>
+<div class="hero-unit">
+    <div class="hero-content">
+        <h1>GitSpatial</h1>
+        <p>A spatial API for your GitHub-hosted GeoJSON.</p>
+        <p><a class="btn btn-large" href="{% url 'how_it_works' %}">Learn more</a> <a class="btn-auth btn-github large" href="{% url 'login' %}">Login with <b>GitHub</b></a> <a class="btn btn-primary btn-large" href="{% url 'login' %}">Login with GitHub &raquo;</a></p>
+    </div>
+</div>
+<p></p>
 {% endblock %}

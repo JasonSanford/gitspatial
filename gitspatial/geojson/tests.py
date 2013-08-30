@@ -73,6 +73,5 @@ class GeoJSONTest(TestCase):
             geojson = GeoJSONParser(test_features.featurecollection_bad_geometry)
         except Exception as e:
             pass
-        print e
         self.assertTrue(isinstance(e, GeoJSONParserException))
         self.assertEqual(str(e), 'GeoJSON validation error. Message: {0}'.format("Failed to validate field 'coordinates' list schema: Value -80.87088507656375 for list item is not of type array."))

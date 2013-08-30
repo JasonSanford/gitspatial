@@ -109,4 +109,4 @@ All static files should be placed in the `/static` directory if they need to be 
 
 Use one command to test all apps
 
-    python manage.py test gitspatial user api
+    python manage.py test gitspatial api user geojson
