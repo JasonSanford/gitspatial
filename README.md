@@ -38,7 +38,7 @@ GitSpatial is a Django app that uses PostGIS as a backend to GeoDjango. So, you 
 
 ### Virtual Environment
 
-Create a virtual environment. Python 2.7 is ideal as this is what Heroku uses. I drop the virtual envrionment within the root of the project. The `venv` directory is `.gitignore`d.git 
+Create a virtual environment. Python 2.7 is ideal as this is what Heroku uses. I drop the virtual envrionment within the root of the project. The `venv` directory is in `.gitignore`.
 
     virtualenv venv
 
@@ -61,6 +61,12 @@ To keep secret keys, passwords and such out of version control, we store them in
     GITHUB_API_SECRET=super-secret
     LD_LIBRARY_PATH=/app/.heroku/vendor/lib:vendor/geos/geos/lib:vendor/proj/proj/lib:vendor/gdal/gdal/lib
     LIBRARY_PATH=/app/.heroku/vendor/lib:vendor/geos/geos/lib:vendor/proj/proj/lib:vendor/gdal/gdal/lib
+
+### Database Stuff
+
+Assuming you have a database already created and credentials are in the `DATABASE_URL` envrionment variable, we just need to `syncdb` to get the necessary tables created. Do not create a superuser if prompted.
+
+    python manage.py syncdb
 
 ### Running the App
 
