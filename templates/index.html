@@ -5,8 +5,30 @@
     <div class="hero-content">
         <h1>GitSpatial</h1>
         <p>A spatial API for your GitHub-hosted GeoJSON.</p>
-        <p><a class="btn btn-large" href="{% url 'how_it_works' %}">Learn more</a> <a class="btn-auth btn-github large" href="{% url 'login' %}">Login with <b>GitHub</b></a> <a class="btn btn-primary btn-large" href="{% url 'login' %}">Login with GitHub &raquo;</a></p>
+        <p><a class="btn btn-large" href="{% url 'how_it_works' %}">Learn more</a> <a class="btn btn-primary btn-large" href="{% url 'login' %}">Login with GitHub &raquo;</a></p>
     </div>
 </div>
 <p></p>
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+.hero-unit {
+    background-image: url({{ STATIC_URL }}img/hero.jpg);
+}
+.hero-content {
+    width: 400px;
+    background-color: rgba(17, 17, 17, 0.65);
+    border-radius: 8px;
+    padding: 15px 30px;
+}
+.hero-content h1 {
+    color: #e0e0e0;
+}
+.hero-unit p {
+    color: #e0e0e0;
+    line-height: 1.3em;
+    margin: 8px 0 12px;
+}
+</style>
 {% endblock %}
