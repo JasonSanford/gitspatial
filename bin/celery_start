@@ -1,0 +1,18 @@
+#!/bin/bash
+ 
+NAME="gitspatial_celery"                                # Name of the application
+DJANGODIR=/home/gitspatial/apps/gitspatial              # Django project directory
+USER=gitspatial                                         # the user to run as
+GROUP=gitspatial                                        # the group to run as
+ 
+echo "Starting $NAME"
+ 
+# Activate the virtual environment
+cd $DJANGODIR
+source venv/bin/activate
+source /home/gitspatial/apps/gitspatial/.env
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+# Start your Celery Unicorn
+# Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)
+exec python manage.py celery worker -E -B --loglevel=INFO
