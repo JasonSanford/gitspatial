@@ -13,7 +13,7 @@ echo "Starting $NAME"
  
 # Activate the virtual environment
 cd $DJANGODIR
-source ../venv/bin/activate
+source venv/bin/activate
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
  
