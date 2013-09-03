@@ -1,12 +1,12 @@
 #!/bin/bash
  
-NAME="GitSpatial"                                       # Name of the application
+NAME="gitspatial_web"                                   # Name of the application
 DJANGODIR=/home/gitspatial/apps/gitspatial/gitspatial   # Django project directory
 SOCKFILE=/home/gitspatial/gitspatial/run/gunicorn.sock  # we will communicte using this unix socket
 USER=gitspatial                                         # the user to run as
 GROUP=gitspatial                                        # the group to run as
 NUM_WORKERS=3                                           # how many worker processes should Gunicorn spawn
-DJANGO_SETTINGS_MODULE=gitspatial.settings.production   # which settings file should Django use
+DJANGO_SETTINGS_MODULE=settings.production              # which settings file should Django use
 DJANGO_WSGI_MODULE=wsgi                                 # WSGI module name
  
 echo "Starting $NAME"
