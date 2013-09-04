@@ -33,6 +33,10 @@ $(document).ready(function () {
                     if ('message' in response) {
                         alert(response.message);
                     }
+                },
+                complete: function (jqXHR, status) {
+                    console.log(jqXHR);
+                    console.log(status);
                 }
             });
         }
