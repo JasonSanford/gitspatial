@@ -160,6 +160,7 @@ def user_repo_sync(request, repo_id):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
+        logger.info('Start user_repo_sync POST')
         # See tests for the why on this awfulness
         if 'testing' in request.GET:
             return HttpResponse('ok', status=201)
@@ -177,7 +178,7 @@ def user_repo_sync(request, repo_id):
 
         repo.synced = True
         repo.sync_status = repo.SYNCING
-        """
+
         # Create a GitHub web hook so we get notified when this repo is pushed
         hook_data = {
             'name': 'web',
@@ -189,14 +190,15 @@ def user_repo_sync(request, repo_id):
             }
         }
         github = GitHub(repo.user)
+        logger.info('Sending GitHub API request')
         gh_request = github.post('/repos/{0}/hooks'.format(repo.full_name), hook_data)
         if gh_request.status_code == 201:
             logger.info('Hook created for repo: {0}'.format(repo))
         else:
             logger.info('Hook not created for repo: {0}'.format(repo))
-        """
         repo.save()
         get_repo_feature_sets.apply_async((repo,))
+        logger.info('Got GitHub API request')
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=201)
     else:  # DELETE
         # See tests for the why on this awfulness
