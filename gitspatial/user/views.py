@@ -102,7 +102,7 @@ def user_feature_set(request, feature_set_id):
             context = {
                 'feature_set': feature_set,
                 'api_url': '{0}{1}'.format(
-                    'http://gitspatial.herokuapp.com',
+                    'http://gitspatial.com',
                     reverse('v1_feature_set_query', kwargs={'user_name': feature_set.repo.user.username, 'repo_name': feature_set.repo.name, 'feature_set_name': feature_set.name})),
                 'count': count,
                 'center_lat': feature_set.center[1],

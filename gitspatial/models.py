@@ -17,7 +17,7 @@ class Repo(Syncable, Timestampable, models.Model):
 
     @property
     def hook_url(self):
-        return 'http://gitspatial.herokuapp.com/api/v1/hooks/{0}'.format(self.id)
+        return 'http://gitspatial.com/api/v1/hooks/{0}'.format(self.id)
 
     def __unicode__(self):
         return self.full_name
