@@ -70,7 +70,7 @@ Assuming you have a database already created and credentials are in the `DATABAS
 
 The django web server (gunicorn) and the celery process are defined in `Procfile`. Run with `Foreman`.
 
-    foreman start -f Procfile
+    foreman start
 
 ### Static Files
 
