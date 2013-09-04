@@ -177,7 +177,7 @@ def user_repo_sync(request, repo_id):
 
         repo.synced = True
         repo.sync_status = repo.SYNCING
-
+        """
         # Create a GitHub web hook so we get notified when this repo is pushed
         hook_data = {
             'name': 'web',
@@ -194,6 +194,7 @@ def user_repo_sync(request, repo_id):
             logger.info('Hook created for repo: {0}'.format(repo))
         else:
             logger.info('Hook not created for repo: {0}'.format(repo))
+        """
         repo.save()
         get_repo_feature_sets.apply_async((repo,))
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=201)
