@@ -15,6 +15,7 @@ def home(request):
     """
     if request.user.is_authenticated() and 'force_home' not in request.GET:
         return redirect('user_landing')
+    return redirect('http://gitspatial.com')
     return render(request, 'index.html')
 
 
