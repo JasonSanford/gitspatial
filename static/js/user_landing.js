@@ -24,6 +24,7 @@ $(document).ready(function () {
             $.ajax({
                 url: $this.attr('href'),
                 type: 'POST',
+                dataType: 'json',
                 success: function () {
                     $this.removeClass('btn-success not-synced').addClass('btn-danger synced').text('Unsync');
                     $name_td.html('<a href="' + repo_url + '">' + repo_name + '</a>');
@@ -33,10 +34,6 @@ $(document).ready(function () {
                     if ('message' in response) {
                         alert(response.message);
                     }
-                },
-                complete: function (jqXHR, status) {
-                    console.log(jqXHR);
-                    console.log(status);
                 }
             });
         }
