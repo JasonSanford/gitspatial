@@ -8,7 +8,113 @@
         <p><a class="btn btn-large" href="{% url 'how_it_works' %}">Learn more</a> <a class="btn btn-primary btn-large" href="{% url 'login' %}">Login with GitHub &raquo;</a></p>
     </div>
 </div>
-<p></p>
+
+<div class="row">
+    <div class="span4">
+        <h2>What?</h2>
+        <p>GitHub renders GeoJSON and makes collaborating simple. But how do I visualize this data?</p>
+        <p>GitSpatial provides a spatial API for your GitHub-hosted GeoJSON so you can do things like bounding box and point+radius queries. Easily.</p>
+    </div>
+    <div class="span4">
+        <h2>How?</h2>
+        <p>Log into GitSpatial with your GitHub account and sync any repos that contain GeoJSON.</p>
+        <p>When you push commits to your repo, we'll automaticlally sync any updates you've made, and any API calls you make will reflect these changes.</p>
+    </div>
+    <div class="span4">
+        <h2>Help</h2>
+        <p>This is an open source project so enhancements and patches are encouraged.</p>
+        <p>So <a href="https://github.com/JasonSanford/gitspatial">grab the code</a>, <a href="https://github.com/JasonSanford/gitspatial/issues">report bugs</a> and <a href="mailto:jasonsanford@gmail.com">let me know what you think</a>.</p>
+        <p><a class="btn btn-primary" href="{% url 'how_it_works' %}">Learn More &raquo;</a></p>
+    </div>
+</div>
+
+<hr>
+
+<h2>The API</h2>
+
+<h3>Example Requests</h3>
+
+<p>Let's find all the parks for an area ...</p>
+
+<pre>http://gitspatial.com/api/v1/JasonSanford/mecklenburg-gis-opendata/parks?bbox=-80.8633,35.2071,-80.8158,35.2488</pre>
+
+<p>... or all the schools within 4000 meters of a point.</p>
+
+<pre>http://gitspatial.com/api/v1/JasonSanford/mecklenburg-gis-opendata/schools?lat=35.256&lon=-80.809&distance=4000</pre>
+
+<h3>Example Responses</h3>
+
+<h4>The Parks</h4>
+
+<pre>{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-80.827706, 35.227213]
+            },
+            "type": "Feature",
+            "properties": {
+                "city": "CHARLOTTE",
+                "address": "739 E 12TH ST",
+                "type": "NEIGHBORHOOD PARK",
+                "name": "ALEXANDER NEIGHBORHOOD PARK"
+            },
+            "id": 21300
+        },
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-80.839708, 35.217964]
+            },
+            "type": "Feature",
+            "properties": {
+                "city": "CHARLOTTE",
+                "address": "800 E 2ND ST",
+                "type": "RECREATION CENTER",
+                "name": "AQUATIC CENTER"
+            },
+            "id": 21306
+        },
+        ...
+    ]
+}</pre>
+
+<h5>The Schools</h5>
+
+<pre>{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-80.814459, 35.228896]
+            },
+            "type": "Feature",
+            "properties": {
+                "address": "1411 Hawthorne Lane",
+                "name": "Hawthorne High School",
+                "city_state": "Charlotte, NC"
+            },
+            "id": 25995
+        },
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-80.824366, 35.257127]
+            },
+            "type": "Feature",
+            "properties": {
+                "address": "2801 Lucena Street",
+                "name": "Druid Hills Academy",
+                "city_state": "Charlotte, NC"
+            },
+            "id": 25987
+        },
+        ...
+    ]
+}</pre>
 {% endblock %}
 
 {% block css %}
