@@ -13,6 +13,7 @@ def deploy(environment='production'):
     with cd(app_dir):
         run('git fetch')
         run('git reset --hard origin/master')
+        run(activate_venv + 'pip install -r requirements.txt')
         run(activate_venv + run_tests)
         run('sudo supervisorctl restart gitspatial_web')
         run('sudo supervisorctl restart gitspatial_celery')
