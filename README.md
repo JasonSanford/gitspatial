@@ -14,6 +14,8 @@ GitHub now supports [rendering GeoJSON files](https://help.github.com/articles/m
 4. Sync individual GeoJSON files within these repos
 5. Utilize the API to query your features
 
+<img src="http://s3.amazonaws.com/geojason/img/gitspatial-demo.gif" />
+
 ### Search by Bounding Box
 
 Find all parks within a map view:
