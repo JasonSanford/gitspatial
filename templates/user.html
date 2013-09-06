@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% if user_repos.count %}
+
 <p>Below are your repos on GitHub. Sync the repos containing GeoJSON to expose a spatial API for them.</p>
 
 <p><strong>Note: </strong>Some of the repos below may be private. Syncing repos (and the feature sets in them) will expose them publicly via an API.</p>
@@ -39,6 +42,11 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% else %}
+<h3>No Repos</h3>
+<p>You have no repos that we can see. If you just signed up we might still be fetching them. Refresh the page to see if we're done yet.</p>
+{% endif %}
 {% endblock %}
 
 {% block javascript %}
