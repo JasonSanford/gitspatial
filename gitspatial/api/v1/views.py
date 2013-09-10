@@ -14,7 +14,7 @@ from ..helpers import query_args
 from ...tasks import get_feature_set_features, get_repo_feature_sets
 
 
-default_limit = 100
+default_limit = 1000
 
 logger = logging.getLogger(__name__)
 
