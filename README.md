@@ -12,7 +12,8 @@ GitHub now supports [rendering GeoJSON files](https://help.github.com/articles/m
 2. Authorize the site to access your GitHub repos
 3. Sync the repos that have GeoJSON in them
 4. Sync individual GeoJSON files within these repos
-5. Utilize the API to query your features
+5. We add a post-receive hook to your GitHub repo so we get notified when you might have updated features
+6. Utilize the API to query your features
 
 <img src="http://s3.amazonaws.com/geojason/img/gitspatial-demo.gif" />
 
