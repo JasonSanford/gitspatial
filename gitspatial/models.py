@@ -54,10 +54,6 @@ class FeatureSet(Syncable, Timestampable, models.Model):
         return (x, y)
 
     @property
-    def is_syncing(self):
-        return self.sync_status == self.SYNCING
-
-    @property
     def size_pretty(self):
         return disk_size_format(self.size)
 

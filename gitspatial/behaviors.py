@@ -24,5 +24,9 @@ class Syncable(models.Model):
 
     sync_status = models.IntegerField(choices=SYNC_CHOICES, default=NOT_SYNCED)
 
+    @property
+    def is_syncing(self):
+        return self.sync_status == self.SYNCING
+
     class Meta:
         abstract = True
