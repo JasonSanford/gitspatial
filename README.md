@@ -85,6 +85,13 @@ All static files should be placed in the `/static` directory if they need to be 
 
 ## Testing
 
-Use one command to test all apps
+Do it with fab
 
-    python manage.py test gitspatial api user geojson
+    fab test
+
+## Deploying
+
+Do it with fab
+
+    fab deploy
+
