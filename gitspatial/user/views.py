@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, EmptyPage as EmptyPageException
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import render, HttpResponse, redirect
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_GET
 
 from ..github import GitHub
 from ..models import Repo, FeatureSet, Feature
@@ -145,9 +145,9 @@ def user_feature_set(request, feature_set_id):
 @require_http_methods(['POST', 'DELETE'])
 def user_repo_sync(request, repo_id):
     """
-    POST /repo/:id
+    POST /repo/:id/sync
     or
-    DELETE /repo/:id
+    DELETE /repo/:id/sync
 
     Sets repo synced property as True or False (POST or DELETE)
     """
@@ -222,6 +222,28 @@ def user_repo_sync(request, repo_id):
                 logger.warning('Hook not deleted for repo: {0}'.format(repo))
         repo.save()
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=204)
+
+
+@login_required
+@require_GET
+def user_repo_sync_status(request, repo_id):
+    """
+    GET /repo/:id/sync_status
+
+    Gets repo sync status as {"status": "<message>"}
+    where message is one of synced, not_synced, syncing, error
+    """
+    try:
+        repo = Repo.objects.get(id=repo_id)
+    except Repo.DoesNotExist:
+        raise Http404
+
+    if not repo.user == request.user:
+        return HttpResponseForbidden()
+
+    status = repo.SYNC_CODES[repo.sync_status]
+
+    return HttpResponse(json.dumps({'status': status}), content_type='application/json')
 
 
 @login_required

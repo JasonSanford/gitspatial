@@ -1,8 +1,11 @@
+import json
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test.client import RequestFactory
 
-from .views import user_repo_sync
+from ..models import Repo
+from .views import user_repo_sync, user_repo_sync_status
 
 
 class UserRepoSyncTest(TestCase):
@@ -53,3 +56,61 @@ class UserRepoSyncTest(TestCase):
         request.user = self.jason
         response = user_repo_sync(request, repo_id=22)
         self.assertEqual(response.status_code, 405)
+
+
+class UserRepoSyncStatusTest(TestCase):
+    fixtures = ['gitspatial/fixtures/test_data.json']
+
+    def setUp(self):
+        self.sal = User.objects.get(id=6)
+        self.jason = User.objects.get(id=5)
+        self.factory = RequestFactory()
+        self.a_synced_repo = Repo.objects.get(id=22)
+
+    def test_user_can_sync_status_own_repo(self):
+        request = self.factory.get('/user/repo/22/sync_status')
+        request.user = self.jason
+        response = user_repo_sync_status(request, repo_id=22)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_cannot_sync_status_others_repo(self):
+        request = self.factory.get('/user/repo/22/sync_status')
+        request.user = self.sal
+        response = user_repo_sync_status(request, repo_id=22)
+        self.assertEqual(response.status_code, 403)
+
+    def test_user_sync_status_synced(self):
+        self.a_synced_repo.sync_status = self.a_synced_repo.SYNCED
+        self.a_synced_repo.save()
+        request = self.factory.get('/user/repo/22/sync_status')
+        request.user = self.jason
+        response = user_repo_sync_status(request, repo_id=22)
+        expected = {'status': 'synced'}
+        self.assertEqual(json.loads(response.content), expected)
+
+    def test_user_sync_status_syncing(self):
+        self.a_synced_repo.sync_status = self.a_synced_repo.SYNCING
+        self.a_synced_repo.save()
+        request = self.factory.get('/user/repo/22/sync_status')
+        request.user = self.jason
+        response = user_repo_sync_status(request, repo_id=22)
+        expected = {'status': 'syncing'}
+        self.assertEqual(json.loads(response.content), expected)
+
+    def test_user_sync_status_not_synced(self):
+        self.a_synced_repo.sync_status = self.a_synced_repo.NOT_SYNCED
+        self.a_synced_repo.save()
+        request = self.factory.get('/user/repo/22/sync_status')
+        request.user = self.jason
+        response = user_repo_sync_status(request, repo_id=22)
+        expected = {'status': 'not_synced'}
+        self.assertEqual(json.loads(response.content), expected)
+
+    def test_user_sync_status_error(self):
+        self.a_synced_repo.sync_status = self.a_synced_repo.ERROR_SYNCING
+        self.a_synced_repo.save()
+        request = self.factory.get('/user/repo/22/sync_status')
+        request.user = self.jason
+        response = user_repo_sync_status(request, repo_id=22)
+        expected = {'status': 'error'}
+        self.assertEqual(json.loads(response.content), expected)

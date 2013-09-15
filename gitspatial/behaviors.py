@@ -22,6 +22,13 @@ class Syncable(models.Model):
         (ERROR_SYNCING, 'Error Syncing'),
     )
 
+    SYNC_CODES = {
+        NOT_SYNCED: 'not_synced',
+        SYNCING: 'syncing',
+        SYNCED: 'synced',
+        ERROR_SYNCING: 'error',
+    }
+
     sync_status = models.IntegerField(choices=SYNC_CHOICES, default=NOT_SYNCED)
 
     @property

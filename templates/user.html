@@ -25,7 +25,7 @@
                 <i class="icon-lock" alt="This repo is marked as private on GitHub." title="This repo is marked as private on GitHub."></i>
                 {% endif %}
             </td>
-            <td class="repo-link-goes-here">
+            <td class="repo-link-goes-here" data-name="{{ repo.name }}" data-url="{% url 'user_repo' repo_id=repo.id %}">
                 {% if repo.synced %}
                 <a href="{% url 'user_repo' repo_id=repo.id %}">
                 {% endif %}
@@ -34,7 +34,7 @@
                 </a>
                 {% endif %}
             </td>
-            <td>{{ repo.get_sync_status_display }}</td>
+            <td class="sync-status">{{ repo.get_sync_status_display }}</td>
             <td>
                 <a style="width: 70px;" href="{% url 'user_repo_sync' repo.id %}" class="repo-sync btn {% if repo.synced %}btn-danger synced{% else %}btn-success not-synced{% endif %}">{% if repo.synced %}Unsync{% else %}Sync{% endif %}</a>
             </td>

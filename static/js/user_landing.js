@@ -8,13 +8,15 @@ $(document).ready(function () {
             $name_td = $tr.find('.repo-link-goes-here'),
             repo_name = $tr.data('repo-name'),
             repo_url = '/user/repo/' + repo_id;
+        if ($this.hasClass('disabled')) {
+            return;
+        }
         if (synced) {
             $.ajax({
                 url: $this.attr('href'),
                 type: 'DELETE',
                 success: function () {
-                    $this.removeClass('btn-danger synced').addClass('btn-success not-synced').text('Sync');
-                    $name_td.html(repo_name);
+                    visuallyUpdateRepoStatus(repo_id, 'not_synced');
                 },
                 error: function () {
                     alert('there was an error syncing');
@@ -26,8 +28,7 @@ $(document).ready(function () {
                 type: 'POST',
                 dataType: 'json',
                 success: function () {
-                    $this.removeClass('btn-success not-synced').addClass('btn-danger synced').text('Unsync');
-                    $name_td.html('<a href="' + repo_url + '">' + repo_name + '</a>');
+                    visuallyUpdateRepoStatus(repo_id, 'syncing');
                 },
                 error: function (jqXHR) {
                     response = JSON.parse(jqXHR.responseText);
@@ -38,4 +39,84 @@ $(document).ready(function () {
             });
         }
     });
+
+    function visuallyUpdateRepoStatus(repo_id, status) {
+        var $tr = $('#repo-tr-' + repo_id),
+            $td_repo_text_or_link = $tr.find('td.repo-link-goes-here'),
+            $td_status = $tr.find('td.sync-status'),
+            $a_repo_sync_button = $tr.find('a.repo-sync'),
+            status_text = (function () {
+                var text;
+                switch (status) {
+                    case 'syncing':
+                        text = 'Syncing';
+                        break;
+                    case 'synced':
+                        text = 'Synced';
+                        break;
+                    case 'not_synced':
+                        text = 'Not Synced';
+                        break;
+                    case 'error':
+                        text = 'Error Syncing';
+                        break;
+                    default:
+                        text = 'Not Synced';
+                }
+                return text;
+            }()),
+            text_or_link_content = (function () {
+                var content,
+                    name = $td_repo_text_or_link.data('name'),
+                    url = $td_repo_text_or_link.data('url');
+                if (status === 'synced') {
+                    content = '<a href="' + url + '">' + name + '</a>';
+                } else {
+                    content = name;
+                }
+                return content;
+            }()),
+            button_text = (function () {
+                var text;
+                switch (status) {
+                    case 'syncing':
+                        text = 'Syncing';
+                        break;
+                    case 'synced':
+                        text = 'Unsync';
+                        break;
+                    case 'not_synced':
+                        text = 'Sync';
+                        break;
+                    case 'error':
+                        text = 'Unsync';
+                        break;
+                    default:
+                        text = 'Unsync';
+                }
+                return text;
+            }());
+        $td_repo_text_or_link.html(text_or_link_content);
+        $td_status.html(status_text);
+        $a_repo_sync_button.text(button_text);
+        var adds = [],
+            removes = [];
+        if (status === 'syncing') {
+            adds.push('disabled');
+            removes.push('btn-success', 'not_synced');
+        } else if (status === 'synced') {
+            adds.push('btn-danger');
+            removes.push('disabled', 'btn-success');
+        } else if (status === 'not_synced') {
+            adds.push('btn-success');
+            removes.push('disabled', 'btn-danger');
+        } else if (status === 'error') {
+            adds.push('btn-danger');
+            removes.push('disabled', 'btn-success');
+        }
+        $a_repo_sync_button.removeClass(removes.join(' ')).addClass(adds.join(' '));
+    }
+
+    window.urs = visuallyUpdateRepoStatus;
+
 });
