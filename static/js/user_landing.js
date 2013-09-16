@@ -23,12 +23,13 @@ $(document).ready(function () {
                 }
             });
         } else {
+            visuallyUpdateRepoStatus(repo_id, 'syncing');
             $.ajax({
                 url: $this.attr('href'),
                 type: 'POST',
                 dataType: 'json',
                 success: function () {
-                    visuallyUpdateRepoStatus(repo_id, 'syncing');
+                    pollRepoStatus(repo_id);
                 },
                 error: function (jqXHR) {
                     response = JSON.parse(jqXHR.responseText);
@@ -105,11 +106,11 @@ $(document).ready(function () {
             adds.push('disabled');
             removes.push('btn-success', 'not_synced');
         } else if (status === 'synced') {
-            adds.push('btn-danger');
+            adds.push('btn-danger', 'synced');
             removes.push('disabled', 'btn-success');
         } else if (status === 'not_synced') {
             adds.push('btn-success');
-            removes.push('disabled', 'btn-danger');
+            removes.push('disabled', 'btn-danger', 'synced');
         } else if (status === 'error') {
             adds.push('btn-danger');
             removes.push('disabled', 'btn-success');
@@ -118,5 +119,27 @@ $(document).ready(function () {
     }
 
     window.urs = visuallyUpdateRepoStatus;
+
+    function pollRepoStatus(repo_id) {
+        var interval = 3 * 1000,  // 3 seconds
+            interval_name = 'polling_repo_' + repo_id;
+        function getStatus() {
+            $.ajax({
+                url: '/user/repo/' + repo_id + '/sync_status',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status !== 'syncing') {
+                        window.clearInterval(interval_name);
+                        visuallyUpdateRepoStatus(repo_id, data.status);
+                    }
+                }
+            });
+        }
+        interval_name = window.setInterval(function () {
+            console.log('Getting status for ' + repo_id);
+            getStatus();
+        }, interval);
+    }
 
 });
