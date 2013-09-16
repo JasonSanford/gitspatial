@@ -25,4 +25,5 @@ script:
   - psql --version
   - psql -d gitspatial -c 'SELECT PostGIS_version();' -U postgres
   - fab test
-
+notifications:
+  email: false
