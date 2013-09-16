@@ -27,7 +27,6 @@ $(document).ready(function () {
             $.ajax({
                 url: $this.attr('href'),
                 type: 'POST',
-                dataType: 'json',
                 success: function () {
                     pollRepoStatus(repo_id);
                 },
@@ -119,8 +118,7 @@ $(document).ready(function () {
     }
 
     function pollRepoStatus(repo_id) {
-        var interval = 3 * 1000,  // 3 seconds
-            interval_name = 'polling_repo_' + repo_id;
+        var interval = 3 * 1000;  // 3 seconds;
         function getStatus() {
             $.ajax({
                 url: '/user/repo/' + repo_id + '/sync_status',
