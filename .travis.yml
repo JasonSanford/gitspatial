@@ -16,11 +16,11 @@ before_script:
   - sudo /etc/init.d/postgresql stop
   - sudo cp ./pg_hba.conf /etc/postgresql/9.2/main
   - sudo /etc/init.d/postgresql start
-  - psql -c 'create database gitspatial;' -U postgres
+  - psql -c 'create database test;' -U postgres
   - sudo apt-add-repository -y ppa:ubuntugis/ubuntugis-unstable
   - sudo apt-get update
   - sudo apt-get install -qq libgeos-dev libproj-dev postgresql-9.2-postgis
-  - psql -d gitspatial -c 'CREATE EXTENSION postgis;' -U postgres
+  - psql -d test -c 'CREATE EXTENSION postgis;' -U postgres
 script:
   - psql --version
   - psql -d gitspatial -c 'SELECT PostGIS_version();' -U postgres
