@@ -276,3 +276,25 @@ def user_feature_set_sync(request, feature_set_id):
         feature_set.save()
         delete_feature_set_features.apply_async((feature_set,))
         return HttpResponse(json.dumps({'status': 'ok'}), content_type='application/json', status=204)
+
+
+@login_required
+@require_GET
+def user_feature_set_sync_status(request, feature_set_id):
+    """
+    GET /feature_set/:id/sync_status
+
+    Gets feature set sync status as {"status": "<message>"}
+    where message is one of synced, not_synced, syncing, error
+    """
+    try:
+        fs = FeatureSet.objects.get(id=feature_set_id)
+    except FeatureSet.DoesNotExist:
+        raise Http404
+
+    if not fs.repo.user == request.user:
+        return HttpResponseForbidden()
+
+    status = fs.SYNC_CODES[fs.sync_status]
+
+    return HttpResponse(json.dumps({'status': status}), content_type='application/json')

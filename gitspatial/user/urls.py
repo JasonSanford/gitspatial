@@ -7,4 +7,5 @@ urlpatterns = patterns('gitspatial.user.views',
     url(r'repo/(?P<repo_id>\d+)/sync$', 'user_repo_sync', name='user_repo_sync'),
     url(r'repo/(?P<repo_id>\d+)/sync_status$', 'user_repo_sync_status', name='user_repo_sync_status'),
     url(r'feature_set/(?P<feature_set_id>\d+)/sync$', 'user_feature_set_sync', name='user_feature_set_sync'),
+    url(r'feature_set/(?P<feature_set_id>\d+)/sync_status$', 'user_feature_set_sync_status', name='user_feature_set_sync_status'),
 )

@@ -118,8 +118,6 @@ $(document).ready(function () {
         $a_repo_sync_button.removeClass(removes.join(' ')).addClass(adds.join(' '));
     }
 
-    window.urs = visuallyUpdateRepoStatus;
-
     function pollRepoStatus(repo_id) {
         var interval = 3 * 1000,  // 3 seconds
             interval_name = 'polling_repo_' + repo_id;
