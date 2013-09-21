@@ -5,7 +5,6 @@ from django.test.client import Client
 
 from .exceptions import InvalidSpatialParameterException
 from .helpers import query_args
-from .test_utils import parse_header_links
 
 class APIRequestTest(TestCase):
     fixtures = ['gitspatial/fixtures/test_data.json']
