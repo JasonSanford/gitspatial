@@ -5,7 +5,7 @@ from django.test.client import Client
 
 from .exceptions import InvalidSpatialParameterException
 from .helpers import query_args
-
+from .test_utils import parse_header_links
 
 class APIRequestTest(TestCase):
     fixtures = ['gitspatial/fixtures/test_data.json']
@@ -111,6 +111,37 @@ class PaginationTest(TestCase):
         self.assertEqual(response.status_code, 200)
         json_content = json.loads(response.content)
         self.assertEqual(len(json_content['features']), 3)
+
+
+class PaginationMembersTest(TestCase):
+    fixtures = ['gitspatial/fixtures/test_data.json']
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_with_limit(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?limit=25')
+        json_content = json.loads(response.content)
+        count = json_content['count']
+        total_count = json_content['total_count']
+        self.assertEqual(count, 25)
+        self.assertEqual(total_count, 150)
+
+    def test_without_limit(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson')
+        json_content = json.loads(response.content)
+        count = json_content['count']
+        total_count = json_content['total_count']
+        self.assertEqual(count, 150)
+        self.assertEqual(total_count, 150)
+
+    def test_count_less_than_limit(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?limit=10&offset=145')
+        json_content = json.loads(response.content)
+        count = json_content['count']
+        total_count = json_content['total_count']
+        self.assertEqual(count, 5)
+        self.assertEqual(total_count, 150)
 
 
 class HttpMethodTest(TestCase):

@@ -70,6 +70,8 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
     if spatial_args is not None:
         filter_kwargs.update(spatial_args)
 
+    total_count = Feature.objects.filter(**filter_kwargs).count()
+
     features = Feature.objects.filter(**filter_kwargs).geojson()[offset:offset+limit]
     json_features = [
         {
@@ -79,7 +81,7 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
             'id': feature.id,
         } for feature in features
     ]
-    response = {'type': 'FeatureCollection', 'features': json_features}
+    response = {'type': 'FeatureCollection', 'features': json_features, 'count': len(features), 'total_count': total_count}
     indent = 2 if settings.DEBUG else None
     content = json.dumps(response, indent=indent)
 
