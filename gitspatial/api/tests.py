@@ -53,6 +53,29 @@ class APIRequestTest(TestCase):
         self.assertEqual(response.content[:7], 'myFunc(')
         self.assertEqual(response.content[-1], ')')
 
+    def test_within_distance(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?lat=35.1889&lon=-80.7870&distance=3000')
+        self.assertEqual(response.status_code, 200)
+        json_content = json.loads(response.content)
+        self.assertEqual(len(json_content['features']), 10)
+
+    def test_within_distance_bad_parameters(self):
+        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?lat=cat&lon=-80.7870&distance=3000')
+        self.assertEqual(response.status_code, 400)
+        json_content = json.loads(response.content)
+        expected = {
+            'status': 'error',
+            'message': 'Parameters lat, lon and distance must be parseable as floats'
+        }
+        self.assertEqual(json_content, expected)
+
+
+class PaginationTest(TestCase):
+    fixtures = ['gitspatial/fixtures/test_data.json']
+
+    def setUp(self):
+        self.client = Client()
+
     def test_pagination_defaults(self):
         response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson')
         self.assertEqual(response.status_code, 200)
@@ -83,27 +106,11 @@ class APIRequestTest(TestCase):
         json_content = json.loads(response.content)
         self.assertEqual(len(json_content['features']), 5)
 
-    def test_within_distance(self):
-        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?lat=35.1889&lon=-80.7870&distance=3000')
-        self.assertEqual(response.status_code, 200)
-        json_content = json.loads(response.content)
-        self.assertEqual(len(json_content['features']), 10)
-
     def test_within_distance_limit(self):
         response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?lat=35.1889&lon=-80.7870&distance=3000&limit=3')
         self.assertEqual(response.status_code, 200)
         json_content = json.loads(response.content)
         self.assertEqual(len(json_content['features']), 3)
-
-    def test_within_distance_bad_parameters(self):
-        response = self.client.get('/api/v1/JasonSanford/mecklenburg-gis-opendata/data/polling_locations.geojson?lat=cat&lon=-80.7870&distance=3000')
-        self.assertEqual(response.status_code, 400)
-        json_content = json.loads(response.content)
-        expected = {
-            'status': 'error',
-            'message': 'Parameters lat, lon and distance must be parseable as floats'
-        }
-        self.assertEqual(json_content, expected)
 
 
 class HttpMethodTest(TestCase):
