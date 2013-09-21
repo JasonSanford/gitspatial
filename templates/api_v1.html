@@ -83,7 +83,7 @@
     <tbody>
         <tr>
             <th>limit</th>
-            <td>The number of features to return. The default and maximum is 100. Use with <code>offset</code> for pagination.</td>
+            <td>The number of features to return. The default and maximum is 1000. Use with <code>offset</code> for pagination.</td>
         </tr>
         <tr>
             <th>offset</th>
@@ -91,5 +91,54 @@
         </tr>
     </tbody>
 </table>
+
+<h3>Response</h3>
+
+<p>The response body is a <a href="http://www.geojson.org/geojson-spec.html#feature-collection-objects">GeoJSON FeatureCollection</a>. In addition to the required <code>type</code> and <code>features</code> members, there are the <code>count</code> and <code>total_count</code> members which represent the number of features in the current response and the total number of features respectively.</p>
+
+<pre>{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -80.838923,
+                    35.220129
+                ]
+            },
+            "type": "Feature",
+            "properties": {
+                "city": "CHARLOTTE",
+                "address": "800 EAST 3RD ST",
+                "type": "NEIGHBORHOOD PARK",
+                "zipcode": "28202",
+                "name": "MARSHALL NEIGHBORHOOD PARK"
+            },
+            "id": 31902
+        },
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -80.845156,
+                    35.391193
+                ]
+            },
+            "type": "Feature",
+            "properties": {
+                "city": "HUNTERSVILLE",
+                "address": "",
+                "type": "COMMUNITY PARK",
+                "zipcode": "",
+                "name": "HUNTERSVILLE ATHLETIC COMMUNITY PARK"
+            },
+            "id": 31901
+        },
+        ...
+    ]
+    "count": 1000,
+    "total_count": 1254
+}</pre>
 
 {% endblock %}
