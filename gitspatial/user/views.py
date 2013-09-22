@@ -37,6 +37,10 @@ def user_repo(request, repo_id):
         repo = Repo.objects.get(id=repo_id)
     except Repo.DoesNotExist:
         raise Http404
+
+    if not repo.user == request.user:
+        return HttpResponseForbidden()
+
     feature_sets = FeatureSet.objects.filter(repo=repo).order_by('-synced', 'name')
     context = {'repo': repo, 'feature_sets': feature_sets}
     return render(request, 'user_repo.html', context)
@@ -53,7 +57,7 @@ def user_feature_set(request, feature_set_id):
         raise Http404
 
     if not feature_set.repo.user == request.user:
-        raise PermissionDenied
+        return HttpResponseForbidden()
 
     if request.method == 'GET':
         if feature_set.is_syncing:

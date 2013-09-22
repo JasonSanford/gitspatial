@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 
 from ..models import Repo, FeatureSet
-from .views import user_repo_sync, user_repo_sync_status, user_feature_set_sync_status
+from .views import user_repo, user_feature_set, user_repo_sync, user_repo_sync_status, user_feature_set_sync_status
 
 
 class UserRepoSyncTest(TestCase):
@@ -172,3 +172,37 @@ class UserFeatureSetSyncStatusTest(TestCase):
         response = user_feature_set_sync_status(request, feature_set_id=18)
         expected = {'status': 'error'}
         self.assertEqual(json.loads(response.content), expected)
+
+
+class PageViewTest(TestCase):
+    fixtures = ['gitspatial/fixtures/test_data.json']
+
+    def setUp(self):
+        self.sal = User.objects.get(id=6)
+        self.jason = User.objects.get(id=5)
+        self.factory = RequestFactory()
+
+    def test_user_cannot_view_others_repo(self):
+        request = self.factory.get('/user/repo/22')
+        request.user = self.sal
+        response = user_repo(request, 22)
+        self.assertEqual(response.status_code, 403)
+
+    def test_user_can_view_own_repo(self):
+        request = self.factory.get('/user/repo/22')
+        request.user = self.jason
+        response = user_repo(request, 22)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_cannot_view_others_feature_set(self):
+        request = self.factory.get('/user/feature_set/3')
+        request.user = self.sal
+        response = user_feature_set(request, 3)
+        self.assertEqual(response.status_code, 403)
+
+    def test_user_can_view_own_feature_set(self):
+        request = self.factory.get('/user/feature_set/3')
+        request.user = self.jason
+        response = user_feature_set(request, 3)
+        self.assertEqual(response.status_code, 200)
+
