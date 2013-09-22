@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, EmptyPage as EmptyPageException
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseBadRequest, HttpResponseForbidden
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods, require_GET
 
 from ..github import GitHub
@@ -33,10 +33,7 @@ def user_landing(request):
 
 @login_required
 def user_repo(request, repo_id):
-    try:
-        repo = Repo.objects.get(id=repo_id)
-    except Repo.DoesNotExist:
-        raise Http404
+    repo = get_object_or_404(Repo, id=repo_id)
 
     if not repo.user == request.user:
         return HttpResponseForbidden()
@@ -51,10 +48,7 @@ def user_repo(request, repo_id):
 def user_feature_set(request, feature_set_id):
     per_page = 50
 
-    try:
-        feature_set = FeatureSet.objects.get(id=feature_set_id)
-    except FeatureSet.DoesNotExist:
-        raise Http404
+    feature_set = get_object_or_404(FeatureSet, id=feature_set_id)
 
     if not feature_set.repo.user == request.user:
         return HttpResponseForbidden()

@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.models import User
+from django.http import Http404
 from django.test import TestCase
 from django.test.client import RequestFactory
 
@@ -206,3 +207,25 @@ class PageViewTest(TestCase):
         response = user_feature_set(request, 3)
         self.assertEqual(response.status_code, 200)
 
+    def test_unknown_repo_404s(self):
+        # A 404 actually raises an exception, so we have to catch it to prove we 404'd. Lame.
+        exc = None
+        request = self.factory.get('/user/repo/99999')
+        request.user = self.jason
+        try:
+            response = user_repo(request, 99999)
+        except Exception as exc:
+            print exc
+            pass
+        self.assertTrue(isinstance(exc, Http404))
+
+    def test_unknown_feature_set_404s(self):
+        # A 404 actually raises an exception, so we have to catch it to prove we 404'd. Lame.
+        exc = None
+        request = self.factory.get('/user/feature_set/99999')
+        request.user = self.jason
+        try:
+            response = user_feature_set(request, 99999)
+        except Exception as exc:
+            pass
+        self.assertTrue(isinstance(exc, Http404))
