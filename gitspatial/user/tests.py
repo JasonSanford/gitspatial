@@ -215,7 +215,6 @@ class PageViewTest(TestCase):
         try:
             response = user_repo(request, 99999)
         except Exception as exc:
-            print exc
             pass
         self.assertTrue(isinstance(exc, Http404))
 
