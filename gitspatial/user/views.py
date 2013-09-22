@@ -26,7 +26,7 @@ def user_landing(request):
     """
     # TODO: Only do this at sign up. Subsequent re-checks of new/updated repos should be scheduled.
     get_user_repos.apply_async((request.user,))
-    user_repos = Repo.objects.filter(user=request.user).extra(select={'lower_name': 'lower(name)'}).order_by('lower_name')
+    user_repos = Repo.objects.filter(user=request.user).extra(select={'lower_name': 'lower(name)'}).order_by('-synced', 'lower_name')
     context = {'user_repos': user_repos}
     return render(request, 'user.html', context)
 
@@ -37,7 +37,7 @@ def user_repo(request, repo_id):
         repo = Repo.objects.get(id=repo_id)
     except Repo.DoesNotExist:
         raise Http404
-    feature_sets = FeatureSet.objects.filter(repo=repo).order_by('name')
+    feature_sets = FeatureSet.objects.filter(repo=repo).order_by('-synced', 'name')
     context = {'repo': repo, 'feature_sets': feature_sets}
     return render(request, 'user_repo.html', context)
 
