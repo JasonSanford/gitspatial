@@ -35,6 +35,7 @@
                     <ul class="nav">
                         <li><a href="{% url 'how_it_works' %}">How it Works</a></li>
                         <li><a href="{% url 'api_landing' %}">API</a></li>
+                        <li><a href="#about-modal" data-target="#about-modal" data-toggle="modal">About</a></li>
                     </ul>
                     <ul class="nav pull-right">
                     {% if user.is_anonymous %}
@@ -61,12 +62,29 @@
             <p>&copy; GitSpatial 2013</p>
         </footer>
     </div>
+    <div class="modal fade" id="about-modal" data-keyboard="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">About GitSpatial</h4>
+                </div>
+                <div class="modal-body">
+                    <p><a href="http://geojason.info">Jason Sanford</a> built this. It's <a href="https://github.com/JasonSanford/gitspatial">open source</a>. Read a <a href="http://geojason.info/2013/gitspatial-a-spatial-api-for-your-github-hosted-geojson/">blog post</a> about it.</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script src="{{ STATIC_URL }}lib/bootstrap/js/bootstrap.min.js"></script>
     <script>
         window.gs = {
             STATIC_URL: '{{ STATIC_URL }}'
         };
+        $('#about-modal').modal({
+            show: false,
+            keyboard: true
+        });
     </script>
     {% block javascript %}{% endblock %}
 </body>
