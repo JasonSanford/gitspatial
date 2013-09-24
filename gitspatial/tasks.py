@@ -9,6 +9,7 @@ from django.db.models.query import QuerySet
 from .models import Repo, FeatureSet, Feature
 from .github import GitHub
 from .geojson import GeoJSONParser, GeoJSONParserException
+from .utils import strip_zs
 
 
 logger = logging.getLogger(__name__)
@@ -128,7 +129,8 @@ def get_feature_set_features(feature_set_or_feature_sets):
             feature_set.save()
             return
         for feature in geojson.features:
-            geom = GEOSGeometry(json.dumps(feature['geometry']))
+            zs_stripped = strip_zs(feature['geometry'])
+            geom = GEOSGeometry(json.dumps(zs_stripped))
             properties = json.dumps(feature['properties'])
             feature = Feature(feature_set=feature_set, geom=geom, properties=properties)
             feature.save()

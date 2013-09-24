@@ -4,6 +4,8 @@ from django.test.client import Client, RequestFactory
 
 from .views import home
 from .models import FeatureSet, Repo
+from .test_geojson import featurecollection_with_zs, featurecollection_no_zs
+from .utils import strip_zs
 
 
 class WebTest(TestCase):
@@ -61,3 +63,17 @@ class ModelsTest(TestCase):
 
     def test_feature_set_bounds(self):
         self.assertEqual(self.fs.bounds, (-80.955914, 35.067714, -80.694945, 35.499112))
+
+
+class StripZTest(TestCase):
+    def setUp(self):
+        pass
+
+    def test_z_values_stripped(self):
+        new_featurecollection = {'type': 'FeatureCollection', 'features': []}
+
+        for feature in featurecollection_with_zs['features']:
+            feature['geometry'] = strip_zs(feature['geometry'])
+            new_featurecollection['features'].append(feature)
+
+        self.assertEqual(new_featurecollection, featurecollection_no_zs)
