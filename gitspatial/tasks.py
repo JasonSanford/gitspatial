@@ -50,7 +50,7 @@ def get_user_repos(user_or_users):
                         'github_private': raw_repo['private'],
                         'master_branch': raw_repo['master_branch'],
                     }
-                except IndexError:
+                except KeyError:
                     logger.error('Raw repo from GitHub has no master_branch: %s' % raw_repo)
                     continue
                 repo, created = Repo.objects.get_or_create(github_id=raw_repo['id'], defaults=defaults)
