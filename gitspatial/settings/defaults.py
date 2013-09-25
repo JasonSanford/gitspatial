@@ -103,6 +103,10 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'gitspatial.urls'
 
+RAVEN_CONFIG = {
+    'dsn': 'https://ba2512aa1e58436f9cd223e45b930859:82b01af5d3f247a58713a7b3491861de@app.getsentry.com/13510',
+}
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'gitspatial.wsgi.application'
 
@@ -132,6 +136,7 @@ INSTALLED_APPS = (
     'social_auth',
     'kombu.transport.django',
     'djcelery',
+    'raven.contrib.django.raven_compat',
 )
 
 AUTHENTICATION_BACKENDS = (
