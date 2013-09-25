@@ -51,7 +51,7 @@ def get_user_repos(user_or_users):
                         'master_branch': raw_repo['master_branch'],
                     }
                 except KeyError:
-                    logger.error('Raw repo from GitHub has no master_branch: %s' % raw_repo)
+                    logger.warning('Repo has no master_branch key: %s' % raw_repo['full_name'])
                     continue
                 repo, created = Repo.objects.get_or_create(github_id=raw_repo['id'], defaults=defaults)
                 current_repos.append(repo)
