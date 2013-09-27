@@ -4,6 +4,7 @@ import logging
 
 from celery import task
 from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.geos.error import GEOSException
 from django.db.models.query import QuerySet
 
 from .models import Repo, FeatureSet, Feature
@@ -135,8 +136,13 @@ def get_feature_set_features(feature_set_or_feature_sets):
             feature_set.save()
             return
         for feature in geojson.features:
-            zs_stripped = strip_zs(feature['geometry'])
-            geom = GEOSGeometry(json.dumps(zs_stripped))
+            geojson_geometry = strip_zs(feature['geometry'])
+            try:
+                geom = GEOSGeometry(json.dumps(geojson_geometry))
+            except GEOSException:
+                logger.error('Could not parse as GEOSGeometry: %s' % geojson_geometry)
+                # This one feature failed, but let's process the rest.
+                continue
             properties = json.dumps(feature['properties'])
             feature = Feature(feature_set=feature_set, geom=geom, properties=properties)
             feature.save()
