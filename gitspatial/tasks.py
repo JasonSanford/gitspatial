@@ -129,7 +129,7 @@ def get_feature_set_features(feature_set_or_feature_sets):
             try:
                 content = _get_blob(github, feature_set)
             except MemoryError:
-                logger.error('MemoryError parsing FeatureSet: {0} with error: {1}'.format(feature_set))
+                logger.error('MemoryError parsing FeatureSet: {0}'.format(feature_set))
                 logger.info('Setting feature set sync status as error syncing: {0}'.format(feature_set))
                 feature_set.sync_status = FeatureSet.MEMORY_ERROR
                 feature_set.save()
