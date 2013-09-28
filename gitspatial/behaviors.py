@@ -13,13 +13,17 @@ class Syncable(models.Model):
     NOT_SYNCED = 1
     SYNCING = 2
     SYNCED = 3
-    ERROR_SYNCING = 4
+    ERROR_SYNCING = 4  # A more specific error below should be used
+    MEMORY_ERROR = 5
+    INVALID_GEOJSON_ERROR = 6
 
     SYNC_CHOICES = (
         (NOT_SYNCED, 'Not Synced'),
         (SYNCING, 'Syncing'),
         (SYNCED, 'Synced'),
         (ERROR_SYNCING, 'Error Syncing'),
+        (MEMORY_ERROR, 'Feature Set Too Large'),
+        (INVALID_GEOJSON_ERROR, 'Invalid GeoJSON'),
     )
 
     SYNC_CODES = {
@@ -27,6 +31,8 @@ class Syncable(models.Model):
         SYNCING: 'syncing',
         SYNCED: 'synced',
         ERROR_SYNCING: 'error',
+        MEMORY_ERROR: 'memory_error',
+        INVALID_GEOJSON_ERROR: 'invalid_geojson_error',
     }
 
     sync_status = models.IntegerField(choices=SYNC_CHOICES, default=NOT_SYNCED)

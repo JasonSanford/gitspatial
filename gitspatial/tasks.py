@@ -126,7 +126,14 @@ def get_feature_set_features(feature_set_or_feature_sets):
             content = base64.b64decode(gh_request.json()['content'])
         else:
             # For files > 1 megabyte, we have to a lot of HTTP dancing
-            content = _get_blob(github, feature_set)
+            try:
+                content = _get_blob(github, feature_set)
+            except MemoryError:
+                logger.error('MemoryError parsing FeatureSet: {0} with error: {1}'.format(feature_set))
+                logger.info('Setting feature set sync status as error syncing: {0}'.format(feature_set))
+                feature_set.sync_status = FeatureSet.MEMORY_ERROR
+                feature_set.save()
+                return
         try:
             geojson = GeoJSONParser(content)
         except GeoJSONParserException as e:
@@ -180,7 +187,10 @@ def _get_blob(github, feature_set):
             continue
 
     # Get the blob
-    blob_request = github.get(blob_url)
-    encoded_content = blob_request.json()['content']
-    decoded = base64.b64decode(encoded_content)
+    try:
+        blob_request = github.get(blob_url)
+        encoded_content = blob_request.json()['content']
+        decoded = base64.b64decode(encoded_content)
+    except MemoryError:
+        raise
     return decoded

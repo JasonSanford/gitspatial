@@ -60,6 +60,12 @@ $(document).ready(function () {
                     case 'error':
                         text = 'Error Syncing';
                         break;
+                    case 'memory_error':
+                        text = 'GeoJSON Too Large';
+                        break;
+                    case 'invalid_geojson_error':
+                        text = 'Invalid GeoJSON';
+                        break;
                     default:
                         text = 'Not Synced';
                 }
@@ -89,6 +95,8 @@ $(document).ready(function () {
                         text = 'Sync';
                         break;
                     case 'error':
+                    case 'memory_error':
+                    case 'invalid_geojson_error':
                         text = 'Unsync';
                         break;
                     default:
@@ -110,7 +118,7 @@ $(document).ready(function () {
         } else if (status === 'not_synced') {
             adds.push('btn-success');
             removes.push('disabled', 'btn-danger', 'synced');
-        } else if (status === 'error') {
+        } else if (['error', 'memory_error', 'invalid_geojson_error'].indexOf(status) > -1) {
             adds.push('btn-danger');
             removes.push('disabled', 'btn-success');
         }
