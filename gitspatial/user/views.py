@@ -162,17 +162,6 @@ def user_repo_sync(request, repo_id):
         if 'testing' in request.GET:
             return HttpResponse('ok', status=201)
 
-        max_repo_syncs = 3
-
-        current_synced_repos = Repo.objects.filter(user=request.user, synced=True).count()
-
-        if current_synced_repos >= max_repo_syncs:
-            response = {
-                'status': 'error',
-                'message': 'While we ramp things up, users are limited to syncing {0} repos. Cool?'.format(max_repo_syncs)
-            }
-            return HttpResponseBadRequest(json.dumps(response), content_type='application/json')
-
         repo.synced = True
         repo.sync_status = repo.SYNCING
 
