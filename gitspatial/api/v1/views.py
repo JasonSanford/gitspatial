@@ -107,9 +107,12 @@ def repo_hook(request, repo_id):
                 added.append(path)
 
     for path in modified:
-        feature_set = FeatureSet.objects.get(repo=repo, path=path)
-        logger.info('[github_hook]: Getting features for {0}'.format(feature_set))
-        get_feature_set_features.apply_async((feature_set,))
+        try:
+            feature_set = FeatureSet.objects.get(repo=repo, path=path)
+            logger.info('[github_hook]: Getting features for {0}'.format(feature_set))
+            get_feature_set_features.apply_async((feature_set,))
+        except FeatureSet.DoesNotExist:
+            pass
 
     for path in removed:
         feature_sets = FeatureSet.objects.filter(repo=repo, path=path)
