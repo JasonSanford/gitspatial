@@ -121,7 +121,7 @@ def repo_hook(request, repo_id):
             feature_set.delete()
 
     if added:
-        get_repo_feature_sets.apply_async((repo,))
+        get_repo_feature_sets.apply_async((repo, False,))
 
     return HttpResponse('Thanks GitHub!')
 

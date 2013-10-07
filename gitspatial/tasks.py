@@ -68,7 +68,7 @@ def get_user_repos(user_or_users):
 
 
 @task(name='get_repo_feature_sets')
-def get_repo_feature_sets(repo_or_repos):
+def get_repo_feature_sets(repo_or_repos, sync_feature_sets=True):
     """
     Create or update the feature sets for
     a single repo or set of repos
@@ -87,7 +87,7 @@ def get_repo_feature_sets(repo_or_repos):
                 defaults = {'name': item['path'], 'size': item['size']}
                 feature_set, created = FeatureSet.objects.get_or_create(repo=repo, path=item['path'], defaults=defaults)
                 current_feature_sets.append(feature_set)
-                if feature_set.synced:
+                if feature_set.synced and sync_feature_sets:
                     logger.info('Setting feature set sync status as syncing: {0}'.format(feature_set))
                     feature_set.sync_status = FeatureSet.SYNCING
                     feature_set.save()
