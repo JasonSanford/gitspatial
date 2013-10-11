@@ -2,6 +2,8 @@
 
 A spatial API for your GitHub-hosted GeoJSON.
 
+Read more in a [blog post](http://geojason.info/2013/gitspatial-a-spatial-api-for-your-github-hosted-geojson/) or [see it in action](http://gitspatial.com/).
+
 ## Overview
 
 GitHub now supports [rendering GeoJSON files](https://help.github.com/articles/mapping-geojson-files-on-github). This makes it easy to collaborate on geo data. GitSpatial provides a spatial API for GeoJSON hosted at GitHub. 
