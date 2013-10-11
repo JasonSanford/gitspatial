@@ -3,3 +3,5 @@ venv
 celerybeat-schedule.db
 *.pyc
 logs
+.coverage
+htmlcov

@@ -1,10 +1,15 @@
 import json
+import logging
 
 from django.test import TestCase
 from django.test.client import Client
 
 from .exceptions import InvalidSpatialParameterException
 from .helpers import query_args
+
+# Simma down the logs during testing
+logger = logging.getLogger('gitspatial.api.v1.views')
+logger.setLevel(logging.ERROR)
 
 class APIRequestTest(TestCase):
     fixtures = ['gitspatial/fixtures/test_data.json']

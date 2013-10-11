@@ -26,6 +26,7 @@ def docs(request):
 @jsonp
 @require_GET
 def feature_set_query(request, user_name, repo_name, feature_set_name):
+    logger.info('[api]: URL: {0}'.format(request.path))
     full_name = '{0}/{1}'.format(user_name, repo_name)
     try:
         repo = Repo.objects.get(full_name=full_name)
