@@ -42,8 +42,6 @@ def get_user_repos(user_or_users):
                 there_are_more_repos = False
             for raw_repo in gh_request.json():
                 try:
-                    # Some repos don't have a master_branch member. Let's 
-                    # see why this is: JasonSanford/gitspatial#2
                     defaults = {
                         'user': user,
                         'name': raw_repo['name'],
@@ -52,6 +50,7 @@ def get_user_repos(user_or_users):
                         'master_branch': raw_repo['master_branch'],
                     }
                 except KeyError:
+                    # Repos without commits have no master_branch. seeya.
                     logger.warning('Repo has no master_branch key: %s' % raw_repo['full_name'])
                     continue
                 repo, created = Repo.objects.get_or_create(github_id=raw_repo['id'], defaults=defaults)
