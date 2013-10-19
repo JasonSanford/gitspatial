@@ -1,11 +1,18 @@
+import logging
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test.client import Client, RequestFactory
 
 from .views import home
-from .models import FeatureSet, Repo
+from .models import FeatureSet, Repo, Feature
+from .tasks import delete_feature_set_features, delete_repo_feature_sets
 from .test_geojson import featurecollection_with_zs, featurecollection_no_zs
 from .utils import strip_zs
+
+
+logger = logging.getLogger('gitspatial.tasks')
+logger.setLevel(logging.ERROR)
 
 
 class WebTest(TestCase):
@@ -77,3 +84,31 @@ class StripZTest(TestCase):
             new_featurecollection['features'].append(feature)
 
         self.assertEqual(new_featurecollection, featurecollection_no_zs)
+
+class TasksTest(TestCase):
+    fixtures = ['gitspatial/fixtures/test_data.json']
+
+    def setUp(self):
+        pass
+
+    def test_delete_feature_set_features(self):
+        fs = FeatureSet.objects.get(id=3)
+
+        features = Feature.objects.filter(feature_set=fs)
+        self.assertTrue(len(features) > 0)
+
+        delete_feature_set_features(fs)
+
+        features = Feature.objects.filter(feature_set=fs)
+        self.assertEqual(len(features), 0)
+
+    def test_delete_repo_feature_sets(self):
+        repo = Repo.objects.get(id=22)
+
+        fs = FeatureSet.objects.filter(repo=repo)
+        self.assertTrue(len(fs) > 0)
+
+        delete_repo_feature_sets(repo)
+
+        fs = FeatureSet.objects.filter(repo=repo)
+        self.assertEqual(len(fs), 0)
