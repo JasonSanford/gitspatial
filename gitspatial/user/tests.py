@@ -1,12 +1,13 @@
 import json
 
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.test import TestCase
 from django.test.client import RequestFactory
 
 from ..models import Repo, FeatureSet
-from .views import user_repo, user_feature_set, user_repo_sync, user_repo_sync_status, user_feature_set_sync_status
+from .views import user_repo, user_feature_set, user_repo_sync, user_repo_sync_status, user_feature_set_sync_status, user_feature_set_sync
 
 
 class UserRepoSyncTest(TestCase):
@@ -57,6 +58,15 @@ class UserRepoSyncTest(TestCase):
         request.user = self.jason
         response = user_repo_sync(request, repo_id=22)
         self.assertEqual(response.status_code, 405)
+
+    def test_user_repo_sync_dne(self):
+        request = self.factory.post('/user/repo/99999/sync')
+        request.user = self.jason
+        try:
+            response = user_repo_sync(request, repo_id=99999)
+        except Exception as exc:
+            pass
+        self.assertTrue(isinstance(exc, Http404))
 
 
 class UserRepoSyncStatusTest(TestCase):
@@ -116,6 +126,80 @@ class UserRepoSyncStatusTest(TestCase):
         expected = {'status': 'error'}
         self.assertEqual(json.loads(response.content), expected)
 
+    def test_user_sync_status_fs_dne(self):
+        request = self.factory.get('/user/repo/99999/sync_status')
+        request.user = self.jason
+        try:
+            response = user_repo_sync_status(request, repo_id=99999)
+        except Exception as exc:
+            pass
+        self.assertTrue(isinstance(exc, Http404))
+
+
+class UserFeatureSetSyncTest(TestCase):
+    #
+    # These are kind of terrible now. They test for a forbidden response is
+    # legit, but we're short circuiting the POST to sync as to not make
+    # an external request to GitHub.
+    #
+    fixtures = ['gitspatial/fixtures/test_data.json']
+
+    def setUp(self):
+        self.sal = User.objects.get(id=6)
+        self.jason = User.objects.get(id=5)
+        self.factory = RequestFactory()
+
+    def test_user_can_sync_own_feature_set(self):
+        request = self.factory.post('/user/feature_set/3/sync')
+        request.user = self.jason
+        response = user_feature_set_sync(request, feature_set_id=3)
+        self.assertEqual(response.status_code, 201)
+
+    def test_user_cannot_sync_others_feature_set(self):
+        request = self.factory.post('/user/feature_set/19/sync')
+        request.user = self.jason
+        try:
+            response = user_feature_set_sync(request, feature_set_id=19)
+        except Exception as exc:
+            pass
+        self.assertTrue(isinstance(exc, PermissionDenied))
+
+    def test_user_can_unsync_own_feature_set(self):
+        request = self.factory.delete('/user/feature_set/3/sync')
+        request.user = self.jason
+        response = user_feature_set_sync(request, feature_set_id=3)
+        self.assertEqual(response.status_code, 204)
+
+    def test_user_cannot_unsync_others_feature_set(self):
+        request = self.factory.delete('/user/feature_set/19/sync')
+        request.user = self.jason
+        try:
+            response = user_feature_set_sync(request, feature_set_id=19)
+        except Exception as exc:
+            pass
+        self.assertTrue(isinstance(exc, PermissionDenied))
+
+    def test_invalid_method_put(self):
+        request = self.factory.put('/user/feature_set/3/sync')
+        request.user = self.jason
+        response = user_feature_set_sync(request, feature_set_id=3)
+        self.assertEqual(response.status_code, 405)
+
+    def test_invalid_method_get(self):
+        request = self.factory.get('/user/feature_set/3/sync')
+        request.user = self.jason
+        response = user_feature_set_sync(request, feature_set_id=3)
+        self.assertEqual(response.status_code, 405)
+
+    def test_feature_set_dne(self):
+        request = self.factory.post('/user/feature_set/99999/sync')
+        request.user = self.jason
+        try:
+            response = user_feature_set_sync(request, feature_set_id=99999)
+        except Exception as exc:
+            pass
+        self.assertTrue(isinstance(exc, Http404))
+
 
 class UserFeatureSetSyncStatusTest(TestCase):
     fixtures = ['gitspatial/fixtures/test_data.json']
@@ -173,6 +257,15 @@ class UserFeatureSetSyncStatusTest(TestCase):
         response = user_feature_set_sync_status(request, feature_set_id=18)
         expected = {'status': 'error'}
         self.assertEqual(json.loads(response.content), expected)
+
+    def test_user_sync_status_fs_dne(self):
+        request = self.factory.get('/user/feature_set/99999/sync_status')
+        request.user = self.jason
+        try:
+            response = user_feature_set_sync_status(request, feature_set_id=99999)
+        except Exception as exc:
+            pass
+        self.assertTrue(isinstance(exc, Http404))
 
 
 class PageViewTest(TestCase):
