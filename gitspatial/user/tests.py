@@ -1,4 +1,6 @@
 import json
+import random
+import string
 
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
@@ -7,7 +9,7 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 
 from ..models import Repo, FeatureSet
-from .views import user_repo, user_feature_set, user_repo_sync, user_repo_sync_status, user_feature_set_sync_status, user_feature_set_sync
+from .views import user_repo, user_feature_set, user_repo_sync, user_repo_sync_status, user_feature_set_sync_status, user_feature_set_sync, user_landing
 
 
 class UserRepoSyncTest(TestCase):
@@ -276,6 +278,12 @@ class PageViewTest(TestCase):
         self.jason = User.objects.get(id=5)
         self.factory = RequestFactory()
 
+    def test_user_landing(self):
+        request = self.factory.get('/user')
+        request.user = self.sal
+        response = user_landing(request)
+        self.assertEqual(response.status_code, 200)
+
     def test_user_cannot_view_others_repo(self):
         request = self.factory.get('/user/repo/22')
         request.user = self.sal
@@ -296,6 +304,52 @@ class PageViewTest(TestCase):
 
     def test_user_can_view_own_feature_set(self):
         request = self.factory.get('/user/feature_set/3')
+        request.user = self.jason
+        response = user_feature_set(request, 3)
+        self.assertEqual(response.status_code, 200)
+
+    def test_feature_set_rename(self):
+        request = self.factory.put('/user/feature_set/3', data='name=name&value=cats&pk=3')
+        request.user = self.jason
+        response = user_feature_set(request, 3)
+        self.assertEqual(response.status_code, 200)
+
+    def test_feature_set_rename_no_value(self):
+        request = self.factory.put('/user/feature_set/3', data='name=name&pk=3')
+        request.user = self.jason
+        response = user_feature_set(request, 3)
+        self.assertEqual(response.status_code, 400)
+
+    def test_feature_set_rename_value_too_long(self):
+        value = ''.join(random.choice(string.lowercase) for i in range(1003))
+        request = self.factory.put('/user/feature_set/3', data='name=name&value={0}&pk=3'.format(value))
+        request.user = self.jason
+        response = user_feature_set(request, 3)
+        self.assertEqual(response.status_code, 400)
+
+    def test_page_too_high_redirects(self):
+        request = self.factory.get('/user/feature_set/3?page=99999')
+        request.user = self.jason
+        response = user_feature_set(request, 3)
+        self.assertEqual(response.status_code, 302)
+
+    def test_string_page_redirects(self):
+        request = self.factory.get('/user/feature_set/3?page=lobster')
+        request.user = self.jason
+        response = user_feature_set(request, 3)
+        self.assertEqual(response.status_code, 302)
+
+    def test_0_page_redirects(self):
+        request = self.factory.get('/user/feature_set/3?page=0')
+        request.user = self.jason
+        response = user_feature_set(request, 3)
+        self.assertEqual(response.status_code, 302)
+
+    def test_feature_set_syncing(self):
+        request = self.factory.get('/user/feature_set/3')
+        fs = FeatureSet.objects.get(id=3)
+        fs.sync_status = FeatureSet.SYNCING
+        fs.save()
         request.user = self.jason
         response = user_feature_set(request, 3)
         self.assertEqual(response.status_code, 200)
