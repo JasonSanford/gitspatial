@@ -55,7 +55,7 @@ Install dependencies defined in `requirements.txt`.
 
     pip install -r requirements.txt
 
-### Envrionment Variables
+### Environment Variables
 
 To keep secret keys, passwords and such out of version control, we store them in environment variables. Below are the variables required to run.
 
