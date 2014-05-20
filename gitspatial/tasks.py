@@ -41,11 +41,11 @@ def get_user_repos(user):
                     'name': raw_repo['name'],
                     'full_name': raw_repo['full_name'],
                     'github_private': raw_repo['private'],
-                    'master_branch': raw_repo['master_branch'],
+                    'master_branch': raw_repo['default_branch'],
                 }
             except KeyError:
-                # Repos without commits have no master_branch. seeya.
-                logger.warning('Repo has no master_branch key: %s' % raw_repo['full_name'])
+                # Repos without commits have no default_branch. seeya.
+                logger.warning('Repo has no default_branch key: %s' % raw_repo['full_name'])
                 continue
             repo, created = Repo.objects.get_or_create(github_id=raw_repo['id'], defaults=defaults)
             current_repos.append(repo)
