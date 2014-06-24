@@ -93,6 +93,7 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
 @csrf_exempt
 def repo_hook(request, repo_id):
     payload = json.loads(request.body)
+    logger.info('[hook_payload]: {0}'.format(payload))
     repo = Repo.objects.get(github_id=payload['repository']['id'])
 
     modified, removed, added = [], [], []
