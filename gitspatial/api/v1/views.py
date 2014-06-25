@@ -93,37 +93,37 @@ def feature_set_query(request, user_name, repo_name, feature_set_name):
 @csrf_exempt
 def repo_hook(request, repo_id):
     payload = json.loads(request.body)
-    logger.info('[hook_payload]: {0}'.format(payload))
-    repo = Repo.objects.get(github_id=payload['repository']['id'])
+    if 'repository' in payload:
+        repo = Repo.objects.get(github_id=payload['repository']['id'])
 
-    modified, removed, added = [], [], []
-    for commit in payload['commits']:
-        for path in commit['modified']:
-            if path not in modified:
-                modified.append(path)
-        for path in commit['removed']:
-            if path not in removed:
-                removed.append(path)
-        for path in commit['added']:
-            if path not in added:
-                added.append(path)
+        modified, removed, added = [], [], []
+        for commit in payload['commits']:
+            for path in commit['modified']:
+                if path not in modified:
+                    modified.append(path)
+            for path in commit['removed']:
+                if path not in removed:
+                    removed.append(path)
+            for path in commit['added']:
+                if path not in added:
+                    added.append(path)
 
-    for path in modified:
-        try:
-            feature_set = FeatureSet.objects.get(repo=repo, path=path)
-            logger.info('[github_hook]: Getting features for {0}'.format(feature_set))
-            get_feature_set_features.apply_async((feature_set,))
-        except FeatureSet.DoesNotExist:
-            pass
+        for path in modified:
+            try:
+                feature_set = FeatureSet.objects.get(repo=repo, path=path)
+                logger.info('[github_hook]: Getting features for {0}'.format(feature_set))
+                get_feature_set_features.apply_async((feature_set,))
+            except FeatureSet.DoesNotExist:
+                pass
 
-    for path in removed:
-        feature_sets = FeatureSet.objects.filter(repo=repo, path=path)
-        for feature_set in feature_sets:
-            logger.info('[github_hook]: Deleting feature set for {0}'.format(feature_set))
-            feature_set.delete()
+        for path in removed:
+            feature_sets = FeatureSet.objects.filter(repo=repo, path=path)
+            for feature_set in feature_sets:
+                logger.info('[github_hook]: Deleting feature set for {0}'.format(feature_set))
+                feature_set.delete()
 
-    if added:
-        get_repo_feature_sets.apply_async((repo, False,))
+        if added:
+            get_repo_feature_sets.apply_async((repo, False,))
 
     return HttpResponse('Thanks GitHub!')
 
