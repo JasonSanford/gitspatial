@@ -2,7 +2,7 @@
 
 A spatial API for your GitHub-hosted GeoJSON.
 
-Read more in a [blog post](http://geojason.info/2013/gitspatial-a-spatial-api-for-your-github-hosted-geojson/) or [see it in action](http://gitspatial.com/).
+Read more in a [blog post](http://geojason.info/2013/gitspatial-a-spatial-api-for-your-github-hosted-geojson/).
 
 ## Overview
 
